@@ -6,6 +6,7 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
 - `site/`: trang web tĩnh (trang chủ, các trang con, `quan-tri/` là trang quản lý).
 - `functions/api/`: máy chủ nhỏ chạy trên Cloudflare Pages Functions.
   - `POST /api/track`: ghi lượt xem trang, thời gian xem, lượt bấm nút liên hệ.
+  - `POST /api/consent`: lưu lựa chọn cookie của khách (đồng ý tất cả, chỉ cần thiết, tùy chọn). Mã khách `fb_vid`, phiên `fb_sid` và nguồn utm chỉ được tạo khi khách đồng ý cookie thống kê; GA4 và Facebook Pixel chỉ tải sau khi khách đồng ý. Dữ liệu sự kiện, phiên, lựa chọn cookie quá 400 ngày tự xóa.
   - `POST /api/lead`: lưu form liên hệ và gửi email (Resend) tới `LEAD_EMAIL_TO`.
   - `POST /api/auth/login|logout|setup|password`, `GET /api/auth/me`: đăng nhập email + mật khẩu (cookie HttpOnly, 7 ngày).
     Chủ sở hữu mặc định `minhducuy@gmail.com` (đổi bằng biến `OWNER_EMAIL`), tạo hoặc đặt lại mật khẩu bằng mã `ADMIN_TOKEN`.
@@ -16,6 +17,7 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
   - `/chien-dich-10000ha/`: đường link riêng để gửi khách, có ảnh xem trước `img/og-10000ha.jpg` khi chia sẻ Zalo, Facebook, rồi tự mở trang chiến dịch.
   - `POST /api/admin/media`, `GET /api/media/:id`: ảnh tải lên (lưu trong D1, tối đa 1,5 MB, trang quản lý tự thu nhỏ về 1600 px).
   - `GET /api/admin/stats`, `GET|PATCH /api/admin/leads`: thống kê và khách liên hệ, theo vai trò.
+  - `GET /api/admin/cookies?days=30`: tỉ lệ đồng ý cookie, nguồn khách và chiến dịch utm (kèm số khách để lại liên hệ), khách quay lại, trang vào đầu tiên, hành trình các trang khách đã xem trước khi gửi form.
 - Vai trò: Chủ sở hữu (mọi thứ), Quản trị (trừ tài khoản), Duyệt bài (thống kê, nội dung), Biên tập (nội dung, hình ảnh), Kinh doanh (khách liên hệ).
 - Cơ sở dữ liệu: Cloudflare D1, tên biến `DB`. Bảng tự tạo ở lần gọi đầu.
 

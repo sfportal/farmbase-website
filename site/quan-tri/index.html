@@ -177,7 +177,7 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
 .dbars b{font-size:11px;color:var(--fg)}
 .lead-st{padding:4px 8px;border-radius:8px;font-size:12px;font-weight:700;width:auto}
 .tbl td.n,.tbl th.n{text-align:right;font-variant-numeric:tabular-nums}
-#stk .kpi .l,#stk .kpi .v{display:block}
+#stk .kpi .l,#stk .kpi .v,#ckk .kpi .l,#ckk .kpi .v{display:block}
 /* Đăng nhập */
 #login{position:fixed;inset:0;z-index:50;background:radial-gradient(1200px 600px at 10% -10%,#0B6B58 0%,transparent 60%),radial-gradient(900px 500px at 110% 110%,#35A57655 0%,transparent 60%),var(--side);display:grid;place-items:center;padding:16px}
 #login .box{background:var(--surface);color:var(--fg);border-radius:16px;padding:26px 24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.35);display:grid;gap:12px}
@@ -281,6 +281,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
   <a href="#bao-cao" data-v="bao-cao">Báo cáo tuần</a>
   <span class="sep">Khách hàng</span>
   <a href="#thong-ke" data-v="thong-ke" data-cap="stats">Thống kê truy cập</a>
+  <a href="#cookie" data-v="cookie" data-cap="stats">Cookie và hành vi khách</a>
   <a href="#khach-hang" data-v="khach-hang" data-cap="leads">Khách để lại liên hệ <span class="n" id="nlead" hidden>0</span></a>
   <a href="#cai-dat" data-v="cai-dat" data-cap="settings">Kết nối và cài đặt</a>
   <a href="#tai-khoan" data-v="tai-khoan" data-cap="users">Tài khoản và phân quyền</a>
@@ -436,8 +437,26 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
     <div class="grid g2" style="margin-top:16px">
       <div class="card scroll"><h2>Từng trang</h2><table class="tbl" style="margin-top:8px"><thead><tr><th>Trang</th><th class="n">Lượt xem</th><th class="n">Người xem</th><th class="n">Thời gian TB</th><th class="n">Bấm liên hệ</th></tr></thead><tbody id="stpages"></tbody></table></div>
       <div class="card"><h2>Thiết bị và ngôn ngữ</h2><div id="stdev" style="margin-top:8px"></div><div id="stlang" style="margin-top:14px"></div>
-        <p class="rule">Không lưu IP, không dùng cookie quảng cáo. Mỗi trình duyệt có một mã ngẫu nhiên để đếm người xem. Thời gian xem chỉ tính khi tab đang mở trên màn hình.</p></div>
+        <p class="rule">Không lưu IP. Người xem chỉ được đếm riêng khi đã đồng ý cookie thống kê; khách chưa đồng ý chỉ được tính lượt xem ẩn danh. Thời gian xem chỉ tính khi tab đang mở trên màn hình.</p></div>
     </div>
+  </section>
+
+  <!-- COOKIE -->
+  <section data-view="cookie" hidden>
+    <div class="top"><div><h1>Cookie và hành vi khách</h1><p class="sub">Tỉ lệ đồng ý cookie, nguồn khách, chiến dịch và hành trình của khách trước khi để lại liên hệ. Chỉ tính khách đã đồng ý cookie thống kê.</p></div><div class="right"><select id="ckdays" aria-label="Khoảng thời gian" style="width:auto"><option value="7">7 ngày qua</option><option value="30" selected>30 ngày qua</option><option value="90">90 ngày qua</option></select></div></div>
+    <p class="src-line" id="cksrc"><i></i><span>Đang tải…</span></p>
+    <div class="grid g6" id="ckk"></div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card"><h2>Lựa chọn cookie của khách</h2><div id="ckcons" style="margin-top:8px"></div><p class="rule" id="ckrate"></p></div>
+      <div class="card"><h2>Thiết bị (khách đã đồng ý)</h2><div id="ckdev" style="margin-top:8px"></div><h2 style="margin-top:16px">Trang vào đầu tiên</h2><div id="ckland" style="margin-top:8px"></div></div>
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card scroll"><h2>Nguồn khách</h2><table class="tbl" style="margin-top:8px"><thead><tr><th>Nguồn</th><th class="n">Phiên</th><th class="n">Khách</th><th class="n">Trang / phiên</th><th class="n">Để lại liên hệ</th></tr></thead><tbody id="cksrcs"></tbody></table></div>
+      <div class="card scroll"><h2>Chiến dịch (utm_campaign)</h2><table class="tbl" style="margin-top:8px"><thead><tr><th>Chiến dịch</th><th>Nguồn</th><th class="n">Phiên</th><th class="n">Khách</th><th class="n">Để lại liên hệ</th></tr></thead><tbody id="ckcamp"></tbody></table>
+        <p class="rule">Gắn utm vào link quảng cáo, bài đăng để biết kênh nào mang khách về, ví dụ: farmbase.vn/?utm_source=facebook&amp;utm_medium=post&amp;utm_campaign=10000ha</p></div>
+    </div>
+    <div class="card scroll" style="margin-top:16px"><h2>Hành trình khách trước khi để lại liên hệ</h2><table class="tbl" style="margin-top:8px"><thead><tr><th>Thời gian</th><th>Khách</th><th>Nguồn đầu tiên</th><th class="n">Số lần vào</th><th>Các trang đã xem</th></tr></thead><tbody id="ckjour"></tbody></table>
+      <p class="rule">Dùng để tư vấn đúng nhu cầu: ví dụ khách đã xem trang Mã vùng trồng và Chiến dịch 10.000 ha thì gọi tư vấn về hồ sơ mã vùng. Không chia sẻ dữ liệu này ra ngoài; khách yêu cầu xóa thì xóa theo Chính sách bảo mật.</p></div>
   </section>
 
   <!-- KHÁCH HÀNG -->
@@ -625,8 +644,8 @@ const can=c=>MODE==='demo'||(ME&&CAPS[c].includes(ME.role));
 async function api(path,opt={}){const r=await fetch(path,Object.assign({credentials:'same-origin'},opt,{headers:Object.assign({'content-type':'application/json'},opt.headers||{})}));
  const j=await r.json().catch(()=>null);if(r.status===401&&!/\/api\/auth\//.test(path)){showLogin();}if(!r.ok||!j){const e=new Error((j&&j.error)||r.status);e.status=r.status;throw e;}return j;}
 function srcLine(id,live,msg){const el=document.getElementById(id);el.classList.toggle('live',live);el.querySelector('span').textContent=msg;}
-const PATHN={'/trang-chu':'Trang chủ','/ve-chung-toi':'Về chúng tôi','/giai-phap':'Giải pháp','/truy-xuat':'Truy xuất nguồn gốc','/ma-vung-trong':'Tư vấn mã vùng trồng','/ma-dong-goi':'Tư vấn mã đóng gói','/thu-mua-ky-thuat':'Liên kết thu mua','/giai-phap-rieng':'Giải pháp riêng','/chien-dich-10000ha':'Chiến dịch 10.000 ha','/cd-dang-ky':'Chiến dịch · đăng ký','/su-kien':'Sự kiện','/blog':'Blog','/lien-he':'Liên hệ'};
-const pn=p=>PATHN[p]||(p&&p.startsWith('/bai-viet/')?'Bài viết · '+p.slice(10):p||'—');
+const PATHN={'/trang-chu':'Trang chủ','/ve-chung-toi':'Về chúng tôi','/giai-phap':'Giải pháp','/truy-xuat':'Truy xuất nguồn gốc','/ma-vung-trong':'Tư vấn mã vùng trồng','/ma-dong-goi':'Tư vấn mã đóng gói','/thu-mua-ky-thuat':'Liên kết thu mua','/giai-phap-rieng':'Giải pháp riêng','/chien-dich-10000ha':'Chiến dịch 10.000 ha','/cd-dang-ky':'Chiến dịch · đăng ký','/su-kien':'Sự kiện','/blog':'Blog','/lien-he':'Liên hệ','/doi-tac':'Khách hàng, đối tác','/nguon-hang':'Tìm nguồn hàng','/chinh-sach-bao-mat':'Chính sách bảo mật','/dieu-khoan-su-dung':'Điều khoản sử dụng'};
+const pn=p=>PATHN[p]||(p&&p.startsWith('/bai-viet/')?'Bài viết · '+p.slice(10):p&&p.startsWith('/doi-tac/')?'Đối tác · '+p.slice(9):p||'—');
 const mmss=ms=>{if(!ms)return '—';const s=Math.round(ms/1000);return s<60?s+' giây':Math.floor(s/60)+' phút '+(s%60)+' giây';};
 const nf=n=>Number(n||0).toLocaleString('vi-VN');
 function sampleStats(days){const k=days/7;const pages=[['/trang-chu',612,401,48000,41],['/chien-dich-10000ha',188,142,96000,23],['/truy-xuat',131,98,72000,12],['/ma-vung-trong',119,90,81000,15],['/lien-he',74,66,39000,18],['/su-kien',66,52,55000,2],['/bai-viet/bv-8',58,51,124000,6],['/blog',41,37,27000,1],['/thu-mua-ky-thuat',33,29,62000,4],['/ve-chung-toi',29,27,44000,1]].map(r=>({path:r[0],views:Math.round(r[1]*k),visitors:Math.round(r[2]*k),avg_ms:r[3],ctas:Math.round(r[4]*k)}));
@@ -661,7 +680,7 @@ document.getElementById('csv').addEventListener('click',()=>{const H=['Thời gi
  const rows=LEADS.map(r=>[ldt(r.ts),r.name,r.phone,r.email,r.org_type,r.need,r.crop,r.area,r.location,r.note,r.source,r.status]);
  const csv='﻿'+[H].concat(rows).map(a=>a.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='khach-lien-he-farmbase.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);});
-loadStats();loadLeads();
+loadStats();if(can('stats'))loadCookies();loadLeads();
 let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2600);}
 function route(){const h=(location.hash||'#tong-quan').slice(1);const vs=[...document.querySelectorAll('[data-view]')];const v=vs.find(x=>x.dataset.view===h)?h:'tong-quan';vs.forEach(x=>x.hidden=x.dataset.view!==v);document.querySelectorAll('aside a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));window.scrollTo(0,0);}
 
@@ -735,7 +754,7 @@ function applyUser(){document.querySelectorAll('aside [data-cap]').forEach(a=>a.
  document.querySelector('.demo').hidden=MODE==='live';
  $('who').innerHTML=ME?`<b>${esc(ME.name||ME.email)}</b>${esc(ME.email)}<br><span class="rolechip ${ME.role==='owner'?'owner':''}">${esc(ME.role_name||ME.role)}</span><div class="wl">${MODE==='live'?'<button type="button" id="chpw">Đổi mật khẩu</button><button type="button" id="lgout">Đăng xuất</button>':'<button type="button" id="lgout">Thoát bản mẫu</button>'}</div>`:'';
  const h=(location.hash||'').slice(1);const a=document.querySelector(`aside a[data-v="${h}"]`);if(a&&a.hidden)location.hash='#tong-quan';
- loadStats();loadLeads();if(can('users'))loadUsers();if(can('settings'))loadMeasure();if(can('content')){loadContent();loadPartners();}}
+ loadStats();if(can("stats"))loadCookies();loadLeads();if(can("users"))loadUsers();if(can('settings'))loadMeasure();if(can('content')){loadContent();loadPartners();}}
 function enter(u){ME=u;MODE='live';$('login').hidden=true;applyUser();toast('Xin chào '+(u.name||u.email));}
 document.addEventListener('click',async e=>{
  if(e.target.id==='lgout'){if(MODE==='live'){try{await api('/api/auth/logout',{method:'POST'});}catch(err){}}ME=null;$('who').innerHTML='';showLogin();}
@@ -896,6 +915,32 @@ async function savePartners(){const bad=PTS.find(p=>!/^[a-z0-9][a-z0-9-]{1,59}$/
  try{await api('/api/admin/partners',{method:'PUT',body:JSON.stringify({items:PTS})});PTDIRTY=false;srcLine('ptsrc',true,'Dữ liệu thật · lưu trên máy chủ');toast('Đã lưu. Website cập nhật sau khoảng 1 phút');drawPtEd();}
  catch(err){toast(err.message==='invalid_item'?'Có đơn vị thiếu tên hoặc mã đường dẫn không hợp lệ':em(err));}}
 addEventListener('beforeunload',e=>{if(PTDIRTY){e.preventDefault();e.returnValue='';}});
+
+/* ---------- Cookie và hành vi khách ---------- */
+function sampleCookies(days){const k=days/30;const r=n=>Math.round(n*k);
+ return {consent:[{action:'accept_all',n:r(512),a:r(512),m:r(512)},{action:'necessary',n:r(205),a:0,m:0},{action:'custom',n:r(61),a:r(48),m:r(9)},{action:'update',n:r(7),a:r(3),m:r(2)}],
+  visitors:{sessions:r(980),visitors:r(560),pages:3.1,returning:r(140)},anon_views:r(1450),
+  sources:[{source:'(trực tiếp)',medium:'',sessions:r(390),visitors:r(250),pages:2.6,leads:r(9)},{source:'facebook',medium:'social',sessions:r(270),visitors:r(190),pages:3.4,leads:r(11)},{source:'google',medium:'',sessions:r(160),visitors:r(120),pages:3.8,leads:r(6)},{source:'zalo.me',medium:'',sessions:r(95),visitors:r(70),pages:2.9,leads:r(4)},{source:'facebook',medium:'cpc',sessions:r(65),visitors:r(58),pages:2.2,leads:r(3)}],
+  campaigns:[{campaign:'10000ha',source:'facebook',sessions:r(140),visitors:r(110),leads:r(7)},{campaign:'msvt-sau-rieng',source:'zalo',sessions:r(60),visitors:r(45),leads:r(3)}],
+  landing:[{landing:'/trang-chu',sessions:r(520),pages:2.8},{landing:'/chien-dich-10000ha',sessions:r(210),pages:3.6},{landing:'/ma-vung-trong',sessions:r(95),pages:3.9},{landing:'/nguon-hang',sessions:r(60),pages:3.1}],
+  devices:[{device:'mobile',visitors:r(410)},{device:'desktop',visitors:r(140)},{device:'tablet',visitors:r(10)}],
+  leads:[{ts:Date.parse('2026-11-01T09:12:00+07:00'),name:'Nguyễn Văn A (mẫu)',source:'Chiến dịch 10.000 ha',visits:3,first:{source:'facebook',campaign:'10000ha'},path:['/chien-dich-10000ha','/doi-tac','/ma-vung-trong','/chien-dich-10000ha']},
+   {ts:Date.parse('2026-10-31T15:40:00+07:00'),name:'Trần Thị B (mẫu)',source:'Trang Liên hệ',visits:1,first:{source:'google'},path:['/trang-chu','/truy-xuat','/lien-he']}]};}
+const CKA={accept_all:'Đồng ý tất cả',necessary:'Chỉ cần thiết',custom:'Tùy chọn',update:'Đổi lựa chọn'};
+function drawCookies(d){const c=d.consent||[];const tot=c.reduce((a,x)=>a+x.n,0)||0;const A=c.reduce((a,x)=>a+(x.a||0),0),M=c.reduce((a,x)=>a+(x.m||0),0);const v=d.visitors||{};
+ const pc=x=>tot?Math.round(x/tot*100)+'%':'—';
+ $('ckk').innerHTML=[['Lượt chọn cookie',nf(tot)],['Đồng ý thống kê',pc(A)],['Đồng ý marketing',pc(M)],['Khách (đã đồng ý)',nf(v.visitors)],['Khách quay lại',nf(v.returning)],['Trang / phiên',(v.pages?(+v.pages).toFixed(1):'—')]].map(x=>`<div class="card kpi"><span class="l">${x[0]}</span><span class="v" style="font-size:22px">${x[1]}</span></div>`).join('');
+ hbars('ckcons',c,r=>CKA[r.action]||r.action,r=>r.n);
+ $('ckrate').textContent=`Lượt xem ẩn danh (khách chưa đồng ý hoặc chưa chọn): ${nf(d.anon_views||0)}. Khách chọn "Chỉ cần thiết" sẽ không được gắn mã nhận biết.`;
+ const DN={mobile:'Điện thoại',desktop:'Máy tính',tablet:'Máy tính bảng'};hbars('ckdev',d.devices||[],r=>DN[r.device]||r.device||'Khác',r=>r.visitors);
+ hbars('ckland',d.landing||[],r=>pn(r.landing||'')||r.landing,r=>r.sessions);
+ $('cksrcs').innerHTML=(d.sources||[]).map(r=>`<tr><td><b>${esc(r.source)}</b>${r.medium?`<small style="display:block;color:var(--muted)">${esc(r.medium)}</small>`:''}</td><td class="n">${nf(r.sessions)}</td><td class="n">${nf(r.visitors)}</td><td class="n">${r.pages?(+r.pages).toFixed(1):'—'}</td><td class="n">${nf(r.leads||0)}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--muted)">Chưa có dữ liệu.</td></tr>';
+ $('ckcamp').innerHTML=(d.campaigns||[]).map(r=>`<tr><td><b>${esc(r.campaign)}</b></td><td>${esc(r.source)}</td><td class="n">${nf(r.sessions)}</td><td class="n">${nf(r.visitors)}</td><td class="n">${nf(r.leads||0)}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--muted)">Chưa có chiến dịch gắn utm.</td></tr>';
+ $('ckjour').innerHTML=(d.leads||[]).map(l=>`<tr><td style="white-space:nowrap">${new Date(l.ts).toLocaleString('vi-VN',{dateStyle:'short',timeStyle:'short'})}</td><td><b>${esc(l.name)}</b><small style="display:block;color:var(--muted)">${esc(l.source||'')}</small></td><td>${esc(l.first?l.first.source:'—')}${l.first&&l.first.campaign?`<small style="display:block;color:var(--muted)">${esc(l.first.campaign)}</small>`:''}</td><td class="n">${nf(l.visits||0)}</td><td>${(l.path||[]).map(x=>`<span class="ch" title="${esc(x)}">${esc(pn(x)||x)}</span>`).join(' → ')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--muted)">Chưa có khách đồng ý cookie để lại liên hệ trong khoảng này.</td></tr>';}
+async function loadCookies(){const days=+$('ckdays').value;
+ try{if(MODE!=='live')throw new Error('nokey');const d=await api('/api/admin/cookies?days='+days);drawCookies(d);srcLine('cksrc',true,'Dữ liệu thật từ máy chủ · chỉ tính khách đã đồng ý cookie');}
+ catch(e){drawCookies(sampleCookies(days));srcLine('cksrc',false,e.message==='nokey'?'Dữ liệu mẫu: bản xem thử chưa có máy chủ':'Dữ liệu mẫu: chưa kết nối được máy chủ');}}
+$('ckdays').addEventListener('change',loadCookies);
 
 boot();
 </script>

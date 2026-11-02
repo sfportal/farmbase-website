@@ -1,16 +1,12 @@
-// Gắn mã Google Analytics 4 và Facebook Pixel (cài trong trang quản lý) vào các trang công khai.
+// Gắn cấu hình Google Analytics 4 và Facebook Pixel (cài trong trang quản lý) vào các trang công khai.
 import { cachedSettings } from "./_lib.js";
 
+// Chỉ chèn mã cấu hình. Trang web tự tải GA4 và Pixel sau khi khách đồng ý cookie thống kê, marketing.
 function snippet(s) {
-  let h = "";
-  if (/^G-[A-Z0-9]{4,15}$/.test(s.ga_id || "")) {
-    h += `<script async src="https://www.googletagmanager.com/gtag/js?id=${s.ga_id}"></script>` +
-      `<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${s.ga_id}',{send_page_view:false});</script>`;
-  }
-  if (/^\d{8,20}$/.test(s.fb_pixel_id || "")) {
-    h += `<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${s.fb_pixel_id}');</script>`;
-  }
-  return h;
+  const c = {};
+  if (/^G-[A-Z0-9]{4,15}$/.test(s.ga_id || "")) c.ga = s.ga_id;
+  if (/^\d{8,20}$/.test(s.fb_pixel_id || "")) c.px = s.fb_pixel_id;
+  return Object.keys(c).length ? `<script>window.FB_TAGS=${JSON.stringify(c)}</script>` : "";
 }
 
 export async function onRequest(ctx) {

@@ -21,13 +21,14 @@ export async function onRequestPost({ request, env }) {
     email: clip(b.email, 120), org_type: clip(b.org_type, 60), need: clip(b.need, 80),
     crop: clip(b.crop, 40), area: clip(b.area, 20), location: clip(b.location, 120),
     note: clip(b.note, 1000), source: clip(b.source, 40), page: clip(b.page, 120), lang: clip(b.lang, 5),
+    vid: clip(b.vid, 40), sid: clip(b.sid, 40), // chỉ có khi khách đồng ý cookie thống kê
   };
   const D = await db(env);
   const r = await D.prepare(
-    `INSERT INTO leads (ts,name,phone,email,org_type,need,crop,area,location,note,source,page,lang)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`
+    `INSERT INTO leads (ts,name,phone,email,org_type,need,crop,area,location,note,source,page,lang,vid,sid)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(Date.now(), lead.name, lead.phone, lead.email, lead.org_type, lead.need, lead.crop,
-         lead.area, lead.location, lead.note, lead.source, lead.page, lead.lang).run();
+         lead.area, lead.location, lead.note, lead.source, lead.page, lead.lang, lead.vid, lead.sid).run();
   const id = r.meta?.last_row_id;
 
   // Gửi email qua Resend nếu đã cài RESEND_API_KEY.

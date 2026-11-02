@@ -35,7 +35,18 @@ const SCHEMA = [
      size INTEGER, created INTEGER, created_by TEXT)`,
   `CREATE TABLE IF NOT EXISTS partners (
      slug TEXT PRIMARY KEY, data TEXT NOT NULL, sort INTEGER DEFAULT 0, updated INTEGER, updated_by TEXT)`,
+  `CREATE TABLE IF NOT EXISTS consents (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, cid TEXT, vid TEXT,
+     action TEXT, analytics INTEGER, marketing INTEGER, lang TEXT, path TEXT, device TEXT, country TEXT)`,
+  `CREATE INDEX IF NOT EXISTS idx_consents_ts ON consents(ts)`,
+  `CREATE TABLE IF NOT EXISTS visits (
+     sid TEXT PRIMARY KEY, vid TEXT, ts_first INTEGER, ts_last INTEGER, landing TEXT, ref TEXT,
+     src TEXT, medium TEXT, campaign TEXT, device TEXT, country TEXT, lang TEXT, pages INTEGER DEFAULT 0)`,
+  `CREATE INDEX IF NOT EXISTS idx_visits_ts ON visits(ts_first)`,
+  `CREATE INDEX IF NOT EXISTS idx_visits_vid ON visits(vid)`,
 ];
+// Cột thêm cho bảng đã có từ bản trước (bỏ qua nếu đã có)
+const MIGRATE = ["ALTER TABLE leads ADD COLUMN vid TEXT", "ALTER TABLE leads ADD COLUMN sid TEXT"];
 
 let ready = false;
 // Tự tạo bảng ở lần gọi đầu tiên, người dùng không cần chạy SQL bằng tay.
@@ -43,6 +54,7 @@ export async function db(env) {
   if (!env.DB) throw new Error("Chưa gắn cơ sở dữ liệu D1 với tên biến DB");
   if (!ready) {
     await env.DB.batch(SCHEMA.map((s) => env.DB.prepare(s)));
+    for (const m of MIGRATE) { try { await env.DB.prepare(m).run(); } catch (e) { /* đã có cột */ } }
     ready = true;
   }
   return env.DB;
