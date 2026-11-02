@@ -50,9 +50,12 @@ const SCHEMA = [
      meta_title TEXT, meta_desc TEXT, meta_kw TEXT, og_image TEXT, tr TEXT,
      published_at INTEGER, created INTEGER, updated INTEGER, author TEXT)`,
   `CREATE INDEX IF NOT EXISTS idx_posts_pub ON posts(status, published_at)`,
+  `CREATE TABLE IF NOT EXISTS pass_tries (ip TEXT, slug TEXT, ts INTEGER)`,
+  `CREATE INDEX IF NOT EXISTS idx_pass_tries ON pass_tries(slug, ip, ts)`,
 ];
 // Cột thêm cho bảng đã có từ bản trước (bỏ qua nếu đã có)
-const MIGRATE = ["ALTER TABLE leads ADD COLUMN vid TEXT", "ALTER TABLE leads ADD COLUMN sid TEXT"];
+const MIGRATE = ["ALTER TABLE leads ADD COLUMN vid TEXT", "ALTER TABLE leads ADD COLUMN sid TEXT",
+  "ALTER TABLE posts ADD COLUMN visibility TEXT DEFAULT 'public'", "ALTER TABLE posts ADD COLUMN pass_hash TEXT", "ALTER TABLE posts ADD COLUMN expires_at INTEGER"];
 
 let ready = false;
 // Tự tạo bảng ở lần gọi đầu tiên, người dùng không cần chạy SQL bằng tay.
@@ -238,5 +241,25 @@ export function publicPost(r, full = false) {
     meta_title: r.meta_title, meta_desc: r.meta_desc, og_image: r.og_image, tr: {} };
   for (const l of ["en", "zh"]) { const t = tr[l] || {}; o.tr[l] = { title: t.title || null, excerpt: t.excerpt || null }; if (full) o.tr[l].body = t.body || null; }
   if (full) { o.body = r.body; o.meta_kw = r.meta_kw; }
+  if (r.visibility === "link") o.private = true;
   return o;
+}
+// Bài "chỉ người có link": không hiện ở trang chủ, Blog, sitemap
+export const PUBLIC_SQL = "COALESCE(visibility,'public')='public'";
+// Mật khẩu xem bài: PBKDF2-SHA256, lưu dạng pbkdf2$vòng$muối$băm
+async function pbkdf2(pw, salt, n) {
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveBits"]);
+  return b64(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: n }, k, 256));
+}
+export async function hashPass(pw) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), n = 50000;
+  return `pbkdf2$${n}$${b64(salt)}$${await pbkdf2(pw, salt, n)}`;
+}
+export async function checkPass(pw, stored) {
+  const [k, n, salt, h] = String(stored || "").split("$");
+  if (k !== "pbkdf2" || !pw) return false;
+  const got = await pbkdf2(String(pw).slice(0, 100), Uint8Array.from(atob(salt), (c) => c.charCodeAt(0)), +n);
+  let d = got.length ^ h.length;
+  for (let i = 0; i < got.length && i < h.length; i++) d |= got.charCodeAt(i) ^ h.charCodeAt(i);
+  return d === 0;
 }

@@ -17,6 +17,7 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
   - `/chien-dich-10000ha/`: đường link riêng để gửi khách, có ảnh xem trước `img/og-10000ha.jpg` khi chia sẻ Zalo, Facebook, rồi tự mở trang chiến dịch.
   - `POST /api/admin/media`, `GET /api/media/:id`: ảnh (JPG, PNG, WebP, GIF) và video (MP4, WebM) tải lên, lưu trong D1, tối đa 2 MB mỗi tệp. Trang quản lý tự nén ảnh lớn; video phát được tua nhờ hỗ trợ Range.
   - `GET /api/posts`, `GET /api/posts/:slug`: bài viết đã đăng (hỗ trợ hẹn giờ theo ngày đăng). `GET|POST|PUT|DELETE /api/admin/posts`: soạn, lưu nháp, đăng, xóa bài và xem lượt xem, khách, thời gian đọc từng bài. Biên tập viên chỉ lưu nháp; người duyệt, quản trị, chủ sở hữu được đăng.
+  - Bài "chỉ người có link" (`visibility=link`): không hiện ở trang chủ, Blog, `/api/posts`, sitemap; gắn noindex. Đường link tự thêm đuôi ngẫu nhiên `-kxxxxx`. Có thể đặt mật khẩu (lưu dạng băm PBKDF2, người xem gửi qua header `X-Post-Pass`, tối đa 10 lần sai mỗi 15 phút) và ngày hết hiệu lực. Tắt hiệu lực (`PATCH /api/admin/posts`) hoặc quá hạn thì trả 410 "hết hiệu lực". Lượt xem, cookie đo như bài thường.
   - `/bai-viet/:slug`: link chia sẻ của từng bài, máy chủ gắn sẵn title, description, keywords, canonical, Open Graph, Twitter, JSON-LD để Google, Zalo, Facebook đọc được.
   - `/sitemap.xml`: trang chủ, trang 10.000 ha và mọi bài đã đăng.
   - Trình soạn bài dùng Quill 2.0.3 (giấy phép BSD, để trong `site/quan-tri/vendor/`).

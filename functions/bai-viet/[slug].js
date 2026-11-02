@@ -10,10 +10,18 @@ export async function onRequestGet({ params, env, request }) {
   const page = await env.ASSETS.fetch(new URL("/", url));
   let p = null;
   try { p = await (await db(env)).prepare("SELECT * FROM posts WHERE slug=? AND status='published' AND published_at<=?").bind(slug, Date.now()).first(); } catch (e) { p = null; }
-  if (!p) return new Response(page.body, { status: 404, headers: page.headers });
+  if (!p || (p.expires_at && p.expires_at <= Date.now())) {
+    // Không có hoặc đã hết hiệu lực: trang web tự báo cho người xem
+    const h404 = new Headers(page.headers); h404.set("x-robots-tag", "noindex"); h404.set("cache-control", "no-store");
+    const slugOut = new HTMLRewriter().on("title", { element(el) { el.after(`<base href="/"><meta name="robots" content="noindex"><script>window.FB_POST=${JSON.stringify(slug)}</script>`, { html: true }); } })
+      .transform(new Response(page.body, { headers: page.headers }));
+    return new Response(slugOut.body, { status: 404, headers: h404 });
+  }
+  const priv = p.visibility === "link", locked = priv && !!p.pass_hash;
   const canon = `${url.origin}/bai-viet/${p.slug}`;
   const title = (p.meta_title || p.title) + " | FarmBase";
-  const desc = (p.meta_desc || p.excerpt || strip(p.body).slice(0, 158)).slice(0, 300);
+  // Bài có mật khẩu: không lấy nội dung làm mô tả
+  const desc = (p.meta_desc || p.excerpt || (locked ? "Bài viết dành cho người tham gia chương trình. Nhập mật khẩu để xem." : strip(p.body).slice(0, 158))).slice(0, 300);
   const abs = (u) => (!u ? "" : /^https:/.test(u) ? u : `${url.origin}/${u.replace(/^\//, "")}`);
   const img = abs(p.og_image || p.cover) || `${url.origin}/img/og-10000ha.jpg`;
   const ld = { "@context": "https://schema.org", "@type": "Article", headline: p.title, description: desc, image: [img],
@@ -27,13 +35,14 @@ export async function onRequestGet({ params, env, request }) {
 <meta property="og:title" content="${esc(p.meta_title || p.title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:image" content="${esc(img)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="article:published_time" content="${new Date(p.published_at).toISOString()}">
-<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>
+${priv ? '<meta name="robots" content="noindex, nofollow">' : `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`}
 <script>window.FB_POST=${JSON.stringify(p.slug)}</script>`;
   let titled = false;
   const out = new HTMLRewriter()
     .on("title", { element(el) { if (!titled) { el.setInnerContent(title); el.after(head, { html: true }); titled = true; } } })
     .on('meta[name="description"]', { element(el) { el.remove(); } })
     .transform(new Response(page.body, { headers: page.headers }));
-  const h = new Headers(out.headers); h.set("cache-control", "public, max-age=120");
+  const h = new Headers(out.headers); h.set("cache-control", priv ? "private, no-store" : "public, max-age=120");
+  if (priv) h.set("x-robots-tag", "noindex, nofollow");
   return new Response(out.body, { status: 200, headers: h });
 }
