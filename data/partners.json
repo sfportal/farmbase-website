@@ -1,0 +1,656 @@
+[
+ {
+  "slug": "htx-dala",
+  "group": "dong-hanh",
+  "logo": "img/logos/dala.png",
+  "cover": "img/16.jpg",
+  "name": {
+   "vi": "HTX Nông nghiệp Công nghệ Cao DaLa",
+   "en": "DaLa High-Tech Agricultural Cooperative",
+   "zh": "DaLa 高科技农业合作社"
+  },
+  "short": {
+   "vi": "Đơn vị đề xuất, điều phối Chiến dịch 10.000 ha",
+   "en": "Proposing and coordinating unit of the 10,000 ha Campaign",
+   "zh": "万公顷行动倡议与统筹单位"
+  },
+  "about": {
+   "vi": "Tầm nhìn: trở thành đầu mối dịch vụ nông nghiệp tin cậy, chuẩn hóa vùng trồng và gia tăng giá trị nông sản Tây Nguyên. Sứ mệnh: kết nối công nghệ, chuyên môn và thị trường để tạo giải pháp khả thi, minh bạch, đo lường được. Giá trị cốt lõi: minh bạch, khả thi, hợp tác, chuẩn chất lượng, đo lường kết quả.",
+   "en": "Vision: to be a trusted hub of agricultural services, standardising growing areas and adding value to Central Highlands produce. Mission: connecting technology, expertise and markets to create feasible, transparent and measurable solutions. Core values: transparency, feasibility, cooperation, quality standards, measurable results.",
+   "zh": "愿景:成为值得信赖的农业服务枢纽,规范种植区,提升西原农产品价值。使命:连接技术、专业与市场,打造可行、透明、可衡量的解决方案。核心价值:透明、可行、合作、质量标准、结果可衡量。"
+  },
+  "role": {
+   "vi": "Cùng BVI đề xuất và điều phối Chiến dịch 10.000 ha cây trồng chủ lực niên vụ 2026–2027.",
+   "en": "Proposes and coordinates the 10,000 ha key-crop Campaign for the 2026–2027 season together with BVI.",
+   "zh": "与 BVI 共同倡议并统筹 2026–2027 年度万公顷主力作物行动。"
+  },
+  "products": [
+   {
+    "img": "img/15.jpg",
+    "name": {
+     "vi": "Điều phối dịch vụ nông nghiệp",
+     "en": "Agricultural service coordination",
+     "zh": "农业服务统筹"
+    },
+    "desc": {
+     "vi": "Đầu mối kết nối hệ sinh thái dịch vụ nông nghiệp Tây Nguyên cho nông hộ, HTX.",
+     "en": "A hub connecting Central Highlands agricultural service providers with farmers and cooperatives.",
+     "zh": "连接西原农业服务生态与农户、合作社的枢纽。"
+    }
+   },
+   {
+    "img": "img/08.jpg",
+    "name": {
+     "vi": "Chuẩn hóa vùng trồng",
+     "en": "Growing-area standardisation",
+     "zh": "种植区规范化"
+    },
+    "desc": {
+     "vi": "Phối hợp các đơn vị chuyên môn chuẩn hóa vùng trồng sầu riêng, cà phê.",
+     "en": "Works with specialist units to standardise durian and coffee growing areas.",
+     "zh": "与专业单位合作规范榴莲、咖啡种植区。"
+    }
+   },
+   {
+    "img": "img/11.jpg",
+    "name": {
+     "vi": "Tập huấn, hội nghị",
+     "en": "Training and conferences",
+     "zh": "培训与会议"
+    },
+    "desc": {
+     "vi": "Tổ chức hội nghị, đào tạo, tập huấn theo nhịp mùa vụ.",
+     "en": "Organises conferences, training and field sessions in step with the crop calendar.",
+     "zh": "按作物季节组织会议、培训与田间指导。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "TP. Buôn Ma Thuột, Đắk Lắk",
+   "phone": "0917 202 527",
+   "email": "htxdala@gmail.com",
+   "web": "https://htxdala.vn"
+  },
+  "sort": 0
+ },
+ {
+  "slug": "lien-hiep-htx-cu-mgar",
+  "group": "dong-hanh",
+  "logo": "img/logos/lien-hiep-htx-cu-mgar.png",
+  "cover": "img/03.jpg",
+  "name": {
+   "vi": "Liên hiệp HTX Nông nghiệp Công nghệ Cao Cư M'gar",
+   "en": "Cu M'gar High-Tech Agricultural Cooperative Union",
+   "zh": "Cu M'gar 高科技农业合作社联社"
+  },
+  "short": {
+   "vi": "Liên kết HTX, vùng nguyên liệu; tập huấn và tư vấn mã số vùng trồng",
+   "en": "Cooperative and raw-material area linkage; training and planting-area code advisory",
+   "zh": "合作社与原料区联结;种植基地注册号培训与咨询"
+  },
+  "about": {
+   "vi": "Liên hiệp HTX tại xã Cư M'gar, Đắk Lắk, liên kết các HTX nông nghiệp công nghệ cao trong vùng sầu riêng, cà phê.",
+   "en": "A cooperative union in Cu M'gar commune, Dak Lak, linking high-tech agricultural cooperatives in durian and coffee areas.",
+   "zh": "位于多乐省 Cu M'gar 乡的合作社联社,联结榴莲、咖啡产区的高科技农业合作社。"
+  },
+  "role": {
+   "vi": "Phối hợp tập huấn, tư vấn hồ sơ mã số vùng trồng sầu riêng, cà phê và hướng dẫn thành lập tổ hợp tác. Đơn vị đồng hành Chiến dịch 10.000 ha.",
+   "en": "Co-delivers training, planting-area code dossier advice for durian and coffee, and guidance on forming cooperative groups. Partner unit of the 10,000 ha Campaign.",
+   "zh": "协同开展培训、榴莲与咖啡种植基地注册号材料咨询,并指导成立合作组。万公顷行动同行单位。"
+  },
+  "products": [
+   {
+    "img": "img/00.jpg",
+    "name": {
+     "vi": "Tập huấn kỹ thuật",
+     "en": "Technical training",
+     "zh": "技术培训"
+    },
+    "desc": {
+     "vi": "Tập huấn cho nông hộ, HTX tại địa phương.",
+     "en": "Training for farmers and cooperatives on site.",
+     "zh": "面向当地农户、合作社的培训。"
+    }
+   },
+   {
+    "img": "img/crops/sau-rieng.png",
+    "name": {
+     "vi": "Tư vấn mã số vùng trồng",
+     "en": "Planting-area code advisory",
+     "zh": "种植基地注册号咨询"
+    },
+    "desc": {
+     "vi": "Hướng dẫn chuẩn bị hồ sơ cho vùng sầu riêng, cà phê. Việc cấp mã thuộc thẩm quyền cơ quan quản lý.",
+     "en": "Guidance on dossiers for durian and coffee areas. Codes are granted by the competent authorities.",
+     "zh": "指导榴莲、咖啡种植区准备材料。注册号由主管部门核发。"
+    }
+   },
+   {
+    "img": "img/16.jpg",
+    "name": {
+     "vi": "Thành lập tổ hợp tác",
+     "en": "Forming cooperative groups",
+     "zh": "成立合作组"
+    },
+    "desc": {
+     "vi": "Hướng dẫn nông hộ thành lập tổ hợp tác, HTX.",
+     "en": "Guides farmers in forming cooperative groups and cooperatives.",
+     "zh": "指导农户成立合作组、合作社。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "Số 120, Đường 1, Thôn 8, xã Cư M'gar, Đắk Lắk",
+   "phone": "0384 798 855",
+   "email": "",
+   "web": ""
+  },
+  "sort": 1
+ },
+ {
+  "slug": "hiep-hoi-sau-rieng-dak-lak",
+  "group": "dong-hanh",
+  "logo": "img/logos/hiep-hoi-sau-rieng-daklak.png",
+  "cover": "img/08.jpg",
+  "name": {
+   "vi": "Hiệp hội Sầu riêng tỉnh Đắk Lắk",
+   "en": "Dak Lak Durian Association",
+   "zh": "多乐省榴莲协会"
+  },
+  "short": {
+   "vi": "Ngành hàng, truyền thông, liên kết vùng",
+   "en": "Industry, communication and regional linkage",
+   "zh": "行业、传播与区域联结"
+  },
+  "about": {
+   "vi": "Tổ chức ngành hàng sầu riêng của tỉnh Đắk Lắk.",
+   "en": "The durian industry association of Dak Lak province.",
+   "zh": "多乐省榴莲行业组织。"
+  },
+  "role": {
+   "vi": "Chương trình hợp tác về truy xuất nguồn gốc và mã số vùng trồng; hội nghị tại các xã; đơn vị đồng hành Chiến dịch 10.000 ha.",
+   "en": "Cooperation programme on traceability and planting-area codes; commune-level conferences; partner unit of the 10,000 ha Campaign.",
+   "zh": "溯源与种植基地注册号合作项目;乡级会议;万公顷行动同行单位。"
+  },
+  "products": [
+   {
+    "img": "img/15.jpg",
+    "name": {
+     "vi": "Hội nghị tại xã",
+     "en": "Commune conferences",
+     "zh": "乡级会议"
+    },
+    "desc": {
+     "vi": "Phổ biến yêu cầu thị trường, truy xuất, mã số vùng trồng đến nông hộ.",
+     "en": "Sharing market requirements, traceability and planting-area codes with farmers.",
+     "zh": "向农户宣讲市场要求、溯源与种植基地注册号。"
+    }
+   },
+   {
+    "img": "img/crops/sau-rieng.png",
+    "name": {
+     "vi": "Liên kết ngành hàng sầu riêng",
+     "en": "Durian industry linkage",
+     "zh": "榴莲行业联结"
+    },
+    "desc": {
+     "vi": "Kết nối hội viên, vùng trồng và doanh nghiệp.",
+     "en": "Connecting members, growing areas and businesses.",
+     "zh": "连接会员、种植区与企业。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "Đắk Lắk",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 2
+ },
+ {
+  "slug": "bazan-lab",
+  "group": "dong-hanh",
+  "logo": "img/logos/bazan-lab.png",
+  "cover": "img/12.jpg",
+  "name": {
+   "vi": "Bazan Lab",
+   "en": "Bazan Lab",
+   "zh": "Bazan Lab"
+  },
+  "short": {
+   "vi": "Kiểm định, kiểm nghiệm",
+   "en": "Testing and inspection",
+   "zh": "检测与检验"
+  },
+  "about": {
+   "vi": "Đang cập nhật cùng đối tác",
+   "en": "Being updated with the partner",
+   "zh": "正在与合作方共同更新"
+  },
+  "role": {
+   "vi": "Đơn vị đồng hành Chiến dịch 10.000 ha về kiểm nghiệm đất, nước, lá, trái. Dịch vụ kiểm nghiệm do Bazan Lab cung cấp.",
+   "en": "Partner unit of the 10,000 ha Campaign for soil, water, leaf and fruit testing. Testing services are provided by Bazan Lab.",
+   "zh": "万公顷行动同行单位,负责土壤、水、叶片、果实检测。检测服务由 Bazan Lab 提供。"
+  },
+  "products": [
+   {
+    "img": "img/12.jpg",
+    "name": {
+     "vi": "Kiểm nghiệm đất, nước, lá, trái",
+     "en": "Soil, water, leaf and fruit testing",
+     "zh": "土壤、水、叶片、果实检测"
+    },
+    "desc": {
+     "vi": "Phục vụ canh tác và yêu cầu kiểm nghiệm theo lô.",
+     "en": "Supports farming decisions and batch testing requirements.",
+     "zh": "服务于种植管理与批次检测要求。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 3
+ },
+ {
+  "slug": "htx-an-nong",
+  "group": "dong-hanh",
+  "logo": "img/logos/an-nong.png",
+  "cover": "img/06.jpg",
+  "name": {
+   "vi": "HTX Nông nghiệp Công nghệ Xanh An Nông",
+   "en": "An Nong Green Technology Agricultural Cooperative",
+   "zh": "An Nong 绿色科技农业合作社"
+  },
+  "short": {
+   "vi": "Kỹ thuật, tập huấn, hỗ trợ sản xuất",
+   "en": "Technical support, training and production support",
+   "zh": "技术、培训与生产支持"
+  },
+  "about": {
+   "vi": "Đang cập nhật cùng đối tác",
+   "en": "Being updated with the partner",
+   "zh": "正在与合作方共同更新"
+  },
+  "role": {
+   "vi": "Đơn vị đồng hành Chiến dịch 10.000 ha về kỹ thuật canh tác và hỗ trợ sản xuất.",
+   "en": "Partner unit of the 10,000 ha Campaign for farming techniques and production support.",
+   "zh": "万公顷行动同行单位,负责种植技术与生产支持。"
+  },
+  "products": [
+   {
+    "img": "img/06.jpg",
+    "name": {
+     "vi": "Hướng dẫn kỹ thuật tại vườn",
+     "en": "On-farm technical guidance",
+     "zh": "果园技术指导"
+    },
+    "desc": {
+     "vi": "Hỗ trợ nông hộ áp dụng quy trình canh tác.",
+     "en": "Helps farmers apply farming procedures.",
+     "zh": "帮助农户应用种植规程。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 4
+ },
+ {
+  "slug": "htx-nn-xanh-krong-pac",
+  "group": "khach-hang",
+  "logo": "img/logos/htx-nn-xanh-krong-pac.png",
+  "cover": "img/00.jpg",
+  "name": {
+   "vi": "HTX Nông nghiệp Xanh Krông Pắc",
+   "en": "Krong Pac Green Agricultural Cooperative",
+   "zh": "Krong Pac 绿色农业合作社"
+  },
+  "short": {
+   "vi": "Sầu riêng Krông Pắc; chuyên môn kỹ thuật và thu mua",
+   "en": "Krong Pac durian; technical expertise and purchasing",
+   "zh": "Krong Pac 榴莲;技术与收购"
+  },
+  "about": {
+   "vi": "HTX sản xuất sầu riêng tại Krông Pắc và Ea Kly, Đắk Lắk, quản lý vùng trồng trên FarmBase.",
+   "en": "A durian cooperative in Krong Pac and Ea Kly, Dak Lak, managing its growing areas on FarmBase.",
+   "zh": "位于多乐省 Krong Pac 与 Ea Kly 的榴莲合作社,在 FarmBase 上管理种植区。"
+  },
+  "role": {
+   "vi": "Khách hàng sử dụng FarmBase. Nông hộ vùng trồng 07 (Ea Kly) tự cài ứng dụng và tự nhập nhật ký canh tác. Đơn vị chuyên môn kỹ thuật và thu mua trong Chiến dịch 10.000 ha.",
+   "en": "FarmBase customer. Farmers of growing area 07 (Ea Kly) install the app and keep their own farm diaries. Technical and purchasing unit in the 10,000 ha Campaign.",
+   "zh": "FarmBase 用户。07 号种植区(Ea Kly)农户自行安装应用并记录农事日志。万公顷行动中的技术与收购单位。"
+  },
+  "products": [
+   {
+    "img": "img/crops/sau-rieng.png",
+    "name": {
+     "vi": "Sầu riêng",
+     "en": "Durian",
+     "zh": "榴莲"
+    },
+    "desc": {
+     "vi": "Sầu riêng từ vùng trồng có nhật ký canh tác trên FarmBase.",
+     "en": "Durian from growing areas with farm diaries on FarmBase.",
+     "zh": "来自在 FarmBase 记录农事日志的种植区的榴莲。"
+    }
+   },
+   {
+    "img": "img/03.jpg",
+    "name": {
+     "vi": "Tập huấn nông hộ",
+     "en": "Farmer training",
+     "zh": "农户培训"
+    },
+    "desc": {
+     "vi": "Hướng dẫn nông hộ ghi nhật ký, chuẩn bị yêu cầu vùng trồng.",
+     "en": "Guiding farmers on diaries and growing-area requirements.",
+     "zh": "指导农户记录日志、准备种植区要求。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "Krông Pắc, Đắk Lắk",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 5
+ },
+ {
+  "slug": "song-toan-phat",
+  "group": "khach-hang",
+  "logo": "img/logos/song-toan-phat.png",
+  "cover": "img/08.jpg",
+  "name": {
+   "vi": "Công ty TNHH TMDV Song Toàn Phát",
+   "en": "Song Toan Phat Trading & Services Co., Ltd.",
+   "zh": "Song Toan Phat 贸易服务有限公司"
+  },
+  "short": {
+   "vi": "Khách hàng sử dụng hệ thống truy xuất FarmBase",
+   "en": "Customer using the FarmBase traceability system",
+   "zh": "FarmBase 溯源系统用户"
+  },
+  "about": {
+   "vi": "Đang cập nhật cùng đối tác",
+   "en": "Being updated with the partner",
+   "zh": "正在与合作方共同更新"
+  },
+  "role": {
+   "vi": "Sử dụng FarmBase để quản lý vùng trồng, nhật ký và truy xuất nguồn gốc.",
+   "en": "Uses FarmBase to manage growing areas, diaries and traceability.",
+   "zh": "使用 FarmBase 管理种植区、日志与溯源。"
+  },
+  "products": [
+   {
+    "img": "img/crops/sau-rieng.png",
+    "name": {
+     "vi": "Sầu riêng",
+     "en": "Durian",
+     "zh": "榴莲"
+    },
+    "desc": {
+     "vi": "Đang cập nhật cùng đối tác",
+     "en": "Being updated with the partner",
+     "zh": "正在与合作方共同更新"
+    }
+   }
+  ],
+  "contact": {
+   "address": "Đắk Lắk",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 6
+ },
+ {
+  "slug": "uyen-diep",
+  "group": "khach-hang",
+  "logo": "img/logos/uyen-diep.png",
+  "cover": "img/08.jpg",
+  "name": {
+   "vi": "Công ty CP XNK Nông sản Uyên Điệp (Durian Krông Pắc)",
+   "en": "Uyen Diep Agricultural Import-Export JSC (Durian Krong Pac)",
+   "zh": "Uyen Diep 农产品进出口股份公司(Durian Krong Pac)"
+  },
+  "short": {
+   "vi": "Khách hàng sử dụng hệ thống truy xuất FarmBase",
+   "en": "Customer using the FarmBase traceability system",
+   "zh": "FarmBase 溯源系统用户"
+  },
+  "about": {
+   "vi": "Đang cập nhật cùng đối tác",
+   "en": "Being updated with the partner",
+   "zh": "正在与合作方共同更新"
+  },
+  "role": {
+   "vi": "Sử dụng FarmBase để quản lý vùng trồng, nhật ký và truy xuất nguồn gốc.",
+   "en": "Uses FarmBase to manage growing areas, diaries and traceability.",
+   "zh": "使用 FarmBase 管理种植区、日志与溯源。"
+  },
+  "products": [
+   {
+    "img": "img/crops/sau-rieng.png",
+    "name": {
+     "vi": "Sầu riêng",
+     "en": "Durian",
+     "zh": "榴莲"
+    },
+    "desc": {
+     "vi": "Đang cập nhật cùng đối tác",
+     "en": "Being updated with the partner",
+     "zh": "正在与合作方共同更新"
+    }
+   }
+  ],
+  "contact": {
+   "address": "Đắk Lắk",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 7
+ },
+ {
+  "slug": "thien-tam",
+  "group": "khach-hang",
+  "logo": "img/logos/thien-tam.png",
+  "cover": "img/08.jpg",
+  "name": {
+   "vi": "Công ty CP Nông sản Thiện Tâm",
+   "en": "Thien Tam Agricultural Products JSC",
+   "zh": "Thien Tam 农产品股份公司"
+  },
+  "short": {
+   "vi": "Khách hàng sử dụng hệ thống truy xuất FarmBase",
+   "en": "Customer using the FarmBase traceability system",
+   "zh": "FarmBase 溯源系统用户"
+  },
+  "about": {
+   "vi": "Đang cập nhật cùng đối tác",
+   "en": "Being updated with the partner",
+   "zh": "正在与合作方共同更新"
+  },
+  "role": {
+   "vi": "Sử dụng FarmBase để quản lý vùng trồng, nhật ký và truy xuất nguồn gốc.",
+   "en": "Uses FarmBase to manage growing areas, diaries and traceability.",
+   "zh": "使用 FarmBase 管理种植区、日志与溯源。"
+  },
+  "products": [
+   {
+    "img": "img/crops/sau-rieng.png",
+    "name": {
+     "vi": "Sầu riêng",
+     "en": "Durian",
+     "zh": "榴莲"
+    },
+    "desc": {
+     "vi": "Đang cập nhật cùng đối tác",
+     "en": "Being updated with the partner",
+     "zh": "正在与合作方共同更新"
+    }
+   }
+  ],
+  "contact": {
+   "address": "",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 8
+ },
+ {
+  "slug": "nong-nghiep-xanh-viet-nam",
+  "group": "khach-hang",
+  "logo": "img/logos/nong-nghiep-xanh-viet-nam.png",
+  "cover": "img/08.jpg",
+  "name": {
+   "vi": "Công ty CP Nông nghiệp Xanh Việt Nam",
+   "en": "Vietnam Green Agriculture JSC",
+   "zh": "越南绿色农业股份公司"
+  },
+  "short": {
+   "vi": "Khách hàng sử dụng hệ thống truy xuất FarmBase",
+   "en": "Customer using the FarmBase traceability system",
+   "zh": "FarmBase 溯源系统用户"
+  },
+  "about": {
+   "vi": "Đang cập nhật cùng đối tác",
+   "en": "Being updated with the partner",
+   "zh": "正在与合作方共同更新"
+  },
+  "role": {
+   "vi": "Sử dụng FarmBase để quản lý vùng trồng, nhật ký và truy xuất nguồn gốc.",
+   "en": "Uses FarmBase to manage growing areas, diaries and traceability.",
+   "zh": "使用 FarmBase 管理种植区、日志与溯源。"
+  },
+  "products": [
+   {
+    "img": "img/crops/sau-rieng.png",
+    "name": {
+     "vi": "Sầu riêng",
+     "en": "Durian",
+     "zh": "榴莲"
+    },
+    "desc": {
+     "vi": "Đang cập nhật cùng đối tác",
+     "en": "Being updated with the partner",
+     "zh": "正在与合作方共同更新"
+    }
+   }
+  ],
+  "contact": {
+   "address": "",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 9
+ },
+ {
+  "slug": "dakago",
+  "group": "khach-hang",
+  "logo": "img/logos/dakago.png",
+  "cover": "img/08.jpg",
+  "name": {
+   "vi": "Công ty TNHH DakAgo",
+   "en": "DakAgo Co., Ltd.",
+   "zh": "DakAgo 有限公司"
+  },
+  "short": {
+   "vi": "Khách hàng sử dụng hệ thống truy xuất FarmBase",
+   "en": "Customer using the FarmBase traceability system",
+   "zh": "FarmBase 溯源系统用户"
+  },
+  "about": {
+   "vi": "Đang cập nhật cùng đối tác",
+   "en": "Being updated with the partner",
+   "zh": "正在与合作方共同更新"
+  },
+  "role": {
+   "vi": "Sử dụng FarmBase để quản lý vùng trồng, nhật ký và truy xuất nguồn gốc.",
+   "en": "Uses FarmBase to manage growing areas, diaries and traceability.",
+   "zh": "使用 FarmBase 管理种植区、日志与溯源。"
+  },
+  "products": [
+   {
+    "img": "img/crops/sau-rieng.png",
+    "name": {
+     "vi": "Sầu riêng",
+     "en": "Durian",
+     "zh": "榴莲"
+    },
+    "desc": {
+     "vi": "Đang cập nhật cùng đối tác",
+     "en": "Being updated with the partner",
+     "zh": "正在与合作方共同更新"
+    }
+   }
+  ],
+  "contact": {
+   "address": "Krông Năng, Đắk Lắk",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 10
+ },
+ {
+  "slug": "salefronts",
+  "group": "cong-nghe",
+  "logo": "img/logos/salefronts.png",
+  "cover": "img/13.jpg",
+  "name": {
+   "vi": "Salefronts",
+   "en": "Salefronts",
+   "zh": "Salefronts"
+  },
+  "short": {
+   "vi": "Đồng phát triển giải pháp FarmBase cùng BVI",
+   "en": "Co-developer of the FarmBase solution with BVI",
+   "zh": "与 BVI 共同开发 FarmBase 解决方案"
+  },
+  "about": {
+   "vi": "Đang cập nhật cùng đối tác",
+   "en": "Being updated with the partner",
+   "zh": "正在与合作方共同更新"
+  },
+  "role": {
+   "vi": "Giải pháp FarmBase do BVI và Salefronts đồng phát triển.",
+   "en": "The FarmBase solution is co-developed by BVI and Salefronts.",
+   "zh": "FarmBase 解决方案由 BVI 与 Salefronts 共同开发。"
+  },
+  "products": [
+   {
+    "img": "img/13.jpg",
+    "name": {
+     "vi": "Nền tảng FarmBase",
+     "en": "FarmBase platform",
+     "zh": "FarmBase 平台"
+    },
+    "desc": {
+     "vi": "Trang quản lý web cho HTX, doanh nghiệp và Zalo Mini App cho nông hộ.",
+     "en": "Web management portal for cooperatives and businesses, plus a Zalo Mini App for farmers.",
+     "zh": "面向合作社与企业的网页管理端,以及面向农户的 Zalo 小程序。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "",
+   "phone": "",
+   "email": "info@salefronts.com",
+   "web": ""
+  },
+  "sort": 11
+ }
+]

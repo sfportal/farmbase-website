@@ -218,6 +218,32 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 .imgc .b b{font-size:13px}
 .imgc .b .acts{display:flex;gap:6px;flex-wrap:wrap}
 .imgc.changed{border-color:var(--leaf);box-shadow:0 0 0 2px color-mix(in srgb,var(--leaf) 30%,transparent)}
+
+.pt-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start}
+@media (max-width:980px){.pt-wrap{grid-template-columns:1fr}}
+.pt-list ol{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.pt-list li{display:flex;align-items:center;gap:8px;padding:6px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.pt-list li:hover{background:var(--bg)}.pt-list li.on{border-color:var(--leaf);background:var(--sprout)}
+.pt-list li img,.pt-list li .ph{width:40px;height:40px;object-fit:contain;background:#fff;border-radius:6px;border:1px solid var(--line);flex:none}
+.pt-list li span{flex:1;min-width:0;font-size:13px;font-weight:600;line-height:1.3}
+.pt-list li small{display:block;font-weight:400;color:var(--muted)}
+.pt-list .mv{display:flex;flex-direction:column}.pt-list .mv button{border:0;background:none;cursor:pointer;color:var(--muted);font-size:11px;padding:0 4px}
+.pt-ed h3{font-size:14px;font-weight:800;margin:18px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+.pt-ed h3:first-of-type{border-top:0;margin-top:4px;padding-top:0}
+.pt-f{display:grid;gap:4px;margin-bottom:10px}.pt-f>b{font-size:12px;color:var(--muted)}
+.pt-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:760px){.pt-3{grid-template-columns:1fr}}
+.pt-3 label,.pt-2 label{display:grid;gap:2px;font-size:11px;font-weight:700;color:var(--muted)}
+.pt-ed input,.pt-ed textarea,.pt-ed select{font:inherit;font-size:13px;font-weight:400;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:7px 9px;width:100%}
+.pt-ed textarea{min-height:92px;resize:vertical}
+.pt-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:760px){.pt-2{grid-template-columns:1fr}}
+.pt-img{display:flex;gap:10px;align-items:center}
+.pt-img .pv{width:96px;height:72px;border-radius:8px;border:1px solid var(--line);background:#fff center/contain no-repeat;flex:none}
+.pt-img .pv.cv{background-size:cover}
+.pt-img>div{flex:1;display:grid;gap:6px}
+.pt-prod{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:var(--bg)}
+.pt-prod .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12px;font-weight:800}
 </style>
 
 <div id="login" hidden>
@@ -246,6 +272,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
   <a href="#trang" data-v="trang">Trang và khối nội dung</a>
   <a href="#noi-dung" data-v="noi-dung" data-cap="content">Nội dung và bản dịch <span class="n" id="ntr" hidden>0</span></a>
   <a href="#hinh-anh" data-v="hinh-anh" data-cap="content">Hình ảnh website</a>
+  <a href="#doi-tac" data-v="doi-tac" data-cap="content">Khách hàng, đối tác</a>
   <span class="sep">Marketing tự động</span>
   <a href="#lich" data-v="lich">Lịch nội dung</a>
   <a href="#tao-nhanh" data-v="tao-nhanh">Tạo bài nhanh</a>
@@ -480,6 +507,15 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
     <div class="imgs" id="imgs"></div>
   </section>
 
+  <!-- ĐỐI TÁC -->
+  <section data-view="doi-tac" hidden>
+    <div class="top"><div><h1>Khách hàng, đối tác</h1><p class="sub">Trang giới thiệu khách hàng, đối tác trên website (mục Đối tác). Mỗi đơn vị có logo, ảnh bìa, giới thiệu, sản phẩm và liên hệ bằng 3 ngôn ngữ.</p></div>
+      <div class="right"><button class="btn" type="button" id="ptadd">+ Thêm đơn vị</button><button class="btn pri" type="button" id="ptsave">Lưu thay đổi</button></div></div>
+    <p class="src-line" id="ptsrc"><i></i><span>Đang tải…</span></p>
+    <div class="pt-wrap"><div class="card pt-list"><ol id="ptlist"></ol></div><div class="card pt-ed" id="pted"><p style="color:var(--muted)">Chọn một đơn vị bên trái để sửa.</p></div></div>
+    <p class="note" style="margin-top:10px">Chỉ ghi thông tin đã được đối tác đồng ý công bố. Không ghi số liệu vùng, diện tích của khách hàng này cho khách hàng khác xem. Bản dịch EN, 中文 là bản nháp, cần người bản ngữ rà soát.</p>
+  </section>
+
   <!-- TÀI KHOẢN -->
   <section data-view="tai-khoan" hidden>
     <div class="top"><div><h1>Tài khoản và phân quyền</h1><p style="color:var(--muted)">Chỉ chủ sở hữu thấy mục này. Cấp tài khoản cho người cần vào trang quản trị.</p></div></div>
@@ -697,7 +733,7 @@ function applyUser(){document.querySelectorAll('aside [data-cap]').forEach(a=>a.
  document.querySelector('.demo').hidden=MODE==='live';
  $('who').innerHTML=ME?`<b>${esc(ME.name||ME.email)}</b>${esc(ME.email)}<br><span class="rolechip ${ME.role==='owner'?'owner':''}">${esc(ME.role_name||ME.role)}</span><div class="wl">${MODE==='live'?'<button type="button" id="chpw">Đổi mật khẩu</button><button type="button" id="lgout">Đăng xuất</button>':'<button type="button" id="lgout">Thoát bản mẫu</button>'}</div>`:'';
  const h=(location.hash||'').slice(1);const a=document.querySelector(`aside a[data-v="${h}"]`);if(a&&a.hidden)location.hash='#tong-quan';
- loadStats();loadLeads();if(can('users'))loadUsers();if(can('settings'))loadMeasure();if(can('content'))loadContent();}
+ loadStats();loadLeads();if(can('users'))loadUsers();if(can('settings'))loadMeasure();if(can('content')){loadContent();loadPartners();}}
 function enter(u){ME=u;MODE='live';$('login').hidden=true;applyUser();toast('Xin chào '+(u.name||u.email));}
 document.addEventListener('click',async e=>{
  if(e.target.id==='lgout'){if(MODE==='live'){try{await api('/api/auth/logout',{method:'POST'});}catch(err){}}ME=null;$('who').innerHTML='';showLogin();}
@@ -786,7 +822,7 @@ $('cimp').addEventListener('change',async e=>{const f=e.target.files[0];e.target
  $('cf').value='dirty';CPAGE=0;drawContent();toast(`Đã nhập ${n} đoạn thay đổi${skip?`, bỏ qua ${skip} dòng không khớp mã`:''}. Kiểm tra rồi bấm Lưu thay đổi`);}catch(err){toast('Không đọc được file. Hãy dùng file xuất từ trang này');}});
 /* Hình ảnh */
 const IP='im'+'g/';/* tách chuỗi để công cụ build không đổi đường dẫn */
-const IMGS=['08','15','01','07','11','13','12','03','00','02','04','06','09','14','16','17','18','19','20','21'].map(n=>IP+n+'.jpg').concat(['sau-rieng','ca-phe','thanh-long','chanh-leo','dua','chuoi','mit','buoi','vai','nhan','xoai','dua-xiem'].map(n=>IP+'crops/'+n+'.svg'));
+const IMGS=['08','15','01','07','11','13','12','03','00','02','04','06','09','14','16','17','18','19','20','21'].map(n=>IP+n+'.jpg').concat(['sau-rieng','ca-phe','thanh-long','chanh-leo','dua','chuoi','mit','buoi','vai','nhan','xoai','dua-xiem'].map(n=>IP+'crops/'+n+'.png'));
 function imgAlt(p){const h=window.SITE_HTML||'';const m=h.match(new RegExp('src="'+p.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&')+'"[^>]*alt="([^"]*)"'))||h.match(new RegExp('alt="([^"]*)"[^>]*src="'+p.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&')+'"'));return m?m[1]:'';}
 const imgUrl=p=>{const o=COV['img:'+p];return o&&o.vi?o.vi:(siteBase()||'../')+p;};
 function drawImages(){srcLine('isrc',CLIVE,CLIVE?'Dữ liệu thật · ảnh thay thế lưu trên máy chủ':'Chưa kết nối máy chủ: xem được ảnh, chưa thay ảnh được');
@@ -804,6 +840,60 @@ document.addEventListener('change',async e=>{const t=e.target.closest('[data-iu]
  catch(err){toast(err.message==='too_large'?'Ảnh quá lớn, hãy chọn ảnh nhỏ hơn':'Chưa tải được ảnh, thử lại sau');}});
 document.addEventListener('click',async e=>{const t=e.target.closest('[data-irs]');if(!t)return;const p=IMGS[+t.dataset.irs];
  try{await api('/api/admin/content',{method:'PUT',body:JSON.stringify({items:[{k:'img:'+p,vi:null,en:null,zh:null}]})});delete COV['img:'+p];drawImages();toast('Đã dùng lại ảnh gốc');}catch(err){toast(em(err));}});
+
+/* ---------- Khách hàng, đối tác ---------- */
+let PTS=[],PTI=-1,PTLIVE=false,PTDIRTY=false;
+const PTG={'dong-hanh':'Đơn vị đồng hành','khach-hang':'Khách hàng','cong-nghe':'Đồng phát triển'};
+const SB=()=>/quan-tri/.test(location.pathname)?siteBase():'';
+const ptU=u=>!u?'':/^img\//.test(u)?SB()+u:u;
+const tv=(o,l)=>(o&&o[l])||'';
+async function loadPartners(){PTLIVE=false;let items=null,seed=false;
+ try{if(MODE!=='live')throw 0;const r=await api('/api/admin/partners');items=r.items||[];PTLIVE=true;}catch(e){}
+ if(!items||!items.length){for(const u of [SB()+'data/partners.json','data/partners.json','../data/partners.json']){try{const r=await fetch(u,{cache:'no-store'});if(r.ok){items=await r.json();seed=true;break;}}catch(e){}}}
+ PTS=Array.isArray(items)?items:[];PTI=PTS.length?0:-1;PTDIRTY=false;
+ srcLine('ptsrc',PTLIVE,PTLIVE?(seed?'Máy chủ chưa có dữ liệu: đang hiển thị dữ liệu mẫu, bấm Lưu thay đổi để đưa lên website':'Dữ liệu thật · lưu trên máy chủ'):'Chưa kết nối máy chủ: sửa thử được, chưa lưu thật');
+ drawPtList();drawPtEd();}
+function drawPtList(){$('ptlist').innerHTML=PTS.map((p,i)=>`<li data-pi="${i}" class="${i===PTI?'on':''}">${p.logo?`<img src="${esc(ptU(p.logo))}" alt="">`:'<span class="ph"></span>'}<span>${esc(tv(p.name,'vi')||'(chưa có tên)')}<small>${esc(PTG[p.group]||'')}</small></span><span class="mv"><button type="button" data-pm="${i}" data-d="-1" aria-label="Lên">▲</button><button type="button" data-pm="${i}" data-d="1" aria-label="Xuống">▼</button></span></li>`).join('')||'<li style="cursor:default;color:var(--muted)">Chưa có đơn vị nào</li>';}
+const f3=(path,label,ta)=>{const o=getP(path)||{};return `<div class="pt-f"><b>${label}</b><div class="pt-3">${['vi','en','zh'].map(l=>`<label>${{vi:'Tiếng Việt',en:'English',zh:'中文'}[l]}${ta?`<textarea data-pf="${path}.${l}">${esc(o[l]||'')}</textarea>`:`<input data-pf="${path}.${l}" value="${esc(o[l]||'')}">`}</label>`).join('')}</div></div>`;};
+const fimg=(path,label,cv)=>{const v=getP(path)||'';return `<div class="pt-f"><b>${label}</b><div class="pt-img"><span class="pv ${cv?'cv':''}" style="background-image:url('${esc(ptU(v)).replace(/'/g,'%27')}')"></span><div><input data-pf="${path}" value="${esc(v)}" placeholder="../img/... hoặc tải ảnh lên"><label class="btn sm" style="cursor:pointer;justify-self:start">Tải ảnh lên<input type="file" accept="image/jpeg,image/png,image/webp" hidden data-pup="${path}"></label></div></div></div>`;};
+function getP(path){let o=PTS[PTI];for(const k of path.split('.')){if(o==null)return undefined;o=o[k];}return o;}
+function setP(path,v){let o=PTS[PTI];const ks=path.split('.');ks.slice(0,-1).forEach(k=>{if(o[k]==null||typeof o[k]!=='object')o[k]={};o=o[k];});o[ks[ks.length-1]]=v;}
+function drawPtEd(){const p=PTS[PTI];if(!p){$('pted').innerHTML='<p style="color:var(--muted)">Chọn một đơn vị bên trái để sửa.</p>';return;}
+ p.products=p.products||[];p.contact=p.contact||{};
+ $('pted').innerHTML=`<h3>Thông tin chung</h3>
+ <div class="pt-2"><label>Mã đường dẫn (không dấu)<input data-pf="slug" value="${esc(p.slug||'')}" placeholder="vi-du-htx-abc"></label><label>Nhóm<select data-pf="group">${Object.entries(PTG).map(([k,v])=>`<option value="${k}" ${p.group===k?'selected':''}>${v}</option>`).join('')}</select></label></div>
+ <p class="note" style="margin:4px 0 10px">Đường dẫn trên website: #doi-tac/${esc(p.slug||'')}</p>
+ ${f3('name','Tên đơn vị')}${f3('short','Mô tả ngắn (hiện ở danh sách)')}
+ <div class="pt-2">${fimg('logo','Logo (PNG nền trong)')}${fimg('cover','Ảnh bìa (ảnh ngang)',1)}</div>
+ ${f3('about','Giới thiệu đơn vị',1)}${f3('role','Hợp tác cùng FarmBase',1)}
+ <h3>Sản phẩm, dịch vụ</h3>${p.products.map((x,j)=>`<div class="pt-prod"><div class="hd">Sản phẩm ${j+1}<button class="btn sm" type="button" data-pdel="${j}">Xóa</button></div>${fimg('products.'+j+'.img','Ảnh sản phẩm',1)}${f3('products.'+j+'.name','Tên sản phẩm, dịch vụ')}${f3('products.'+j+'.desc','Mô tả',1)}</div>`).join('')}
+ <button class="btn sm" type="button" id="ppadd">+ Thêm sản phẩm, dịch vụ</button>
+ <h3>Liên hệ</h3><div class="pt-2"><label>Địa chỉ<input data-pf="contact.address" value="${esc(p.contact.address||'')}"></label><label>Điện thoại<input data-pf="contact.phone" value="${esc(p.contact.phone||'')}"></label><label>Email<input data-pf="contact.email" type="email" value="${esc(p.contact.email||'')}"></label><label>Website (https://…)<input data-pf="contact.web" value="${esc(p.contact.web||'')}"></label></div>
+ <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="btn pri" type="button" data-ptsave>Lưu thay đổi</button><button class="btn" type="button" id="ptdel" style="color:#B3261E">Xóa đơn vị này</button></div>`;}
+document.addEventListener('input',e=>{const t=e.target.closest('[data-pf]');if(!t||!PTS[PTI])return;let v=t.value;if(t.dataset.pf==='slug')v=v.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9-]+/g,'-').replace(/^-+/,'').slice(0,60);setP(t.dataset.pf,v);PTDIRTY=true;
+ if(/^(name\.vi|group|logo)$/.test(t.dataset.pf))drawPtList();if(/(logo|cover|img)$/.test(t.dataset.pf)){const pv=t.closest('.pt-img');if(pv)pv.querySelector('.pv').style.backgroundImage=`url('${ptU(v).replace(/'/g,'%27')}')`;}});
+document.addEventListener('change',e=>{const t=e.target.closest('[data-pf]');if(t&&t.tagName==='SELECT'){setP(t.dataset.pf,t.value);PTDIRTY=true;drawPtList();}});
+document.addEventListener('click',e=>{const li=e.target.closest('[data-pi]');const mv=e.target.closest('[data-pm]');
+ if(mv){const i=+mv.dataset.pm,j=i+(+mv.dataset.d);if(j<0||j>=PTS.length)return;[PTS[i],PTS[j]]=[PTS[j],PTS[i]];if(PTI===i)PTI=j;else if(PTI===j)PTI=i;PTDIRTY=true;drawPtList();return;}
+ if(li){PTI=+li.dataset.pi;drawPtList();drawPtEd();return;}
+ if(e.target.id==='ptadd'){PTS.push({slug:'don-vi-moi-'+(PTS.length+1),group:'khach-hang',logo:'',cover:'',name:{vi:'Đơn vị mới',en:'',zh:''},short:{},about:{},role:{},products:[],contact:{}});PTI=PTS.length-1;PTDIRTY=true;drawPtList();drawPtEd();return;}
+ if(e.target.id==='ppadd'){PTS[PTI].products.push({img:'',name:{vi:'',en:'',zh:''},desc:{}});PTDIRTY=true;drawPtEd();return;}
+ const pd=e.target.closest('[data-pdel]');if(pd){PTS[PTI].products.splice(+pd.dataset.pdel,1);PTDIRTY=true;drawPtEd();return;}
+ if(e.target.id==='ptdel'){if(!confirm('Xóa đơn vị "'+tv(PTS[PTI].name,'vi')+'" khỏi trang Đối tác? Thay đổi chỉ áp dụng khi bấm Lưu.'))return;PTS.splice(PTI,1);PTI=Math.min(PTI,PTS.length-1);PTDIRTY=true;drawPtList();drawPtEd();return;}
+ if(e.target.id==='ptsave'||e.target.closest('[data-ptsave]'))savePartners();});
+document.addEventListener('change',async e=>{const t=e.target.closest('[data-pup]');if(!t)return;const f=t.files[0];t.value='';if(!f)return;const path=t.dataset.pup;
+ if(!PTLIVE){toast('Chưa kết nối máy chủ: chưa tải ảnh lên được');return;}
+ try{toast('Đang tải ảnh lên…');const b=await shrink(f);if(b.size>1.5*1024*1024)throw new Error('too_large');
+  const r=await fetch('/api/admin/media?name='+encodeURIComponent(f.name),{method:'POST',credentials:'same-origin',headers:{'content-type':b.type},body:b});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||r.status);
+  setP(path,j.url);PTDIRTY=true;drawPtEd();drawPtList();toast('Đã tải ảnh. Bấm Lưu thay đổi để cập nhật website');}
+ catch(err){toast(err.message==='too_large'?'Ảnh quá lớn, hãy chọn ảnh nhỏ hơn':'Chưa tải được ảnh, thử lại sau');}});
+async function savePartners(){const bad=PTS.find(p=>!/^[a-z0-9][a-z0-9-]{1,59}$/.test(p.slug||'')||!tv(p.name,'vi'));if(bad){toast('Mỗi đơn vị cần tên tiếng Việt và mã đường dẫn không dấu');return;}
+ const sl=PTS.map(p=>p.slug);if(new Set(sl).size!==sl.length){toast('Hai đơn vị đang trùng mã đường dẫn');return;}
+ PTS.forEach(p=>p.products=(p.products||[]).filter(x=>tv(x.name,'vi')));
+ if(!PTLIVE){toast('Bản mẫu: chưa lưu thật');return;}
+ try{await api('/api/admin/partners',{method:'PUT',body:JSON.stringify({items:PTS})});PTDIRTY=false;srcLine('ptsrc',true,'Dữ liệu thật · lưu trên máy chủ');toast('Đã lưu. Website cập nhật sau khoảng 1 phút');drawPtEd();}
+ catch(err){toast(err.message==='invalid_item'?'Có đơn vị thiếu tên hoặc mã đường dẫn không hợp lệ':em(err));}}
+addEventListener('beforeunload',e=>{if(PTDIRTY){e.preventDefault();e.returnValue='';}});
 
 boot();
 </script>
