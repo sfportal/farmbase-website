@@ -253,6 +253,9 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 .pcov{aspect-ratio:16/9;border:1px dashed var(--line);border-radius:10px;display:grid;place-items:center;overflow:hidden;color:var(--muted);font-size:13px;background:#f6f8f7}.pcov img{width:100%;height:100%;object-fit:cover}
 .cnt{float:right;font-weight:600;color:var(--muted);font-size:12px}.cnt.bad{color:#C0392B}
 .gprev{border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;display:grid;gap:2px;background:#fff;font-family:arial,sans-serif}.gprev small{color:#4d5156;font-size:12px}.gprev b{color:#1a0dab;font-size:17px;font-weight:400}.gprev span{color:#4d5156;font-size:13px;line-height:1.5}
+.pvis{display:grid;gap:8px;margin-top:6px}.pvis label{display:flex;gap:8px;align-items:flex-start;margin:0;font-weight:400;cursor:pointer;padding:8px;border:1px solid var(--line);border-radius:8px}.pvis label:has(input:checked){border-color:var(--forest);box-shadow:inset 0 0 0 1px var(--forest)}.pvis input{margin-top:3px;width:auto}.pvis b{display:block;font-size:13.5px}.pvis small{display:block;color:var(--muted);font-size:12px;line-height:1.4}
+.chk{display:flex!important;gap:6px;align-items:center;font-weight:400}.chk input{width:auto}
+.st-link{background:#4f46e5}.st-lock{background:#c2410c}.st-exp{background:#6b7280}.ttl .chip{margin-top:4px}
 .seochk{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:4px;font-size:13px;color:var(--muted)}.seochk li.ok{color:var(--leaf,#1E8E5A)}
 .pstat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.pstat div{background:#f3f7f5;border-radius:10px;padding:8px;text-align:center}.pstat b{display:block;font-size:16px}.pstat span{font-size:11px;color:var(--muted)}
 .pmod{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;overflow:auto;padding:24px 12px}.pmod-in{max-width:780px;margin:0 auto;background:#fff;border-radius:16px;padding:24px}
@@ -334,7 +337,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 
   <!-- BÀI VIẾT -->
   <section data-view="bai-viet" hidden>
-    <div class="top"><div><h1>Bài viết website</h1><p class="sub">Soạn bài, định dạng, chèn ảnh và video (tối đa 2 MB mỗi tệp), gắn thẻ SEO. Bài đã đăng hiện ở mục Blog, có link riêng để chia sẻ.</p></div>
+    <div class="top"><div><h1>Bài viết website</h1><p class="sub">Soạn bài, định dạng, chèn ảnh và video (tối đa 2 MB mỗi tệp), gắn thẻ SEO. Bài công khai hiện ở mục Blog; bài "chỉ người có link" để gửi riêng cho người tham gia, có thể đặt mật khẩu.</p></div>
       <div class="right"><select id="pflt" aria-label="Lọc trạng thái" style="width:auto"><option value="">Tất cả</option><option value="draft">Bản nháp</option><option value="published">Đã đăng</option></select><button class="btn pri" type="button" id="pnew">+ Viết bài mới</button></div></div>
     <p class="src-line" id="psrc"><i></i><span>Đang tải…</span></p>
     <div class="grid g4" id="pkpi" style="margin-bottom:14px"></div>
@@ -363,6 +366,20 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
           <p class="rule" id="proleno" hidden>Tài khoản Biên tập chỉ lưu nháp. Người duyệt bài hoặc quản trị sẽ đăng.</p>
           <label for="pt-cat">Chuyên mục<select id="pt-cat"><option value="tin-tuc">Tin tức</option><option value="huong-dan">Hướng dẫn</option><option value="kien-thuc">Kiến thức</option><option value="su-kien">Sự kiện</option><option value="bao-chi">Báo chí</option></select></label>
           <div class="pstat" id="pviews" hidden></div>
+        </div>
+        <div class="card"><h2>Ai được xem</h2>
+          <div class="pvis" role="radiogroup" aria-label="Ai được xem bài">
+            <label><input type="radio" name="pvis" value="public" checked><span><b>Công khai</b><small>Hiện ở Trang chủ, Blog và Google.</small></span></label>
+            <label><input type="radio" name="pvis" value="link"><span><b>Chỉ người có link</b><small>Không hiện ở Trang chủ, Blog, Google. Dùng để gửi cho người tham gia sự kiện, tập huấn.</small></span></label>
+          </div>
+          <div id="plinkbox" hidden>
+            <label for="pt-pass">Mật khẩu xem bài (tùy chọn)<input id="pt-pass" maxlength="100" autocomplete="off" placeholder="Để trống nếu không cần mật khẩu"></label>
+            <p class="cnote" id="ppassnote"></p>
+            <label class="chk" id="ppassclr" hidden><input type="checkbox" id="pt-passx"> Bỏ mật khẩu</label>
+            <label for="pt-exp">Hết hiệu lực lúc (tùy chọn)<input id="pt-exp" type="datetime-local"></label>
+            <p class="rule">Bài đang đăng là đang hiệu lực. Bấm "Tắt hiệu lực" hoặc đến giờ hết hạn thì link không mở được nữa. Lượt xem và cookie vẫn được đo như bài thường.</p>
+            <div class="acts" style="margin-top:8px"><button class="btn sm" type="button" id="pcopy" hidden>Sao chép link</button></div>
+          </div>
         </div>
         <div class="card"><h2>Ảnh bìa</h2>
           <div class="pcov" id="pcov"><span>Chưa có ảnh bìa</span></div>
@@ -1002,13 +1019,18 @@ async function loadPosts(){try{if(MODE!=='live')throw new Error('nokey');const r
 function drawPosts(){const f=$('pflt').value;const L=PL.filter(p=>!f||p.status===f);const pub=PL.filter(p=>p.status==='published');
  $('nwait').hidden=!PL.some(p=>p.status==='draft');$('nwait').textContent=PL.filter(p=>p.status==='draft').length;
  $('pkpi').innerHTML=[['Bài đã đăng',pub.length],['Bản nháp',PL.length-pub.length],['Lượt xem 30 ngày',nf(pub.reduce((a,p)=>a+(+p.views30||0),0))],['Lượt xem tất cả',nf(pub.reduce((a,p)=>a+(+p.views||0),0))]].map(x=>`<div class="card kpi"><span class="l">${x[0]}</span><span class="v">${x[1]}</span></div>`).join('');
- $('plist').innerHTML=L.map(p=>`<tr><td>${p.cover?`<img class="thumb" src="${esc(pimg(p.cover))}" alt="">`:''}</td><td class="ttl"><a href="#bai-viet-sua" data-pedit="${p.id}" style="color:inherit">${esc(p.title)}</a><small>/bai-viet/${esc(p.slug)}</small></td><td>${PCATS[p.cat]||''}</td>
-  <td>${p.status==='published'?(p.published_at>Date.now()?'<span class="chip st-sched">Hẹn giờ đăng</span>':'<span class="chip st-pub">Đã đăng</span>'):'<span class="chip st-draft">Nháp</span>'}</td><td style="white-space:nowrap">${pdt(p.published_at)}</td>
+ $('plist').innerHTML=L.map(p=>`<tr><td>${p.cover?`<img class="thumb" src="${esc(pimg(p.cover))}" alt="">`:''}</td><td class="ttl"><a href="#bai-viet-sua" data-pedit="${p.id}" style="color:inherit">${esc(p.title)}</a><small>/bai-viet/${esc(p.slug)}</small>${p.visibility==='link'?`<span class="chip st-link">Chỉ người có link</span>`:''}${+p.has_pass?` <span class="chip st-lock">Có mật khẩu</span>`:''}${p.expires_at?` <span class="chip ${p.expires_at<=Date.now()?'st-exp':'st-link'}">${p.expires_at<=Date.now()?'Đã hết hạn':'Hạn '+pdt(p.expires_at)}</span>`:''}</td><td>${PCATS[p.cat]||''}</td>
+  <td>${p.status==='published'?(p.published_at>Date.now()?'<span class="chip st-sched">Hẹn giờ đăng</span>':p.visibility==='link'?(p.expires_at&&p.expires_at<=Date.now()?'<span class="chip st-exp">Hết hiệu lực</span>':'<span class="chip st-pub">Đang hiệu lực</span>'):'<span class="chip st-pub">Đã đăng</span>'):p.visibility==='link'&&p.published_at?'<span class="chip st-exp">Đã tắt hiệu lực</span>':'<span class="chip st-draft">Nháp</span>'}</td><td style="white-space:nowrap">${pdt(p.published_at)}</td>
   <td class="n">${nf(p.views||0)}</td><td class="n">${nf(p.views30||0)}</td><td class="n">${pdur(p.avg_ms)}</td>
-  <td style="white-space:nowrap"><button class="btn sm" type="button" data-pedit="${p.id}">Sửa</button>${p.status==='published'?` <a class="btn sm" href="${PLIVE?'/bai-viet/'+esc(p.slug):'#'}" target="_blank" rel="noopener">Xem</a>`:''}${can2del()?` <button class="btn sm" type="button" data-pdel="${p.id}">Xóa</button>`:''}</td></tr>`).join('')||'<tr><td colspan="9" style="color:var(--muted)">Chưa có bài viết. Bấm "+ Viết bài mới" để bắt đầu.</td></tr>';}
+  <td style="white-space:nowrap"><button class="btn sm" type="button" data-pedit="${p.id}">Sửa</button>${p.status==='published'?` <a class="btn sm" href="${PLIVE?'/bai-viet/'+esc(p.slug):'#'}" target="_blank" rel="noopener">Xem</a>`:''}${p.visibility==='link'?` <button class="btn sm" type="button" data-pcopy="${esc(p.slug)}">Sao chép link</button>`:''}${p.visibility==='link'&&can2del()&&p.published_at?` <button class="btn sm" type="button" data-ptog="${p.id}">${p.status==='published'?'Tắt hiệu lực':'Bật hiệu lực'}</button>`:''}${can2del()?` <button class="btn sm" type="button" data-pdel="${p.id}">Xóa</button>`:''}</td></tr>`).join('')||'<tr><td colspan="9" style="color:var(--muted)">Chưa có bài viết. Bấm "+ Viết bài mới" để bắt đầu.</td></tr>';}
 const can2del=()=>MODE==='demo'||(ME&&['owner','admin','approver'].includes(ME.role));
 $('pflt').addEventListener('change',drawPosts);
+const plink=sl=>(PLIVE?location.origin:'https://farmbase.vn')+'/bai-viet/'+sl;
+async function pCopy(sl){const u=plink(sl);try{await navigator.clipboard.writeText(u);toast('Đã sao chép: '+u);}catch(e){prompt('Sao chép link này:',u);}}
 document.addEventListener('click',async e=>{const ed=e.target.closest('[data-pedit]');if(ed){e.preventDefault();openPost(+ed.dataset.pedit);return;}
+ const cp=e.target.closest('[data-pcopy]');if(cp){pCopy(cp.dataset.pcopy);return;}
+ const tg=e.target.closest('[data-ptog]');if(tg){const p=PL.find(x=>x.id==tg.dataset.ptog);if(!p)return;const st=p.status==='published'?'draft':'published';
+  if(PLIVE){try{await api('/api/admin/posts',{method:'PATCH',body:JSON.stringify({id:p.id,status:st})});}catch(err){toast(em(err));return;}}p.status=st;drawPosts();toast(st==='published'?'Đã bật hiệu lực, link mở lại được':'Đã tắt hiệu lực, link không mở được nữa');return;}
  const dl=e.target.closest('[data-pdel]');if(dl){const p=PL.find(x=>x.id==dl.dataset.pdel);if(!p||!confirm('Xóa bài "'+p.title+'"? Không khôi phục được.'))return;
   if(PLIVE){try{await api('/api/admin/posts?id='+p.id,{method:'DELETE'});}catch(err){toast(em(err));return;}}PL=PL.filter(x=>x!==p);drawPosts();toast('Đã xóa bài');}});
 $('pnew').addEventListener('click',()=>openPost(0));
@@ -1054,7 +1076,16 @@ async function openPost(id){location.hash='#bai-viet-sua';try{await initQuill();
  $('psave-p').textContent=PCUR.status==='published'?'Cập nhật bài đã đăng':'Đăng bài';$('psave-d').textContent=PCUR.status==='published'?'Chuyển về nháp':'Lưu nháp';
  $('popen').hidden=!(PCUR.status==='published'&&PLIVE);$('popen').href='/bai-viet/'+PCUR.slug;
  $('pviews').hidden=!id;if(id)$('pviews').innerHTML=`<div><b>${nf(PCUR.views||0)}</b><span>lượt xem</span></div><div><b>${nf(PCUR.views30||0)}</b><span>30 ngày qua</span></div><div><b>${pdur(PCUR.avg_ms)}</b><span>đọc trung bình</span></div>`;
+ const vis=PCUR.visibility==='link'?'link':'public';document.querySelectorAll('[name=pvis]').forEach(r=>r.checked=r.value===vis);$('pt-pass').value='';$('pt-passx').checked=false;
+ $('pt-exp').value=PCUR.expires_at?new Date(PCUR.expires_at-new Date(PCUR.expires_at).getTimezoneOffset()*60000).toISOString().slice(0,16):'';pVis();
  pCover();pLoadLang();PDIRTY=false;$('pt-title').focus();}
+function pVis(){const link=document.querySelector('[name=pvis]:checked').value==='link';$('plinkbox').hidden=!link;const hp=PCUR&&+PCUR.has_pass;
+ $('ppassnote').textContent=hp?'Đã đặt mật khẩu. Nhập mật khẩu mới nếu muốn đổi.':'Người xem phải nhập đúng mật khẩu mới đọc được bài. Tối thiểu 4 ký tự.';$('ppassclr').hidden=!hp;
+ const pub=PCUR&&PCUR.status==='published';$('pcopy').hidden=!(PCUR&&PCUR.id&&link);
+ if(PCUR&&!(ME&&ME.role==='editor')){$('psave-p').textContent=link?(pub?'Cập nhật bài':'Bật hiệu lực (mở link)'):(pub?'Cập nhật bài đã đăng':'Đăng bài');$('psave-d').textContent=pub?(link?'Tắt hiệu lực':'Chuyển về nháp'):'Lưu nháp';}}
+document.querySelectorAll('[name=pvis]').forEach(r=>r.addEventListener('change',()=>{PDIRTY=true;pVis();pSeo();}));
+['pt-pass','pt-exp','pt-passx'].forEach(id=>$(id).addEventListener('input',()=>PDIRTY=true));
+$('pcopy').addEventListener('click',()=>PCUR&&pCopy(PCUR.slug));
 function pCover(){const u=PCUR.cover;$('pcov').innerHTML=u?`<img src="${esc(pimg(u))}" alt="Ảnh bìa">`:'<span>Chưa có ảnh bìa</span>';$('pcovx').hidden=!u;
  $('pog').innerHTML=PCUR.og_image?`Ảnh riêng: <a href="${esc(pimg(PCUR.og_image))}" target="_blank" rel="noopener">xem</a> · <button type="button" class="linkbtn" id="pogx">dùng ảnh bìa</button>`:'Mặc định dùng ảnh bìa.';}
 document.addEventListener('click',e=>{if(e.target.id==='pogx'){PCUR.og_image='';pCover();PDIRTY=true;}});
@@ -1065,17 +1096,20 @@ $('pcovx').addEventListener('click',()=>{PCUR.cover='';pCover();PDIRTY=true;});
 ['pt-title','pt-exc','pt-mt','pt-md','pt-kw','pt-slug'].forEach(id=>$(id).addEventListener('input',()=>{PDIRTY=true;if(id==='pt-slug')$('pt-slug').dataset.auto='0';if(id==='pt-title'&&PLANG==='vi'&&$('pt-slug').dataset.auto==='1')$('pt-slug').value=slugv($('pt-title').value);pSeo();}));
 function pSeo(){if(!PCUR)return;const vi=PLANG==='vi';const t=$('pt-mt').value||$('pt-title').value,d=$('pt-md').value||$('pt-exc').value,sl=$('pt-slug').value||slugv(PCUR.title);
  $('cmt').textContent=`${$('pt-mt').value.length}/60`;$('cmd').textContent=`${$('pt-md').value.length}/160`;$('cmt').classList.toggle('bad',$('pt-mt').value.length>60);const ml=$('pt-md').value.length;$('cmd').classList.toggle('bad',ml>0&&(ml<120||ml>160));
- $('purl').textContent='farmbase.vn/bai-viet/'+(sl||'…');$('gp-u').textContent='farmbase.vn › bai-viet › '+(sl||'…');$('gp-t').textContent=(t||'Tiêu đề bài viết').slice(0,60)+' | FarmBase';$('gp-d').textContent=(d||'Mô tả hiện ở kết quả tìm kiếm Google.').slice(0,160);
+ $('purl').textContent='farmbase.vn/bai-viet/'+(sl||'…')+(document.querySelector('[name=pvis]:checked')?.value==='link'&&!/-k[a-z0-9]{5}$/.test(sl)?'-k••••• (thêm đuôi ngẫu nhiên khi lưu để người ngoài không đoán được)':'');$('gp-u').textContent='farmbase.vn › bai-viet › '+(sl||'…');$('gp-t').textContent=(t||'Tiêu đề bài viết').slice(0,60)+' | FarmBase';$('gp-d').textContent=(d||'Mô tả hiện ở kết quả tìm kiếm Google.').slice(0,160);
  if(!vi){$('pseo').innerHTML='';return;}const body=QL?QL.getText():'';const words=body.trim().split(/\s+/).filter(Boolean).length;const kw=($('pt-kw').value.split(',')[0]||'').trim().toLowerCase();
  const ck=[[t.length>=20&&t.length<=60,'Tiêu đề SEO 20–60 ký tự'],[d.length>=120&&d.length<=160,'Mô tả SEO 120–160 ký tự'],[!!PCUR.cover,'Có ảnh bìa (ảnh chia sẻ mạng xã hội)'],[words>=300,`Nội dung từ 300 chữ (hiện ${words})`],[!kw||(t.toLowerCase().includes(kw)||d.toLowerCase().includes(kw)),'Từ khóa chính có trong tiêu đề hoặc mô tả'],[!QL||![...QL.root.querySelectorAll('img')].length||/<h[23]/.test(QL.root.innerHTML),'Có tiêu đề phụ (H2, H3) chia đoạn']];
  $('pseo').innerHTML=ck.map(c=>`<li class="${c[0]?'ok':''}">${c[0]?'✓':'○'} ${c[1]}</li>`).join('');}
 async function savePost(publish){if(!PCUR)return;pStore();if(!PCUR.title.trim()){toast('Vui lòng nhập tiêu đề tiếng Việt');PLANG='vi';pLoadLang();return;}
  const tdate=new Date($('pt-date').value).getTime();
  const body={id:PCUR.id||undefined,slug:$('pt-slug').value||slugv(PCUR.title),cat:$('pt-cat').value,status:publish?'published':'draft',title:PCUR.title,excerpt:PCUR.excerpt,body:PCUR.body,cover:PCUR.cover,meta_title:PCUR.meta_title,meta_desc:PCUR.meta_desc,meta_kw:$('pt-kw').value,og_image:PCUR.og_image,tr:PCUR.tr,published_at:publish?(tdate||Date.now()):(PCUR.published_at||null)};
+ body.visibility=document.querySelector('[name=pvis]:checked').value;const xd=$('pt-exp').value?new Date($('pt-exp').value).getTime():null;body.expires_at=body.visibility==='link'?xd:null;
+ const pw=$('pt-pass').value.trim();if(body.visibility==='link'&&pw&&pw.length<4){toast('Mật khẩu tối thiểu 4 ký tự');return;}if(body.visibility==='link'){body.password=pw;body.clear_password=$('pt-passx').checked;}
+ if(publish&&xd&&xd<=Date.now()&&body.visibility==='link'){toast('Giờ hết hiệu lực đã qua, hãy chọn giờ sau hiện tại');return;}
  if(JSON.stringify(body).length>1500000){toast('Bài quá dài. Ảnh, video hãy dùng nút tải lên thay vì dán trực tiếp.');return;}
- if(!PLIVE){const i=PL.findIndex(x=>x.id===PCUR.id);const rec=Object.assign({},PCUR,body,{id:PCUR.id||-Date.now(),updated:Date.now(),tr:JSON.stringify(body.tr)});if(i>=0)PL[i]=rec;else PL.unshift(rec);PCUR.id=rec.id;drawPosts();PDIRTY=false;toast('Bản xem thử: đã lưu tạm, chưa đưa lên website');return;}
+ if(!PLIVE){if(body.visibility==='link'&&!/-k[a-z0-9]{5}$/.test(body.slug))body.slug=body.slug.slice(0,82)+'-k'+(Math.random().toString(36)+'xxxxx').slice(2,7);body.has_pass=body.visibility==='link'&&(pw||(+PCUR.has_pass&&!body.clear_password))?1:0;delete body.password;const i=PL.findIndex(x=>x.id===PCUR.id);const rec=Object.assign({},PCUR,body,{id:PCUR.id||-Date.now(),updated:Date.now(),tr:JSON.stringify(body.tr)});if(i>=0)PL[i]=rec;else PL.unshift(rec);PCUR.id=rec.id;drawPosts();PDIRTY=false;toast('Bản xem thử: đã lưu tạm, chưa đưa lên website');return;}
  try{const r=await api('/api/admin/posts',{method:PCUR.id?'PUT':'POST',body:JSON.stringify(body)});PDIRTY=false;await loadPosts();await openPost(r.id);toast(publish?(body.published_at>Date.now()?'Đã hẹn giờ đăng bài':'Đã đăng bài lên website'):'Đã lưu nháp');}
- catch(e){toast(e.message==='slug_taken'?'Đường dẫn đã có bài khác dùng, hãy đổi đường dẫn':e.message==='need_approver'?'Tài khoản Biên tập chỉ lưu nháp':e.message==='too_large'?'Bài quá dài để lưu':em(e));}}
+ catch(e){toast(e.message==='slug_taken'?'Đường dẫn đã có bài khác dùng, hãy đổi đường dẫn':e.message==='need_approver'?'Tài khoản Biên tập chỉ lưu nháp':e.message==='too_large'?'Bài quá dài để lưu':e.message==='short_pass'?'Mật khẩu tối thiểu 4 ký tự':em(e));}}
 $('psave-d').addEventListener('click',()=>savePost(false));$('psave-p').addEventListener('click',()=>savePost(true));
 $('pprev').addEventListener('click',()=>{if(!PCUR)return;pStore();const src=PLANG==='vi'?PCUR:Object.assign({},PCUR,PCUR.tr[PLANG]||{});
  $('pmodb').innerHTML=`<article class="pprev">${PCUR.cover?`<img class="pcv" src="${esc(pimg(PCUR.cover))}" alt="">`:''}<p class="cnote">${PCATS[$('pt-cat').value]} · ${pdt(new Date($('pt-date').value).getTime())}</p><h1>${esc(src.title||PCUR.title)}</h1>${src.excerpt?`<p><b>${esc(src.excerpt)}</b></p>`:''}<div class="prich">${(src.body||'').replace(/<script[\s\S]*?<\/script>/gi,'')}</div></article>`;$('pmod').hidden=false;});
