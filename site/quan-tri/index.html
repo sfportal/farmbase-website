@@ -176,8 +176,41 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
 .lead-st{padding:4px 8px;border-radius:8px;font-size:12px;font-weight:700;width:auto}
 .tbl td.n,.tbl th.n{text-align:right;font-variant-numeric:tabular-nums}
 #stk .kpi .l,#stk .kpi .v{display:block}
+/* Đăng nhập */
+#login{position:fixed;inset:0;z-index:50;background:radial-gradient(1200px 600px at 10% -10%,#0B6B58 0%,transparent 60%),radial-gradient(900px 500px at 110% 110%,#35A57655 0%,transparent 60%),var(--side);display:grid;place-items:center;padding:16px}
+#login .box{background:var(--surface);color:var(--fg);border-radius:16px;padding:26px 24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.35);display:grid;gap:12px}
+#login .box h1{font-size:20px}
+#login .box p{font-size:13px;color:var(--muted)}
+#login .err{color:var(--s-err);font-size:13px;min-height:18px}
+#login .lk{background:none;border:0;padding:0;color:var(--forest);font-weight:600;cursor:pointer;font-size:13px;text-align:left}
+#login .btn{justify-content:center;padding:10px}
+#login .demo-btn{border-style:dashed}
+aside .who b{color:#fff;display:block;font-size:13px}
+aside .who .wl{display:flex;gap:10px;margin-top:6px}
+aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointer;font-size:12px;text-decoration:underline}
+.rolechip{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--sprout);color:var(--forest)}
+.rolechip.owner{background:var(--forest);color:#fff}
+.tmp{font-family:ui-monospace,Menlo,monospace;background:var(--sprout);padding:2px 6px;border-radius:6px;user-select:all}
+.note-ok{font-size:12px;color:var(--muted);margin-top:8px}
+.uform{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:8px;align-items:end}
+@media (max-width:900px){.uform{grid-template-columns:1fr 1fr}}
 </style>
 
+<div id="login" hidden>
+  <form class="box" id="lgf" autocomplete="on">
+    <div class="brand" style="color:var(--fg);padding:0"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 21V10"/><path d="M12 13c-4 0-7-3-7-7 4 0 7 3 7 7z"/><path d="M12 11c0-4 3-7 7-7 0 4-3 7-7 7z"/></svg></span>FarmBase Admin</div>
+    <h1 id="lgt">Đăng nhập trang quản trị</h1>
+    <p id="lgp">Dùng email và mật khẩu được cấp.</p>
+    <label for="lge">Email<input id="lge" type="email" autocomplete="username" required></label>
+    <div id="lgcodew" hidden><label for="lgc">Mã cài đặt (biến ADMIN_TOKEN trên Cloudflare)<input id="lgc" type="password" autocomplete="off"></label></div>
+    <label for="lgw"><span id="lgwl">Mật khẩu</span><input id="lgw" type="password" autocomplete="current-password" required minlength="8"></label>
+    <div id="lgw2w" hidden><label for="lgw2">Nhập lại mật khẩu<input id="lgw2" type="password" autocomplete="new-password"></label></div>
+    <div class="err" id="lgerr" role="alert"></div>
+    <button class="btn dark" type="submit" id="lgb">Đăng nhập</button>
+    <button class="lk" type="button" id="lgsw">Chủ sở hữu: cài đặt lần đầu hoặc quên mật khẩu</button>
+    <button class="btn demo-btn" type="button" id="lgdemo" hidden>Xem bản mẫu (chưa có máy chủ)</button>
+  </form>
+</div>
 <div class="app">
 <aside aria-label="Điều hướng quản trị">
   <div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 21V10"/><path d="M12 13c-4 0-7-3-7-7 4 0 7 3 7 7z"/><path d="M12 11c0-4 3-7 7-7 0 4-3 7-7 7z"/></svg></span>FarmBase Admin</div>
@@ -193,10 +226,11 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
   <a href="#tao-nhanh" data-v="tao-nhanh">Tạo bài nhanh</a>
   <a href="#bao-cao" data-v="bao-cao">Báo cáo tuần</a>
   <span class="sep">Khách hàng</span>
-  <a href="#thong-ke" data-v="thong-ke">Thống kê truy cập</a>
-  <a href="#khach-hang" data-v="khach-hang">Khách để lại liên hệ <span class="n" id="nlead" hidden>0</span></a>
-  <a href="#cai-dat" data-v="cai-dat">Kết nối và cài đặt</a>
-  <div class="who">Đăng nhập: Biên tập viên<br>Vai trò Duyệt: Quản lý marketing</div>
+  <a href="#thong-ke" data-v="thong-ke" data-cap="stats">Thống kê truy cập</a>
+  <a href="#khach-hang" data-v="khach-hang" data-cap="leads">Khách để lại liên hệ <span class="n" id="nlead" hidden>0</span></a>
+  <a href="#cai-dat" data-v="cai-dat" data-cap="settings">Kết nối và cài đặt</a>
+  <a href="#tai-khoan" data-v="tai-khoan" data-cap="users">Tài khoản và phân quyền</a>
+  <div class="who" id="who"></div>
 </aside>
 
 <main>
@@ -366,26 +400,54 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
       <div class="card"><h2>Kết nối</h2>
         <div class="conn"><span class="ic" style="background:#1877F2">f</span><div class="t"><b>Fanpage Facebook</b><small>facebook.com/durianbase · đăng bài, đọc số liệu</small></div><span class="todo">Giai đoạn 3</span></div>
         <div class="conn"><span class="ic" style="background:#0068FF">OA</span><div class="t"><b>Zalo OA</b><small>zalo.me/1461539868993925462</small></div><span class="ok">Đã có link</span></div>
-        <div class="conn"><span class="ic" style="background:#E37400">GA</span><div class="t"><b>Google Analytics 4 + Search Console</b><small>Lượt truy cập, lượt bấm Zalo, Gọi</small></div><span class="todo">Giai đoạn 1</span></div>
+        <div class="conn"><span class="ic" style="background:#E37400">GA</span><div class="t"><b>Google Analytics 4</b><small>Cài mã ở khung "Mã đo lường" bên dưới</small></div><span id="gast" class="todo">Chưa cài</span></div>
+        <div class="conn"><span class="ic" style="background:#1877F2">px</span><div class="t"><b>Facebook Pixel</b><small>Đo chuyển đổi cho quảng cáo Facebook</small></div><span id="pxst" class="todo">Chưa cài</span></div>
         <div class="conn"><span class="ic" style="background:#3C5A57">AI</span><div class="t"><b>Claude API</b><small>Viết bài, dịch, tóm tắt link, chatbot · có hạn mức chi tiêu tháng</small></div><span class="todo">Giai đoạn 3</span></div>
         <div class="conn"><span class="ic" style="background:#13231F">@</span><div class="t"><b>Email gửi báo cáo</b><small>Resend · gửi từ báo-cáo@farmbase.vn</small></div><span class="todo">Giai đoạn 4</span></div>
       </div>
       <div class="card"><h2>Người dùng và quyền</h2>
         <table class="tbl"><thead><tr><th>Vai trò</th><th>Được làm</th></tr></thead><tbody>
-          <tr><td><b>Quản trị</b></td><td>Mọi thứ, gồm kết nối và người dùng</td></tr>
-          <tr><td><b>Duyệt</b></td><td>Duyệt, lên lịch, đăng bài; xem báo cáo</td></tr>
+          <tr><td><b>Chủ sở hữu</b></td><td>Mọi thứ, gồm cấp và thu hồi tài khoản</td></tr>
+          <tr><td><b>Quản trị</b></td><td>Mọi thứ trừ tài khoản: nội dung, khách, thống kê, mã đo lường</td></tr>
+          <tr><td><b>Duyệt bài</b></td><td>Duyệt, lên lịch, đăng bài; xem thống kê</td></tr>
           <tr><td><b>Biên tập</b></td><td>Tạo, sửa nháp, tải ảnh, gửi duyệt</td></tr>
           <tr><td><b>Kinh doanh</b></td><td>Xem và cập nhật khách để lại liên hệ</td></tr>
         </tbody></table>
         <label for="mail" style="margin-top:14px">Email nhận báo cáo tuần<input id="mail" value="info@bvi.vn"></label>
-        <h2 style="margin-top:18px">Kết nối máy chủ</h2>
-        <label for="akey">Khóa quản trị (ADMIN_TOKEN đã cài trên Cloudflare)<input id="akey" type="password" autocomplete="off" placeholder="Dán khóa quản trị"></label>
-        <div class="acts" style="margin-top:8px"><button class="btn dark" type="button" id="akeysave">Lưu khóa trên máy này</button><span id="akeyst" style="font-size:12px;color:var(--muted);align-self:center"></span></div>
         <h2 style="margin-top:18px">Ngôn ngữ website</h2>
         <div class="conn"><span class="ic" style="background:#084C46">VI</span><div class="t"><b>Tiếng Việt</b><small>Ngôn ngữ gốc · farmbase.vn</small></div><span class="ok">Mặc định</span></div>
         <div class="conn"><span class="ic" style="background:#2F6FB5">EN</span><div class="t"><b>English</b><small>farmbase.vn/en · chỉ hiện bản đã duyệt, phần chưa dịch hiện tiếng Việt</small></div><span class="ok">Đang bật</span></div>
         <div class="conn"><span class="ic" style="background:#C7432F">中</span><div class="t"><b>中文 (简体)</b><small>farmbase.vn/zh · cần người bản ngữ duyệt</small></div><span class="ok">Đang bật</span></div>
       </div>
+    </div>
+      <div class="card" style="margin-top:16px"><h2>Mã đo lường trên website</h2>
+      <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">Dán mã rồi bấm Lưu. Website tự gắn mã trong khoảng 1 phút, không cần sửa code. Để trống để gỡ mã.</p>
+      <div class="grid g2">
+        <label for="gaid">Google Analytics 4 · Measurement ID<input id="gaid" placeholder="G-XXXXXXXXXX" autocomplete="off" spellcheck="false"><small style="font-weight:400;color:var(--muted)">Lấy trong GA4: Quản trị → Luồng dữ liệu → Web</small></label>
+        <label for="pxid">Facebook Pixel ID<input id="pxid" placeholder="Dãy số 15–16 chữ số" inputmode="numeric" autocomplete="off"><small style="font-weight:400;color:var(--muted)">Lấy trong Meta Events Manager → Nguồn dữ liệu</small></label>
+      </div>
+      <div class="acts" style="margin-top:12px"><button class="btn dark" type="button" id="mesave">Lưu mã đo lường</button><span id="mest" style="font-size:12px;color:var(--muted);align-self:center"></span></div>
+      <p class="note-ok">Sự kiện gửi kèm: xem trang (page_view / PageView), bấm Zalo, Gọi, Messenger (cta_click / Contact), gửi form liên hệ (generate_lead / Lead).</p>
+    </div>
+  </section>
+
+  <!-- TÀI KHOẢN -->
+  <section data-view="tai-khoan" hidden>
+    <div class="top"><div><h1>Tài khoản và phân quyền</h1><p style="color:var(--muted)">Chỉ chủ sở hữu thấy mục này. Cấp tài khoản cho người cần vào trang quản trị.</p></div></div>
+    <p class="src-line" id="usrc"><i></i><span>Đang tải…</span></p>
+    <div class="card"><h2>Cấp tài khoản mới</h2>
+      <form class="uform" id="uf" style="margin-top:10px">
+        <label for="ue">Email<input id="ue" type="email" required placeholder="ten@congty.vn"></label>
+        <label for="un">Họ tên<input id="un" placeholder="Nguyễn Văn A"></label>
+        <label for="ur">Vai trò<select id="ur"><option value="admin">Quản trị</option><option value="approver">Duyệt bài</option><option value="editor" selected>Biên tập</option><option value="sales">Kinh doanh</option></select></label>
+        <label for="up">Mật khẩu tạm<input id="up" required minlength="8" autocomplete="off"></label>
+        <button class="btn dark" type="submit">Cấp tài khoản</button>
+      </form>
+      <p class="note-ok" id="ufout">Mật khẩu tạm được tạo sẵn. Gửi email và mật khẩu cho người dùng qua Zalo riêng; họ nên đổi mật khẩu ngay sau lần đăng nhập đầu.</p>
+    </div>
+    <div class="card" style="margin-top:16px;overflow-x:auto"><h2>Danh sách tài khoản</h2>
+      <table class="tbl" style="margin-top:8px"><thead><tr><th>Người dùng</th><th>Vai trò</th><th>Trạng thái</th><th>Đăng nhập gần nhất</th><th></th></tr></thead><tbody id="ulist"></tbody></table>
+      <p class="note-ok" id="uout"></p>
     </div>
   </section>
 </main>
@@ -470,8 +532,11 @@ document.getElementById('gen').addEventListener('click',()=>{
 });
 document.getElementById('sendWait').addEventListener('click',()=>{POSTS.push({id:Date.now(),t:src==='anh'?'Ôn cách ghi nhật ký trên Zalo cùng bà con vùng 07':'Báo chí ghi nhận: Ea Drông mã số hóa vùng trồng',sub:'Tạo nhanh · AI viết nháp',ch:'FB + Web',lang:'VI',st:'wait',d:'2026-11-04',h:'19:30',img:src==='anh'?picked:'17'});renderPosts();toast('Đã gửi duyệt. Bài nằm trong mục Bài viết');});
 /* ---------- Kết nối API (Cloudflare) với dữ liệu mẫu dự phòng ---------- */
-let AKEY='';try{AKEY=localStorage.getItem('fb_admin_key')||'';}catch(e){}
-async function api(path,opt={}){const r=await fetch(path,Object.assign({},opt,{headers:Object.assign({'authorization':'Bearer '+AKEY,'content-type':'application/json'},opt.headers||{})}));if(!r.ok)throw new Error(r.status);return r.json();}
+let ME=null,MODE='?';/* MODE: live (có máy chủ) | demo (bản xem thử) */
+const CAPS={users:['owner'],settings:['owner','admin'],stats:['owner','admin','approver'],leads:['owner','admin','sales']};
+const can=c=>MODE==='demo'||(ME&&CAPS[c].includes(ME.role));
+async function api(path,opt={}){const r=await fetch(path,Object.assign({credentials:'same-origin'},opt,{headers:Object.assign({'content-type':'application/json'},opt.headers||{})}));
+ const j=await r.json().catch(()=>null);if(r.status===401&&!/\/api\/auth\//.test(path)){showLogin();}if(!r.ok||!j){const e=new Error((j&&j.error)||r.status);e.status=r.status;throw e;}return j;}
 function srcLine(id,live,msg){const el=document.getElementById(id);el.classList.toggle('live',live);el.querySelector('span').textContent=msg;}
 const PATHN={'/trang-chu':'Trang chủ','/ve-chung-toi':'Về chúng tôi','/giai-phap':'Giải pháp','/truy-xuat':'Truy xuất nguồn gốc','/ma-vung-trong':'Tư vấn mã vùng trồng','/ma-dong-goi':'Tư vấn mã đóng gói','/thu-mua-ky-thuat':'Liên kết thu mua','/giai-phap-rieng':'Giải pháp riêng','/chien-dich-10000ha':'Chiến dịch 10.000 ha','/cd-dang-ky':'Chiến dịch · đăng ký','/su-kien':'Sự kiện','/blog':'Blog','/lien-he':'Liên hệ'};
 const pn=p=>PATHN[p]||(p&&p.startsWith('/bai-viet/')?'Bài viết · '+p.slice(10):p||'—');
@@ -489,8 +554,8 @@ function drawStats(d){const t=d.total||{};const rate=t.visitors?Math.round((t.ct
  const DN={mobile:'Điện thoại',desktop:'Máy tính',tablet:'Máy tính bảng'},LNN={vi:'Tiếng Việt',en:'English',zh:'中文'};
  hbars('stdev',d.devices||[],r=>DN[r.device]||r.device||'Khác',r=>r.visitors);hbars('stlang',d.langs||[],r=>LNN[r.lang]||r.lang||'—',r=>r.views);}
 async function loadStats(){const days=+document.getElementById('days').value;
- try{if(!AKEY)throw new Error('nokey');const d=await api('/api/admin/stats?days='+days);drawStats(d);srcLine('stsrc',true,'Dữ liệu thật từ máy chủ Cloudflare · cập nhật lúc '+new Date().toLocaleTimeString('vi-VN'));}
- catch(e){drawStats(sampleStats(days));srcLine('stsrc',false,e.message==='nokey'?'Dữ liệu mẫu: chưa nhập khóa quản trị (vào Kết nối và cài đặt)':'Dữ liệu mẫu: chưa kết nối được máy chủ. Khi web chạy trên Cloudflare, số liệu thật hiện ở đây.');}}
+ try{if(MODE!=='live')throw new Error('nokey');const d=await api('/api/admin/stats?days='+days);drawStats(d);srcLine('stsrc',true,'Dữ liệu thật từ máy chủ Cloudflare · cập nhật lúc '+new Date().toLocaleTimeString('vi-VN'));}
+ catch(e){drawStats(sampleStats(days));srcLine('stsrc',false,e.message==='nokey'?'Dữ liệu mẫu: bản xem thử chưa có máy chủ':'Dữ liệu mẫu: chưa kết nối được máy chủ. Khi web chạy trên Cloudflare, số liệu thật hiện ở đây.');}}
 document.getElementById('days').addEventListener('change',loadStats);document.getElementById('reload').addEventListener('click',loadStats);
 /* Khách để lại liên hệ */
 const LSTS=['Mới','Đã gọi','Hẹn gặp','Đã gửi báo giá','Đã ký','Không phù hợp'];
@@ -501,17 +566,14 @@ const ldt=ts=>{const d=new Date(ts);return d.toLocaleDateString('vi-VN',{day:'2-
 const esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function drawLeads(){document.getElementById('leads').innerHTML=LEADS.map(r=>`<tr><td style="white-space:nowrap">${ldt(r.ts)}</td><td><b>${esc(r.name)}</b>${r.note?`<small style="display:block;color:var(--muted)">${esc(r.note)}</small>`:''}</td><td style="white-space:nowrap">${r.phone?`<a href="tel:${esc(r.phone).replace(/\s/g,'')}">${esc(r.phone)}</a>`:'—'}</td><td>${esc(r.org_type||'—')}</td><td>${esc(r.need||r.crop||'—')}</td><td>${[r.area?esc(r.area)+' ha':'',esc(r.location||'')].filter(Boolean).join(' · ')||'—'}</td><td><span class="ch">${esc(r.source||'—')}</span></td><td>${r.emailed?'✓ đã gửi':'—'}</td><td><select class="lead-st" data-lead="${r.id}" aria-label="Trạng thái" style="color:#fff;background:${LCOL[r.status]||'var(--s-draft)'}">${LSTS.map(s=>`<option ${s===r.status?'selected':''} style="color:#000;background:#fff">${s}</option>`).join('')}</select></td></tr>`).join('')||'<tr><td colspan="9" style="color:var(--muted)">Chưa có khách nào để lại liên hệ.</td></tr>';
  const n=LEADS.filter(r=>r.status==='Mới').length;const b=document.getElementById('nlead');b.textContent=n;b.hidden=!n;}
-async function loadLeads(){try{if(!AKEY)throw new Error('nokey');const d=await api('/api/admin/leads');LEADS=d.leads;LIVE=true;srcLine('ldsrc',true,'Dữ liệu thật · '+LEADS.length+' khách');}
- catch(e){LEADS=SAMPLE_LEADS.map(x=>Object.assign({},x));LIVE=false;srcLine('ldsrc',false,e.message==='nokey'?'Dữ liệu mẫu: chưa nhập khóa quản trị (vào Kết nối và cài đặt)':'Dữ liệu mẫu: chưa kết nối được máy chủ Cloudflare');}drawLeads();}
+async function loadLeads(){try{if(MODE!=='live')throw new Error('nokey');const d=await api('/api/admin/leads');LEADS=d.leads;LIVE=true;srcLine('ldsrc',true,'Dữ liệu thật · '+LEADS.length+' khách');}
+ catch(e){LEADS=SAMPLE_LEADS.map(x=>Object.assign({},x));LIVE=false;srcLine('ldsrc',false,e.message==='nokey'?'Dữ liệu mẫu: bản xem thử chưa có máy chủ':'Dữ liệu mẫu: chưa kết nối được máy chủ Cloudflare');}drawLeads();}
 document.addEventListener('change',async e=>{const s=e.target.closest('[data-lead]');if(!s)return;const r=LEADS.find(x=>x.id==s.dataset.lead);r.status=s.value;drawLeads();
  if(LIVE){try{await api('/api/admin/leads',{method:'PATCH',body:JSON.stringify({id:r.id,status:r.status})});toast('Đã cập nhật trạng thái');}catch(err){toast('Chưa lưu được, thử lại sau');}}else toast('Đã đổi trạng thái (dữ liệu mẫu)');});
 document.getElementById('csv').addEventListener('click',()=>{const H=['Thời gian','Họ tên','Điện thoại','Email','Đơn vị','Nhu cầu','Cây trồng','Diện tích','Địa phương','Ghi chú','Nguồn','Trạng thái'];
  const rows=LEADS.map(r=>[ldt(r.ts),r.name,r.phone,r.email,r.org_type,r.need,r.crop,r.area,r.location,r.note,r.source,r.status]);
  const csv='﻿'+[H].concat(rows).map(a=>a.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='khach-lien-he-farmbase.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);});
-document.getElementById('akey').value=AKEY;
-document.getElementById('akeysave').addEventListener('click',async()=>{AKEY=document.getElementById('akey').value.trim();try{localStorage.setItem('fb_admin_key',AKEY)}catch(e){}
- const st=document.getElementById('akeyst');st.textContent='Đang kiểm tra…';try{await api('/api/admin/leads');st.textContent='✓ Kết nối máy chủ thành công';}catch(e){st.textContent='Chưa kết nối được (sai khóa hoặc web chưa chạy trên Cloudflare)';}loadStats();loadLeads();});
 loadStats();loadLeads();
 let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2600);}
 function route(){const h=(location.hash||'#tong-quan').slice(1);const vs=[...document.querySelectorAll('[data-view]')];const v=vs.find(x=>x.dataset.view===h)?h:'tong-quan';vs.forEach(x=>x.hidden=x.dataset.view!==v);document.querySelectorAll('aside a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));window.scrollTo(0,0);}
@@ -565,4 +627,70 @@ document.getElementById('bai').addEventListener('click',()=>{BLK[bl].s='ai';rend
 document.getElementById('bok').addEventListener('click',()=>{BLK[bl].s='ok';renderBlk();toast('Đã duyệt bản '+LN[bl]);});
 renderBlk();
 window.addEventListener('hashchange',route);renderPosts();route();
+/* ---------- Đăng nhập, tài khoản, mã đo lường ---------- */
+const $=id=>document.getElementById(id);
+const ERRS={wrong:'Email hoặc mật khẩu chưa đúng.',locked:'Sai quá nhiều lần. Tài khoản tạm khóa 15 phút.',disabled:'Tài khoản đã bị khóa. Liên hệ chủ sở hữu.',no_users:'Chưa có tài khoản nào. Chủ sở hữu bấm "cài đặt lần đầu" bên dưới.',wrong_code:'Mã cài đặt chưa đúng.',weak_password:'Mật khẩu cần ít nhất 8 ký tự.',no_admin_token:'Chưa cài biến ADMIN_TOKEN trên Cloudflare.',exists:'Email này đã có tài khoản.',bad_email:'Email chưa hợp lệ.',bad_role:'Vai trò chưa hợp lệ.',owner_locked:'Không sửa được tài khoản chủ sở hữu.',bad_ga_id:'Mã GA4 phải có dạng G-XXXXXXXXXX.',bad_fb_pixel_id:'Pixel ID chỉ gồm chữ số.',forbidden:'Bạn không có quyền làm việc này.'};
+const em=e=>ERRS[e.message]||'Có lỗi, thử lại sau.';
+let SETUP=false,OWNER='minhducuy@gmail.com';
+function setupMode(on){SETUP=on;$('lgcodew').hidden=!on;$('lgw2w').hidden=!on;$('lgt').textContent=on?'Cài đặt tài khoản chủ sở hữu':'Đăng nhập trang quản trị';
+ $('lgp').textContent=on?'Đặt mật khẩu cho '+OWNER+'. Mã cài đặt là biến ADMIN_TOKEN bạn đã nhập trên Cloudflare.':'Dùng email và mật khẩu được cấp.';
+ $('lgwl').textContent=on?'Mật khẩu mới (ít nhất 8 ký tự)':'Mật khẩu';$('lgw').autocomplete=on?'new-password':'current-password';$('lgb').textContent=on?'Lưu mật khẩu và vào trang':'Đăng nhập';
+ $('lgsw').textContent=on?'← Quay lại đăng nhập':'Chủ sở hữu: cài đặt lần đầu hoặc quên mật khẩu';if(on){$('lge').value=OWNER;}$('lge').readOnly=on;$('lgerr').textContent='';}
+function showLogin(){$('login').hidden=false;setTimeout(()=>(SETUP?$('lgw'):$('lge')).focus(),50);}
+$('lgsw').addEventListener('click',()=>setupMode(!SETUP));
+$('lgf').addEventListener('submit',async e=>{e.preventDefault();$('lgerr').textContent='';const b=$('lgb');b.disabled=true;
+ try{let r;if(SETUP){if($('lgw').value!==$('lgw2').value)throw new Error('mismatch');r=await api('/api/auth/setup',{method:'POST',body:JSON.stringify({code:$('lgc').value,password:$('lgw').value})});}
+  else r=await api('/api/auth/login',{method:'POST',body:JSON.stringify({email:$('lge').value,password:$('lgw').value})});
+  $('lgw').value='';$('lgw2').value='';$('lgc').value='';enter(r.user);}
+ catch(err){$('lgerr').textContent=err.message==='mismatch'?'Hai lần nhập mật khẩu chưa khớp.':em(err);}finally{b.disabled=false;}});
+$('lgdemo').addEventListener('click',()=>{MODE='demo';ME={name:'Bản mẫu',email:'minhducuy@gmail.com',role:'owner',role_name:'Chủ sở hữu'};$('login').hidden=true;applyUser();});
+function applyUser(){document.querySelectorAll('aside [data-cap]').forEach(a=>a.hidden=!can(a.dataset.cap));
+ document.querySelector('.demo').hidden=MODE==='live';
+ $('who').innerHTML=ME?`<b>${esc(ME.name||ME.email)}</b>${esc(ME.email)}<br><span class="rolechip ${ME.role==='owner'?'owner':''}">${esc(ME.role_name||ME.role)}</span><div class="wl">${MODE==='live'?'<button type="button" id="chpw">Đổi mật khẩu</button><button type="button" id="lgout">Đăng xuất</button>':'<button type="button" id="lgout">Thoát bản mẫu</button>'}</div>`:'';
+ const h=(location.hash||'').slice(1);const a=document.querySelector(`aside a[data-v="${h}"]`);if(a&&a.hidden)location.hash='#tong-quan';
+ loadStats();loadLeads();if(can('users'))loadUsers();if(can('settings'))loadMeasure();}
+function enter(u){ME=u;MODE='live';$('login').hidden=true;applyUser();toast('Xin chào '+(u.name||u.email));}
+document.addEventListener('click',async e=>{
+ if(e.target.id==='lgout'){if(MODE==='live'){try{await api('/api/auth/logout',{method:'POST'});}catch(err){}}ME=null;$('who').innerHTML='';showLogin();}
+ if(e.target.id==='chpw'){const o=$('cpo');o.hidden=false;$('cpold').focus();}
+});
+async function boot(){try{const r=await fetch('/api/auth/me',{credentials:'same-origin'});const j=await r.json();MODE='live';OWNER=j.owner_email||OWNER;
+  if(j.user){enter(j.user);return;}setupMode(!!j.needs_setup);showLogin();}
+ catch(e){MODE='?';$('lgdemo').hidden=false;$('lgsw').hidden=true;$('lgp').textContent='Bản xem thử này chưa có máy chủ nên chưa đăng nhập thật được. Bấm "Xem bản mẫu" để xem giao diện.';showLogin();}}
+/* Đổi mật khẩu */
+document.body.insertAdjacentHTML('beforeend',`<div id="cpo" hidden style="position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:16px"><form class="card" id="cpf" style="width:100%;max-width:360px;display:grid;gap:10px"><h2>Đổi mật khẩu</h2><label for="cpold">Mật khẩu hiện tại<input id="cpold" type="password" autocomplete="current-password" required></label><label for="cpnew">Mật khẩu mới (ít nhất 8 ký tự)<input id="cpnew" type="password" autocomplete="new-password" minlength="8" required></label><div id="cperr" style="color:var(--s-err);font-size:13px;min-height:18px"></div><div class="acts"><button class="btn dark" type="submit">Lưu</button><button class="btn" type="button" id="cpx">Hủy</button></div></form></div>`);
+$('cpx').addEventListener('click',()=>$('cpo').hidden=true);
+$('cpf').addEventListener('submit',async e=>{e.preventDefault();try{await api('/api/auth/password',{method:'POST',body:JSON.stringify({old_password:$('cpold').value,new_password:$('cpnew').value})});$('cpo').hidden=true;$('cpf').reset();toast('Đã đổi mật khẩu');}catch(err){$('cperr').textContent=err.message==='wrong'?'Mật khẩu hiện tại chưa đúng.':em(err);}});
+/* Tài khoản */
+const RN={owner:'Chủ sở hữu',admin:'Quản trị',approver:'Duyệt bài',editor:'Biên tập',sales:'Kinh doanh'};
+let USERS=[];
+const SAMPLE_USERS=[{id:1,email:'minhducuy@gmail.com',name:'Minh Đức Uy',role:'owner',active:1,last_login:Date.now()-3600e3},{id:2,email:'ngoc@bvi.vn',name:'Mrs Ngọc',role:'sales',active:1,last_login:Date.now()-86400e3},{id:3,email:'marketing@salefronts.com',name:'Biên tập Salefronts',role:'editor',active:1,last_login:null}];
+const tmpPw=()=>{const c='abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789';const a=crypto.getRandomValues(new Uint32Array(12));return [...a].map(x=>c[x%c.length]).join('');};
+const dt=t=>t?new Date(t).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'Chưa đăng nhập';
+async function loadUsers(){try{if(MODE!=='live')throw new Error('demo');const d=await api('/api/admin/users');USERS=d.users;srcLine('usrc',true,'Dữ liệu thật · '+USERS.length+' tài khoản');}
+ catch(e){USERS=SAMPLE_USERS.map(x=>Object.assign({},x));srcLine('usrc',false,'Dữ liệu mẫu: thao tác chỉ chạy thử trên trang');}drawUsers();$('up').value=tmpPw();}
+function drawUsers(){$('ulist').innerHTML=USERS.map(u=>{const own=u.role==='owner';return `<tr><td><b>${esc(u.name||'—')}</b><br><small style="color:var(--muted)">${esc(u.email)}</small></td>
+ <td>${own?'<span class="rolechip owner">Chủ sở hữu</span>':`<select data-urole="${u.id}" aria-label="Vai trò của ${esc(u.email)}" style="width:auto">${Object.keys(RN).filter(r=>r!=='owner').map(r=>`<option value="${r}" ${r===u.role?'selected':''}>${RN[r]}</option>`).join('')}</select>`}</td>
+ <td>${u.active?'<span style="color:var(--s-ok);font-weight:600">Đang dùng</span>':'<span style="color:var(--s-err);font-weight:600">Đã khóa</span>'}</td><td>${dt(u.last_login)}</td>
+ <td style="white-space:nowrap">${own?'':`<button class="btn sm" data-ureset="${u.id}">Đặt lại mật khẩu</button> <button class="btn sm" data-uact="${u.id}">${u.active?'Khóa':'Mở khóa'}</button> <button class="btn sm" data-udel="${u.id}">Xóa</button>`}</td></tr>`;}).join('');}
+async function uPatch(body,msg){const u=USERS.find(x=>x.id==body.id);try{if(MODE==='live')await api('/api/admin/users',{method:'PATCH',body:JSON.stringify(body)});Object.assign(u,body,body.active!==undefined?{active:body.active?1:0}:{});delete u.password;drawUsers();toast(msg);return true;}catch(e){toast(em(e));return false;}}
+document.addEventListener('change',e=>{const s=e.target.closest('[data-urole]');if(s)uPatch({id:+s.dataset.urole,role:s.value},'Đã đổi vai trò. Người dùng cần đăng nhập lại.');});
+document.addEventListener('click',async e=>{
+ const r=e.target.closest('[data-ureset]');if(r){const pw=tmpPw();const u=USERS.find(x=>x.id==r.dataset.ureset);if(await uPatch({id:u.id,password:pw},'Đã đặt lại mật khẩu'))$('uout').innerHTML=`Mật khẩu mới của <b>${esc(u.email)}</b>: <span class="tmp">${pw}</span>. Gửi riêng cho người dùng; mật khẩu này chỉ hiện một lần.`;}
+ const a=e.target.closest('[data-uact]');if(a){const u=USERS.find(x=>x.id==a.dataset.uact);uPatch({id:u.id,active:!u.active},u.active?'Đã khóa tài khoản':'Đã mở khóa');}
+ const d=e.target.closest('[data-udel]');if(d){const u=USERS.find(x=>x.id==d.dataset.udel);if(d.dataset.sure!=='1'){d.dataset.sure='1';d.textContent='Bấm lần nữa để xóa';setTimeout(()=>{d.dataset.sure='';d.textContent='Xóa';},4000);return;}
+  try{if(MODE==='live')await api('/api/admin/users?id='+u.id,{method:'DELETE'});USERS=USERS.filter(x=>x!==u);drawUsers();toast('Đã xóa tài khoản');}catch(err){toast(em(err));}}
+});
+$('uf').addEventListener('submit',async e=>{e.preventDefault();const body={email:$('ue').value.trim().toLowerCase(),name:$('un').value.trim(),role:$('ur').value,password:$('up').value};
+ try{if(MODE==='live'){await api('/api/admin/users',{method:'POST',body:JSON.stringify(body)});await loadUsers();}else{USERS.push({id:Date.now(),email:body.email,name:body.name,role:body.role,active:1,last_login:null});drawUsers();}
+  $('ufout').innerHTML=`Đã cấp tài khoản <b>${esc(body.email)}</b> (${RN[body.role]}). Mật khẩu tạm: <span class="tmp">${esc(body.password)}</span>. Gửi riêng cho người dùng, họ nên đổi ngay sau lần đăng nhập đầu.`;
+  $('uf').reset();$('ur').value='editor';$('up').value=tmpPw();}catch(err){toast(em(err));}});
+/* Mã đo lường */
+function measureState(){const g=$('gaid').value.trim(),p=$('pxid').value.trim();
+ $('gast').textContent=g?'Đã cài '+g:'Chưa cài';$('gast').className=g?'ok':'todo';$('pxst').textContent=p?'Đã cài':'Chưa cài';$('pxst').className=p?'ok':'todo';}
+async function loadMeasure(){if(MODE!=='live'){measureState();return;}try{const d=await api('/api/admin/settings');$('gaid').value=d.ga_id;$('pxid').value=d.fb_pixel_id;}catch(e){}measureState();}
+$('mesave').addEventListener('click',async()=>{const body={ga_id:$('gaid').value.trim().toUpperCase(),fb_pixel_id:$('pxid').value.trim()};$('gaid').value=body.ga_id;
+ if(body.ga_id&&!/^G-[A-Z0-9]{4,15}$/.test(body.ga_id)){$('mest').textContent=ERRS.bad_ga_id;return;}if(body.fb_pixel_id&&!/^\d{8,20}$/.test(body.fb_pixel_id)){$('mest').textContent=ERRS.bad_fb_pixel_id;return;}
+ try{if(MODE==='live'){await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(body)});$('mest').textContent='✓ Đã lưu. Website gắn mã mới trong khoảng 1 phút.';}else $('mest').textContent='Bản mẫu: chưa lưu thật.';measureState();}catch(e){$('mest').textContent=em(e);}});
+boot();
 </script>

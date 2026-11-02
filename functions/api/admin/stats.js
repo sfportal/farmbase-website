@@ -1,8 +1,9 @@
-// Số liệu truy cập cho trang quản lý. Cần khóa ADMIN_TOKEN.
-import { db, json, isAdmin } from "../../_lib.js";
+// Số liệu truy cập cho trang quản lý. Cần đăng nhập với vai trò phù hợp.
+import { db, json, requireRole, CAN } from "../../_lib.js";
 
 export async function onRequestGet({ request, env }) {
-  if (!isAdmin(request, env)) return json({ error: "unauthorized" }, 401);
+  const u = await requireRole(request, env, CAN.stats);
+  if (u instanceof Response) return u;
   const url = new URL(request.url);
   const days = Math.max(1, Math.min(Number(url.searchParams.get("days")) || 7, 365));
   const since = Date.now() - days * 86400000;
