@@ -305,6 +305,102 @@
   "sort": 4
  },
  {
+  "slug": "giz",
+  "group": "dong-hanh",
+  "logo": "img/logos/giz.png",
+  "cover": "img/11.jpg",
+  "name": {
+   "vi": "GIZ (Tổ chức Hợp tác Quốc tế Đức)",
+   "en": "GIZ (Deutsche Gesellschaft für Internationale Zusammenarbeit)",
+   "zh": "GIZ(德国国际合作机构)"
+  },
+  "short": {
+   "vi": "Dự án chuỗi liên kết bền vững tiêu thụ sầu riêng tại Đắk Lắk",
+   "en": "Sustainable durian value-chain project in Dak Lak",
+   "zh": "多乐省榴莲可持续产销链项目"
+  },
+  "about": {
+   "vi": "Tổ chức Hợp tác Quốc tế Đức, triển khai dự án \"Xây dựng chuỗi liên kết bền vững tiêu thụ sầu riêng tại tỉnh Đắk Lắk\".",
+   "en": "The German development agency, implementing the project \"Building a sustainable durian marketing value chain in Dak Lak province\".",
+   "zh": "德国国际合作机构,实施“多乐省榴莲可持续产销联结链建设”项目。"
+  },
+  "role": {
+   "vi": "Phối hợp tổ chức lớp đào tạo giảng viên nguồn (ToT) sầu riêng ngày 14–17/05/2026.",
+   "en": "Co-organised the durian training-of-trainers (ToT) course on 14–17 May 2026.",
+   "zh": "合作举办 2026 年 5 月 14–17 日榴莲师资培训(ToT)班。"
+  },
+  "products": [
+   {
+    "img": "img/11.jpg",
+    "name": {
+     "vi": "Lớp ToT sầu riêng 05/2026",
+     "en": "Durian ToT course, May 2026",
+     "zh": "2026 年 5 月榴莲 ToT 培训班"
+    },
+    "desc": {
+     "vi": "Đào tạo giảng viên nguồn cùng Viện Cây ăn quả miền Nam và Trung tâm Khuyến nông tỉnh.",
+     "en": "Training of trainers with the Southern Horticultural Research Institute and the Provincial Agricultural Extension Centre.",
+     "zh": "与南方果树研究院及省农业推广中心合作开展师资培训。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "",
+   "phone": "",
+   "email": "",
+   "web": "https://www.giz.de"
+  },
+  "sort": 5
+ },
+ {
+  "slug": "vien-cay-an-qua-mien-nam",
+  "group": "dong-hanh",
+  "logo": "img/logos/sofri.png",
+  "cover": "img/01.jpg",
+  "name": {
+   "vi": "Viện Cây ăn quả miền Nam (SOFRI)",
+   "en": "Southern Horticultural Research Institute (SOFRI)",
+   "zh": "南方果树研究院(SOFRI)"
+  },
+  "short": {
+   "vi": "Chuyên môn kỹ thuật cây ăn quả",
+   "en": "Fruit-crop technical expertise",
+   "zh": "果树技术专业支持"
+  },
+  "about": {
+   "vi": "Viện nghiên cứu cây ăn quả tại miền Nam Việt Nam.",
+   "en": "A fruit-crop research institute in southern Vietnam.",
+   "zh": "越南南部的果树研究机构。"
+  },
+  "role": {
+   "vi": "Giảng viên chuyên môn của lớp đào tạo giảng viên nguồn (ToT) sầu riêng 05/2026.",
+   "en": "Provided specialist lecturers for the durian ToT course in May 2026.",
+   "zh": "为 2026 年 5 月榴莲 ToT 培训班提供专业讲师。"
+  },
+  "products": [
+   {
+    "img": "img/01.jpg",
+    "name": {
+     "vi": "Thực hành kỹ thuật tại vườn",
+     "en": "On-farm technical practice",
+     "zh": "果园技术实操"
+    },
+    "desc": {
+     "vi": "Giảng viên hướng dẫn thực hành trong lớp ToT sầu riêng.",
+     "en": "Lecturers led hands-on practice during the durian ToT course.",
+     "zh": "讲师在榴莲 ToT 培训班中指导实操。"
+    }
+   }
+  ],
+  "contact": {
+   "address": "",
+   "phone": "",
+   "email": "",
+   "web": ""
+  },
+  "sort": 6
+ },
+ {
   "slug": "htx-nn-xanh-krong-pac",
   "group": "khach-hang",
   "logo": "img/logos/htx-nn-xanh-krong-pac.png",
@@ -363,7 +459,7 @@
    "email": "",
    "web": ""
   },
-  "sort": 5
+  "sort": 7
  },
  {
   "slug": "song-toan-phat",
@@ -411,7 +507,7 @@
    "email": "",
    "web": ""
   },
-  "sort": 6
+  "sort": 8
  },
  {
   "slug": "uyen-diep",
@@ -459,7 +555,7 @@
    "email": "",
    "web": ""
   },
-  "sort": 7
+  "sort": 9
  },
  {
   "slug": "thien-tam",
@@ -507,7 +603,7 @@
    "email": "",
    "web": ""
   },
-  "sort": 8
+  "sort": 10
  },
  {
   "slug": "nong-nghiep-xanh-viet-nam",
@@ -555,7 +651,7 @@
    "email": "",
    "web": ""
   },
-  "sort": 9
+  "sort": 11
  },
  {
   "slug": "dakago",
@@ -603,7 +699,7 @@
    "email": "",
    "web": ""
   },
-  "sort": 10
+  "sort": 12
  },
  {
   "slug": "salefronts",
@@ -651,6 +747,6 @@
    "email": "info@salefronts.com",
    "web": ""
   },
-  "sort": 11
+  "sort": 13
  }
 ]
