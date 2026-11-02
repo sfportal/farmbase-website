@@ -9,7 +9,11 @@ export async function onRequestPost({ request, env }) {
   if (b.website) return json({ ok: true }); // ô bẫy chống spam, người thật không điền
   const name = clip((b.name || "").trim(), 120);
   const phone = clip((b.phone || "").replace(/[^\d+ ]/g, "").trim(), 20);
-  if (!name || !phone || phone.replace(/\D/g, "").length < 9)
+  const email0 = String(b.email || "").trim();
+  const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email0);
+  const digits = phone.replace(/\D/g, "").length;
+  // Người mua quốc tế có thể chỉ để lại email; khách trong nước cần số điện thoại.
+  if (!name || !(digits >= 9 || (okEmail && (digits === 0 || digits >= 8))))
     return json({ ok: false, error: "missing" }, 422);
 
   const lead = {
@@ -41,7 +45,7 @@ export async function onRequestPost({ request, env }) {
         body: JSON.stringify({
           from: env.LEAD_EMAIL_FROM || "FarmBase <onboarding@resend.dev>",
           to: (env.LEAD_EMAIL_TO || "info@salefronts.com").split(",").map((s) => s.trim()),
-          subject: `Khách mới từ website FarmBase: ${lead.name} · ${lead.need || "tư vấn"}`,
+          subject: `${/nguồn hàng/i.test(lead.source || "") ? "Người mua quốc tế" : "Khách mới"} từ website FarmBase: ${lead.name} · ${lead.crop || lead.need || "tư vấn"}`,
           html: `<h2 style="font-family:sans-serif">Khách để lại liên hệ trên website</h2><table style="font-family:sans-serif;font-size:14px">${rows}</table><p style="font-family:sans-serif;font-size:13px;color:#5A6B63">Xem và cập nhật trạng thái trong trang quản lý FarmBase.</p>`,
         }),
       });
