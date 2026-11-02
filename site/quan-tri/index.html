@@ -469,7 +469,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
         <h2 style="margin-top:18px">Ngôn ngữ website</h2>
         <div class="conn"><span class="ic" style="background:#084C46">VI</span><div class="t"><b>Tiếng Việt</b><small>Ngôn ngữ gốc · farmbase.vn</small></div><span class="ok">Mặc định</span></div>
         <div class="conn"><span class="ic" style="background:#2F6FB5">EN</span><div class="t"><b>English</b><small>farmbase.vn/en · chỉ hiện bản đã duyệt, phần chưa dịch hiện tiếng Việt</small></div><span class="ok">Đang bật</span></div>
-        <div class="conn"><span class="ic" style="background:#C7432F">中</span><div class="t"><b>中文 (简体)</b><small>farmbase.vn/zh · cần người bản ngữ duyệt</small></div><span class="ok">Đang bật</span></div>
+        <div class="conn"><span class="ic" style="background:#C7432F">中</span><div class="t"><b>中文 (简体)</b><small>farmbase.vn/zh · đã duyệt đưa lên website</small></div><span class="ok">Đang bật</span></div>
       </div>
     </div>
       <div class="card" style="margin-top:16px"><h2>Mã đo lường trên website</h2>
@@ -513,7 +513,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
       <div class="right"><button class="btn" type="button" id="ptadd">+ Thêm đơn vị</button><button class="btn pri" type="button" id="ptsave">Lưu thay đổi</button></div></div>
     <p class="src-line" id="ptsrc"><i></i><span>Đang tải…</span></p>
     <div class="pt-wrap"><div class="card pt-list"><ol id="ptlist"></ol></div><div class="card pt-ed" id="pted"><p style="color:var(--muted)">Chọn một đơn vị bên trái để sửa.</p></div></div>
-    <p class="note" style="margin-top:10px">Chỉ ghi thông tin đã được đối tác đồng ý công bố. Không ghi số liệu vùng, diện tích của khách hàng này cho khách hàng khác xem. Bản dịch EN, 中文 là bản nháp, cần người bản ngữ rà soát.</p>
+    <p class="note" style="margin-top:10px">Chỉ ghi thông tin đã được đối tác đồng ý công bố. Không ghi số liệu vùng, diện tích của khách hàng này cho khách hàng khác xem.</p>
   </section>
 
   <!-- TÀI KHOẢN -->
@@ -822,7 +822,7 @@ $('cimp').addEventListener('change',async e=>{const f=e.target.files[0];e.target
  $('cf').value='dirty';CPAGE=0;drawContent();toast(`Đã nhập ${n} đoạn thay đổi${skip?`, bỏ qua ${skip} dòng không khớp mã`:''}. Kiểm tra rồi bấm Lưu thay đổi`);}catch(err){toast('Không đọc được file. Hãy dùng file xuất từ trang này');}});
 /* Hình ảnh */
 const IP='im'+'g/';/* tách chuỗi để công cụ build không đổi đường dẫn */
-const IMGS=['08','15','01','07','11','13','12','03','00','02','04','06','09','14','16','17','18','19','20','21'].map(n=>IP+n+'.jpg').concat(['sau-rieng','ca-phe','thanh-long','chanh-leo','dua','chuoi','mit','buoi','vai','nhan','xoai','dua-xiem'].map(n=>IP+'crops/'+n+'.png'));
+const IMGS=['08','15','01','07','11','13','12','03','00','02','04','06','09','14','16','17','18','19','20','21','kho1','kho2','kho3','kho4'].map(n=>IP+n+'.jpg').concat(['sau-rieng','ca-phe','thanh-long','chanh-leo','dua','chuoi','mit','buoi','vai','nhan','xoai','dua-xiem'].map(n=>IP+'crops/'+n+'.png'));
 function imgAlt(p){const h=window.SITE_HTML||'';const m=h.match(new RegExp('src="'+p.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&')+'"[^>]*alt="([^"]*)"'))||h.match(new RegExp('alt="([^"]*)"[^>]*src="'+p.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&')+'"'));return m?m[1]:'';}
 const imgUrl=p=>{const o=COV['img:'+p];return o&&o.vi?o.vi:(siteBase()||'../')+p;};
 function drawImages(){srcLine('isrc',CLIVE,CLIVE?'Dữ liệu thật · ảnh thay thế lưu trên máy chủ':'Chưa kết nối máy chủ: xem được ảnh, chưa thay ảnh được');
