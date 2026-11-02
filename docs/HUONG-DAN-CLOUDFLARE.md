@@ -3,7 +3,7 @@
 Làm một lần, khoảng 20 phút. Sau đó mỗi lần cập nhật code lên nhánh `main`, Cloudflare tự đăng bản mới.
 
 1. **Đăng nhập** dash.cloudflare.com (tài khoản miễn phí là đủ).
-2. **Tạo cơ sở dữ liệu**: Storage & Databases → D1 SQL Database → Create → đặt tên `farmbase` → Create. Không cần tạo bảng.
+2. **Cơ sở dữ liệu**: ĐÃ TẠO SẴN (D1 tên `farmbase`, vùng châu Á, đã có bảng). Bỏ qua bước này.
 3. **Kết nối GitHub**: Workers & Pages → Create → thẻ Pages → Connect to Git → cho phép GitHub → chọn `uyducminh/farmbase-website` → Begin setup.
    - Production branch: `main`
    - Framework preset: None
