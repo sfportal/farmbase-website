@@ -1,8 +1,8 @@
-// Tải ảnh lên (trang quản lý đã thu nhỏ ảnh trước khi gửi). Lưu trong D1, tối đa 1,5 MB mỗi ảnh.
+// Tải ảnh, video lên (trang quản lý đã thu nhỏ ảnh trước khi gửi). Lưu trong D1, tối đa 2 MB mỗi tệp (giới hạn một dòng của D1).
 import { db, json, requireRole, CAN, sameOrigin } from "../../_lib.js";
 
-const TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX = 1.5 * 1024 * 1024;
+const TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm"];
+const MAX = 1990000;
 
 export async function onRequestPost({ request, env }) {
   if (!sameOrigin(request)) return json({ error: "forbidden" }, 403);

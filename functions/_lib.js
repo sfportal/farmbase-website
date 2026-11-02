@@ -44,6 +44,12 @@ const SCHEMA = [
      src TEXT, medium TEXT, campaign TEXT, device TEXT, country TEXT, lang TEXT, pages INTEGER DEFAULT 0)`,
   `CREATE INDEX IF NOT EXISTS idx_visits_ts ON visits(ts_first)`,
   `CREATE INDEX IF NOT EXISTS idx_visits_vid ON visits(vid)`,
+  `CREATE TABLE IF NOT EXISTS posts (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, slug TEXT NOT NULL UNIQUE, cat TEXT, status TEXT NOT NULL DEFAULT 'draft',
+     title TEXT NOT NULL, excerpt TEXT, body TEXT, cover TEXT,
+     meta_title TEXT, meta_desc TEXT, meta_kw TEXT, og_image TEXT, tr TEXT,
+     published_at INTEGER, created INTEGER, updated INTEGER, author TEXT)`,
+  `CREATE INDEX IF NOT EXISTS idx_posts_pub ON posts(status, published_at)`,
 ];
 // Cột thêm cho bảng đã có từ bản trước (bỏ qua nếu đã có)
 const MIGRATE = ["ALTER TABLE leads ADD COLUMN vid TEXT", "ALTER TABLE leads ADD COLUMN sid TEXT"];
@@ -218,4 +224,19 @@ export function cleanPartner(p, i) {
       .filter((x) => x.name.vi),
     contact: { address: txt(c.address, 300), phone: txt(c.phone, 60), email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(txt(c.email, 120)) ? txt(c.email, 120) : "", web: /^https:\/\/[\w.-]+(\/[\w./%?=&-]*)?$/.test(web) ? web : "" },
   };
+}
+
+// ---------- Bài viết ----------
+export const POST_CATS = { "tin-tuc": "Tin tức", "huong-dan": "Hướng dẫn", "kien-thuc": "Kiến thức", "bao-chi": "Báo chí", "su-kien": "Sự kiện" };
+export const slugify = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D")
+  .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+// Bài công khai: bỏ thông tin nội bộ
+export function publicPost(r, full = false) {
+  let tr = {};
+  try { tr = JSON.parse(r.tr || "{}") || {}; } catch (e) { tr = {}; }
+  const o = { slug: r.slug, cat: r.cat, title: r.title, excerpt: r.excerpt, cover: r.cover, published_at: r.published_at, updated: r.updated,
+    meta_title: r.meta_title, meta_desc: r.meta_desc, og_image: r.og_image, tr: {} };
+  for (const l of ["en", "zh"]) { const t = tr[l] || {}; o.tr[l] = { title: t.title || null, excerpt: t.excerpt || null }; if (full) o.tr[l].body = t.body || null; }
+  if (full) { o.body = r.body; o.meta_kw = r.meta_kw; }
+  return o;
 }
