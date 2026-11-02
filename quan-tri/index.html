@@ -143,6 +143,22 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
   main{padding:16px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
   body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--side)}
 }
+
+/* ===== Đa ngôn ngữ ===== */
+.lt{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.lt button{border:0;background:var(--surface);padding:6px 12px;font-weight:700;cursor:pointer;color:var(--muted)}
+.lt button[aria-pressed="true"]{background:var(--forest);color:#fff}
+.lg3{display:inline-flex;gap:4px;flex-wrap:wrap}
+.lb{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;border:1px solid var(--line);white-space:nowrap}
+.lb.ok{background:var(--s-ok);border-color:var(--s-ok);color:#fff}.lb.ai{background:var(--sprout);color:var(--forest);border-color:transparent}.lb.wait{background:var(--s-wait);border-color:var(--s-wait);color:#fff}.lb.miss{color:var(--muted);border-style:dashed}
+.prog{display:grid;gap:6px}.prog .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}.prog .bar i{display:block;height:100%;background:var(--leaf)}
+.tr3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tr3 .col{display:grid;gap:8px;align-content:start}
+.tr3 .col h3{font-size:13px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.tr3 textarea{min-height:120px;resize:vertical}
+.gl td:first-child{font-weight:700}
+.rule{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:9px;padding:8px 10px;margin-top:10px}
+@media (max-width:900px){.tr3{grid-template-columns:1fr}}
 </style>
 
 <div class="app">
@@ -154,6 +170,7 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
   <a href="#bai-viet" data-v="bai-viet">Bài viết <span class="n" id="nwait">0</span></a>
   <a href="#thu-vien" data-v="thu-vien">Thư viện ảnh</a>
   <a href="#trang" data-v="trang">Trang và khối nội dung</a>
+  <a href="#ban-dich" data-v="ban-dich">Bản dịch EN · 中文 <span class="n" id="ntr">0</span></a>
   <span class="sep">Marketing tự động</span>
   <a href="#lich" data-v="lich">Lịch nội dung</a>
   <a href="#tao-nhanh" data-v="tao-nhanh">Tạo bài nhanh</a>
@@ -207,16 +224,48 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
     <div class="top"><div><h1>Trang và khối nội dung</h1><p class="sub">Sửa chữ, ảnh, số liệu từng khối mà không cần code</p></div></div>
     <div class="grid g2">
       <div class="card scroll"><table class="tbl"><thead><tr><th>Trang</th><th>VI</th><th>EN</th><th>中文</th><th>Cập nhật</th></tr></thead><tbody id="pages"></tbody></table></div>
-      <div class="card"><h2>Sửa khối: Con số trang chủ</h2>
-        <div class="form">
+      <div class="card"><h2 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">Sửa khối: Con số trang chủ <span class="lt" role="group" aria-label="Ngôn ngữ đang sửa" id="blt"><button type="button" aria-pressed="true" data-l="vi">VI</button><button type="button" aria-pressed="false" data-l="en">EN</button><button type="button" aria-pressed="false" data-l="zh">中文</button></span></h2>
+        <div class="form" style="margin-top:12px">
           <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px">
-            <label for="k1">Vùng trồng<input id="k1" value="66"></label><label for="k2">Nông hộ<input id="k2" value="1.415"></label>
-            <label for="k3">Diện tích (ha)<input id="k3" value="~1.600"></label><label for="k4">Nông hộ được tập huấn<input id="k4" value="~3.000"></label>
+            <label for="k1"><span data-bl="0">Nhãn: vùng trồng</span><input id="k1"></label><label for="k2"><span data-bl="1">Nhãn: nông hộ</span><input id="k2"></label>
+            <label for="k3"><span data-bl="2">Nhãn: diện tích</span><input id="k3"></label><label for="k4"><span data-bl="3">Nhãn: nông hộ được tập huấn</span><input id="k4"></label>
           </div>
-          <label for="k5">Ghi chú nguồn số liệu<input id="k5" value="Dữ liệu FarmBase tại Đắk Lắk ngày 28/10/2026"></label>
-          <div class="acts"><button class="btn" type="button" data-toast="Đã tạo bản dịch EN, 中文 dạng nháp để duyệt">Dịch bằng AI</button><button class="btn pri" type="button" data-toast="Đã lưu. Website cập nhật sau khoảng 1 phút">Lưu</button></div>
+          <label for="k5">Ghi chú nguồn số liệu<textarea id="k5" rows="2"></textarea></label>
+          <p class="rule" id="bnote">Số liệu (66, 1.415, ~1.600, ~3.000) dùng chung cho mọi ngôn ngữ, chỉ sửa ở bản VI. Mỗi ngôn ngữ chỉ dịch phần chữ.</p>
+          <div class="acts"><button class="btn" type="button" id="bai">Dịch bằng AI</button><button class="btn dark" type="button" id="bok">Duyệt bản dịch</button><button class="btn pri" type="button" data-toast="Đã lưu. Website cập nhật sau khoảng 1 phút">Lưu</button></div>
+          <p style="font-size:12px;color:var(--muted)">Trạng thái: <span id="bst"></span></p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- BẢN DỊCH -->
+  <section data-view="ban-dich" hidden>
+    <div class="top"><div><h1>Bản dịch EN · 中文</h1><p class="sub">Tiếng Việt là bản gốc. Bản dịch AI luôn vào trạng thái nháp, chỉ hiện trên website sau khi được duyệt.</p></div><div class="right"><select id="trf" aria-label="Lọc" style="width:auto"><option value="">Tất cả</option><option value="miss">Còn thiếu bản dịch</option><option value="ai">Nháp AI chờ rà soát</option><option value="ok">Đã duyệt đủ</option></select><button class="btn pri" type="button" id="trall">Dịch phần còn thiếu bằng AI</button></div></div>
+    <div class="grid g3" id="trprog"></div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card scroll"><table class="tbl"><thead><tr><th>Nội dung</th><th>Loại</th><th>VI</th><th>EN</th><th>中文</th><th></th></tr></thead><tbody id="trtab"></tbody></table></div>
+      <div class="card"><h2>Thuật ngữ cố định</h2><p class="sub" style="margin-top:4px;color:var(--muted)">AI và người dịch dùng đúng các thuật ngữ này.</p>
+        <table class="tbl gl" style="margin-top:8px"><thead><tr><th>Tiếng Việt</th><th>English</th><th>中文</th></tr></thead><tbody>
+          <tr><td>Mã số vùng trồng</td><td>Planting area code</td><td>种植基地注册号</td></tr>
+          <tr><td>Mã cơ sở đóng gói</td><td>Packing house code</td><td>包装厂注册号</td></tr>
+          <tr><td>Truy xuất nguồn gốc</td><td>Traceability</td><td>溯源</td></tr>
+          <tr><td>Nhật ký canh tác</td><td>Farm diary</td><td>农事日志</td></tr>
+          <tr><td>Hợp tác xã (HTX)</td><td>Cooperative</td><td>合作社</td></tr>
+          <tr><td>Hậu kiểm</td><td>Inspection</td><td>复查</td></tr>
+          <tr><td>Zalo Mini App</td><td>Zalo Mini App</td><td>Zalo 小程序</td></tr>
+        </tbody></table>
+        <p class="rule">Không dịch thành "BVI cấp mã". Việc cấp mã thuộc cơ quan có thẩm quyền. Bản tiếng Trung cần người bản ngữ duyệt trước khi công bố.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px" id="tred" hidden>
+      <h2 style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span id="tredt"></span><button class="btn sm" type="button" id="tredx" style="margin-left:auto">Đóng</button></h2>
+      <div class="tr3" style="margin-top:12px">
+        <div class="col"><h3>Tiếng Việt (gốc) <span class="lb ok">Gốc</span></h3><textarea id="tvi" aria-label="Nội dung tiếng Việt"></textarea></div>
+        <div class="col"><h3>English <span id="sen"></span></h3><textarea id="ten" aria-label="Nội dung tiếng Anh"></textarea><div class="acts"><button class="btn sm" type="button" data-trai="en">Dịch lại bằng AI</button><button class="btn sm dark" type="button" data-trok="en">Duyệt EN</button></div></div>
+        <div class="col"><h3>中文 <span id="szh"></span></h3><textarea id="tzh" aria-label="Nội dung tiếng Trung"></textarea><div class="acts"><button class="btn sm" type="button" data-trai="zh">Dịch lại bằng AI</button><button class="btn sm dark" type="button" data-trok="zh">Duyệt 中文</button></div></div>
+      </div>
+      <div class="acts" style="margin-top:12px"><button class="btn pri" type="button" data-toast="Đã lưu cả 3 ngôn ngữ. Bản đã duyệt cập nhật lên website sau khoảng 1 phút">Lưu</button></div>
     </div>
   </section>
 
@@ -294,6 +343,10 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
           <tr><td><b>Kinh doanh</b></td><td>Xem và cập nhật khách để lại liên hệ</td></tr>
         </tbody></table>
         <label for="mail" style="margin-top:14px">Email nhận báo cáo tuần<input id="mail" value="info@bvi.vn"></label>
+        <h2 style="margin-top:18px">Ngôn ngữ website</h2>
+        <div class="conn"><span class="ic" style="background:#084C46">VI</span><div class="t"><b>Tiếng Việt</b><small>Ngôn ngữ gốc · farmbase.vn</small></div><span class="ok">Mặc định</span></div>
+        <div class="conn"><span class="ic" style="background:#2F6FB5">EN</span><div class="t"><b>English</b><small>farmbase.vn/en · chỉ hiện bản đã duyệt, phần chưa dịch hiện tiếng Việt</small></div><span class="ok">Đang bật</span></div>
+        <div class="conn"><span class="ic" style="background:#C7432F">中</span><div class="t"><b>中文 (简体)</b><small>farmbase.vn/zh · cần người bản ngữ duyệt</small></div><span class="ok">Đang bật</span></div>
       </div>
     </div>
   </section>
@@ -302,20 +355,23 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
 <div class="toast" id="toast" hidden></div>
 
 <script>
+const LBN={ok:['Đã duyệt','ok'],ai:['Nháp AI','ai'],wait:['Chờ duyệt','wait'],miss:['Thiếu','miss']};
+const LN={vi:'VI',en:'EN',zh:'中文'};
+const lb=(st,l)=>`<span class="lb ${LBN[st][1]}" title="${LBN[st][0]}">${l?LN[l]+' · ':''}${LBN[st][0]}</span>`;
 const ST={draft:['Nháp','st-draft'],wait:['Chờ duyệt','st-wait'],ok:['Đã duyệt','st-ok'],sched:['Đã lên lịch','st-sched'],pub:['Đã đăng','st-pub']};
 const POSTS=[
- {id:1,t:'Bàn giao tài khoản truy xuất cho xã Krông Pắc',sub:'Báo chí ghi nhận · Tạp chí Hữu Cơ Việt Nam',ch:'FB + Web',lang:'VI',st:'pub',d:'2026-10-28',h:'19:30',img:'15',r:[2140,186,22]},
- {id:2,t:'Lớp ToT sầu riêng: học trên lớp, thực hành tại vườn',sub:'Sự kiện',ch:'FB + Web',lang:'VI',st:'pub',d:'2026-10-29',h:'19:00',img:'11',r:[1860,142,15]},
- {id:3,t:'Ghi nhật ký bằng ảnh chụp bao bì phân thuốc',sub:'Hướng dẫn Zalo Mini App',ch:'FB',lang:'VI',st:'pub',d:'2026-10-30',h:'20:00',img:'13',r:[2410,205,31]},
- {id:4,t:'Bay flycam khảo sát vùng trồng 07 Ea Kly',sub:'Hình ảnh thực tế',ch:'FB',lang:'VI',st:'pub',d:'2026-10-31',h:'19:00',img:'07',r:[1320,97,8]},
- {id:5,t:'5 yêu cầu của thị trường nhập khẩu với vùng trồng',sub:'Kiến thức · Chiến dịch 10.000 ha',ch:'FB + Web',lang:'VI',st:'pub',d:'2026-11-01',h:'19:30',img:'08',r:[1200,88,12]},
- {id:6,t:'Nhật ký đúng, đủ, kịp thời: bằng chứng giữ mã vùng trồng',sub:'Kiến thức',ch:'FB + Web',lang:'VI',st:'sched',d:'2026-11-03',h:'19:30',img:'03'},
- {id:7,t:'Mở FarmBase trên Zalo bằng mã QR',sub:'Hướng dẫn',ch:'FB',lang:'VI',st:'ok',d:'2026-11-05',h:'19:00',img:'13'},
- {id:8,t:'Chiến dịch 10.000 ha: niên vụ 2026–2027 bắt đầu từ đâu',sub:'Chiến dịch',ch:'FB + Web',lang:'VI',st:'wait',d:'2026-11-07',h:'19:30',img:'16'},
- {id:9,t:'FarmBase traceability platform for durian growing areas',sub:'Bản dịch EN từ bài 6',ch:'Web',lang:'EN',st:'wait',d:'2026-11-08',h:'09:00',img:'08'},
- {id:10,t:'Chăm sóc sầu riêng sau thu hoạch: ghi gì vào nhật ký',sub:'Kiến thức · AI viết nháp',ch:'FB',lang:'VI',st:'draft',d:'2026-11-10',h:'19:00',img:'06'},
- {id:11,t:'Hội nghị truy xuất nguồn gốc: hỏi đáp thường gặp',sub:'Sự kiện · AI viết nháp',ch:'FB + Web',lang:'VI',st:'draft',d:'2026-11-12',h:'19:30',img:'17'},
- {id:12,t:'Lấy mẫu kiểm tra cùng Hiệp hội Sầu riêng',sub:'Hình ảnh thực tế · AI viết nháp',ch:'FB',lang:'VI',st:'draft',d:'2026-11-14',h:'19:00',img:'12'}
+ {id:1,tr:{vi:'ok',en:'ok',zh:'ai'},t:'Bàn giao tài khoản truy xuất cho xã Krông Pắc',sub:'Báo chí ghi nhận · Tạp chí Hữu Cơ Việt Nam',ch:'FB + Web',lang:'VI',st:'pub',d:'2026-10-28',h:'19:30',img:'15',r:[2140,186,22]},
+ {id:2,tr:{vi:'ok',en:'ok',zh:'ok'},t:'Lớp ToT sầu riêng: học trên lớp, thực hành tại vườn',sub:'Sự kiện',ch:'FB + Web',lang:'VI',st:'pub',d:'2026-10-29',h:'19:00',img:'11',r:[1860,142,15]},
+ {id:3,tr:{vi:'ok',en:'ai',zh:'miss'},t:'Ghi nhật ký bằng ảnh chụp bao bì phân thuốc',sub:'Hướng dẫn Zalo Mini App',ch:'FB',lang:'VI',st:'pub',d:'2026-10-30',h:'20:00',img:'13',r:[2410,205,31]},
+ {id:4,tr:{vi:'ok',en:'miss',zh:'miss'},t:'Bay flycam khảo sát vùng trồng 07 Ea Kly',sub:'Hình ảnh thực tế',ch:'FB',lang:'VI',st:'pub',d:'2026-10-31',h:'19:00',img:'07',r:[1320,97,8]},
+ {id:5,tr:{vi:'ok',en:'ai',zh:'ai'},t:'5 yêu cầu của thị trường nhập khẩu với vùng trồng',sub:'Kiến thức · Chiến dịch 10.000 ha',ch:'FB + Web',lang:'VI',st:'pub',d:'2026-11-01',h:'19:30',img:'08',r:[1200,88,12]},
+ {id:6,tr:{vi:'ok',en:'wait',zh:'ai'},t:'Nhật ký đúng, đủ, kịp thời: bằng chứng giữ mã vùng trồng',sub:'Kiến thức',ch:'FB + Web',lang:'VI',st:'sched',d:'2026-11-03',h:'19:30',img:'03'},
+ {id:7,tr:{vi:'ok',en:'ai',zh:'miss'},t:'Mở FarmBase trên Zalo bằng mã QR',sub:'Hướng dẫn',ch:'FB',lang:'VI',st:'ok',d:'2026-11-05',h:'19:00',img:'13'},
+ {id:8,tr:{vi:'ok',en:'miss',zh:'miss'},t:'Chiến dịch 10.000 ha: niên vụ 2026–2027 bắt đầu từ đâu',sub:'Chiến dịch',ch:'FB + Web',lang:'VI',st:'wait',d:'2026-11-07',h:'19:30',img:'16'},
+ {id:9,tr:{vi:'ok',en:'wait',zh:'miss'},t:'FarmBase traceability platform for durian growing areas',sub:'Bản dịch EN từ bài 6',ch:'Web',lang:'EN',st:'wait',d:'2026-11-08',h:'09:00',img:'08'},
+ {id:10,tr:{vi:'ok',en:'miss',zh:'miss'},t:'Chăm sóc sầu riêng sau thu hoạch: ghi gì vào nhật ký',sub:'Kiến thức · AI viết nháp',ch:'FB',lang:'VI',st:'draft',d:'2026-11-10',h:'19:00',img:'06'},
+ {id:11,tr:{vi:'ok',en:'miss',zh:'miss'},t:'Hội nghị truy xuất nguồn gốc: hỏi đáp thường gặp',sub:'Sự kiện · AI viết nháp',ch:'FB + Web',lang:'VI',st:'draft',d:'2026-11-12',h:'19:30',img:'17'},
+ {id:12,tr:{vi:'ok',en:'miss',zh:'miss'},t:'Lấy mẫu kiểm tra cùng Hiệp hội Sầu riêng',sub:'Hình ảnh thực tế · AI viết nháp',ch:'FB',lang:'VI',st:'draft',d:'2026-11-14',h:'19:00',img:'12'}
 ];
 const MEDIA=[['15','Tập huấn ToF','Xã Krông Pắc'],['11','Lớp ToT','05/2026'],['01','ToT tại vườn','05/2026'],['04','ToT hội trường','05/2026'],['07','Flycam khảo sát','Vùng 07 Ea Kly'],['03','Tập huấn vùng trồng','HTX NN Xanh Krông Pắc'],['00','Tập huấn vùng 07','Ea Kly'],['08','Vườn sầu riêng','Đắk Lắk'],['13','Hướng dẫn ứng dụng','Hội nghị TXNG'],['17','Hội nghị TXNG','2026'],['12','Lấy mẫu kiểm tra','Phối hợp Hiệp hội'],['06','Chuyên gia tại vườn','ToT'],['16','Lớp ToF','2026'],['09','Kiểm tra vật tư','Tại vườn']];
 const fmt=d=>{const [y,m,dd]=d.split('-');return dd+'/'+m};
@@ -329,7 +385,7 @@ function actions(p){
 }
 function renderPosts(){
   const f=document.getElementById('flt').value;
-  document.getElementById('posts').innerHTML=POSTS.filter(p=>!f||p.st===f).map(p=>`<tr><td><img class="thumb" src="../img/${p.img}.jpg" alt=""></td><td class="ttl">${p.t}<small>${p.sub}</small></td><td><span class="ch">${p.ch}</span></td><td>${p.lang}</td><td>${chip(p.st)}</td><td style="white-space:nowrap">${fmt(p.d)} · ${p.h}</td><td><div class="acts">${actions(p)}</div></td></tr>`).join('');
+  document.getElementById('posts').innerHTML=POSTS.filter(p=>!f||p.st===f).map(p=>`<tr><td><img class="thumb" src="../img/${p.img}.jpg" alt=""></td><td class="ttl">${p.t}<small>${p.sub}</small></td><td><span class="ch">${p.ch}</span></td><td>${langBadges(p)}</td><td>${chip(p.st)}</td><td style="white-space:nowrap">${fmt(p.d)} · ${p.h}</td><td><div class="acts">${actions(p)}</div></td></tr>`).join('');
   document.getElementById('nwait').textContent=POSTS.filter(p=>p.st==='wait').length;
   const todo=POSTS.filter(p=>p.st==='wait'||p.st==='draft').slice(0,5);
   document.getElementById('todo').innerHTML=todo.map(p=>`<div class="item"><span class="when">${fmt(p.d)}</span>${chip(p.st)}<span style="flex:1;min-width:0">${p.t}</span><span class="acts">${actions(p)}</span></div>`).join('')||'<p style="color:var(--muted)">Không còn bài chờ xử lý.</p>';
@@ -347,8 +403,8 @@ const mx=Math.max(...pubbed.map(p=>p.r[1]));
 document.getElementById('bars').innerHTML=pubbed.map(p=>`<div><b>${p.r[1]}</b><i style="height:${Math.round(p.r[1]/mx*110)}px"></i>${fmt(p.d)}</div>`).join('');
 document.getElementById('rtab').innerHTML=pubbed.map(p=>`<tr><td>${p.t}</td><td>${fmt(p.d)}</td><td class="n">${p.r[0].toLocaleString('vi-VN')}</td><td class="n">${p.r[1]}</td><td class="n">${p.r[2]}</td></tr>`).join('');
 document.getElementById('media').innerHTML=MEDIA.map(m=>`<figure><img src="../img/${m[0]}.jpg" alt="${m[1]}" loading="lazy"><figcaption>${m[1]}<small>${m[2]}</small></figcaption></figure>`).join('');
-const PAGES=[['Trang chủ','✓','Nháp','Nháp','28/10'],['Về chúng tôi','✓','—','—','28/10'],['Giải pháp (6 trang)','✓','—','—','01/11'],['Chiến dịch 10.000 ha','✓','—','—','02/11'],['Sự kiện','✓','—','—','02/11'],['Blog','✓','—','—','02/11'],['Liên hệ','✓','—','—','02/11']];
-document.getElementById('pages').innerHTML=PAGES.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('');
+const PAGES=[['Trang chủ','ok','ai','ai','02/11'],['Về chúng tôi','ok','ai','ai','02/11'],['Giải pháp (6 trang)','ok','ai','ai','02/11'],['Chiến dịch 10.000 ha','ok','ai','ai','02/11'],['Sự kiện','ok','ai','ai','02/11'],['Blog','ok','ai','ai','02/11'],['Liên hệ','ok','ai','ai','02/11']];
+document.getElementById('pages').innerHTML=PAGES.map(r=>`<tr><td><b>${r[0]}</b></td><td>${lb(r[1])}</td><td>${lb(r[2])}</td><td>${lb(r[3])}</td><td>${r[4]}</td></tr>`).join('');
 const WEEKS=[['Tuần 1 · 02–08/11','Mã vùng trồng và nhật ký'],['Tuần 2 · 09–15/11','Chăm sóc sau thu hoạch'],['Tuần 3 · 16–22/11','Khởi động Chiến dịch 10.000 ha'],['Tuần 4 · 23–30/11','Câu chuyện HTX, vùng trồng']];
 document.getElementById('weeks').innerHTML=WEEKS.map(w=>`<div class="card"><b>${w[0]}</b><span>${w[1]}</span></div>`).join('');
 function renderCal(){
@@ -380,5 +436,54 @@ const LST={'Mới':'st-wait','Đã gọi':'st-sched','Hẹn gặp':'st-ok','Đã
 document.getElementById('leads').innerHTML=LEADS.map(r=>`<tr><td style="white-space:nowrap">${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td><span class="ch">${r[5]}</span></td><td>${r[6]}</td><td><span class="chip ${LST[r[7]]}">${r[7]}</span></td></tr>`).join('');
 let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2600);}
 function route(){const h=(location.hash||'#tong-quan').slice(1);const vs=[...document.querySelectorAll('[data-view]')];const v=vs.find(x=>x.dataset.view===h)?h:'tong-quan';vs.forEach(x=>x.hidden=x.dataset.view!==v);document.querySelectorAll('aside a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));window.scrollTo(0,0);}
+
+/* ---------- Đa ngôn ngữ ---------- */
+function langBadges(p){const t=p.tr||{vi:'ok',en:'miss',zh:'miss'};return `<span class="lg3">${['vi','en','zh'].map(l=>`<span class="lb ${LBN[t[l]][1]}" title="${LN[l]}: ${LBN[t[l]][0]}">${LN[l]}</span>`).join('')}</span>`;}
+const TRI=[
+ {n:'Trang chủ · Khối mở đầu',k:'Khối trang',vi:'Dữ liệu vườn trồng, minh bạch từ gốc. FarmBase giúp HTX, doanh nghiệp và địa phương quản lý vùng trồng, lô đất và nhật ký canh tác trên một nền tảng.',en:'Orchard data, transparent from the root. FarmBase helps cooperatives, businesses and local authorities manage growing areas, plots and farm diaries on one platform.',zh:'果园数据,从源头透明。FarmBase 帮助合作社、企业和地方政府在同一平台上管理种植区、地块和农事日志。',s:{en:'ok',zh:'ai'}},
+ {n:'Trang chủ · Con số',k:'Khối trang',vi:'vùng trồng · nông hộ · ha diện tích quản lý · nông hộ được tập huấn',en:'growing areas · households · ha under management · farmers trained',zh:'个种植区 · 户农户 · 公顷管理面积 · 人次农户接受培训',s:{en:'ok',zh:'ai'}},
+ {n:'Giải pháp · Truy xuất nguồn gốc',k:'Trang',vi:'Quản lý vùng trồng, lô đất, nhật ký canh tác và thu hoạch trên một nền tảng.',en:'Manage growing areas, plots, farm diaries and harvests on one platform.',zh:'在同一平台管理种植区、地块、农事日志和采收。',s:{en:'ai',zh:'ai'}},
+ {n:'Giải pháp · Hỗ trợ tư vấn mã vùng trồng',k:'Trang',vi:'Việc cấp mã số vùng trồng thuộc thẩm quyền cơ quan quản lý nhà nước và nước nhập khẩu.',en:'Planting area codes are granted by the competent state authorities and the importing country.',zh:'种植基地注册号由国家主管部门及进口国核发。',s:{en:'ai',zh:'wait'}},
+ {n:'Giải pháp · Liên kết thu mua và kỹ thuật',k:'Trang',vi:'Kết nối từ vùng trồng đến kho thu mua và xuất khẩu, mỗi lô hàng đi kèm dữ liệu vùng trồng.',en:'Connecting growing areas to purchasing warehouses and export, with every shipment carrying growing-area data.',zh:'从种植区到收购仓库再到出口全程对接,每批货物均附带种植区数据。',s:{en:'ai',zh:'ai'}},
+ {n:'Chiến dịch 10.000 ha',k:'Trang',vi:'Các con số là mục tiêu của chương trình đề xuất, chưa phải kết quả.',en:'These figures are targets of a proposed programme, not results.',zh:'以上数字为倡议项目的目标,并非已取得的成果。',s:{en:'ai',zh:'ai'}},
+ {n:'Sự kiện · Lớp ToT sầu riêng',k:'Sự kiện',vi:'Lớp đào tạo giảng viên nguồn (ToT) cùng GIZ, giảng viên Viện Cây ăn quả miền Nam và Trung tâm Khuyến nông tỉnh.',en:'A training-of-trainers (ToT) class with GIZ, lecturers from the Southern Fruit Research Institute and the Provincial Agricultural Extension Centre.',zh:'与 GIZ、南方果树研究院讲师及省农业推广中心联合举办的骨干讲师培训班(ToT)。',s:{en:'ai',zh:'ai'}},
+ {n:'Blog · 7 bước chuẩn bị hồ sơ mã số vùng trồng',k:'Bài viết',vi:'Thống nhất danh sách hộ, diện tích và ranh giới vùng.',en:'',zh:'',s:{en:'miss',zh:'miss'}},
+ {n:'Blog · Thêm người thân ghi nhật ký giúp',k:'Bài viết',vi:'Nhiều bà con lớn tuổi nhờ con cháu ghi nhật ký giúp.',en:'Many older farmers ask their children or grandchildren to keep diaries for them.',zh:'',s:{en:'ai',zh:'miss'}},
+ {n:'Liên hệ · Form tư vấn',k:'Trang',vi:'Để lại thông tin, chuyên viên FarmBase gọi lại trong giờ làm việc.',en:'Leave your details and a FarmBase specialist will call you back during working hours.',zh:'留下您的信息,FarmBase 专员将在工作时间回电。',s:{en:'ok',zh:'ok'}}
+];
+let trCur=null;
+function renderTr(){
+  const f=document.getElementById('trf').value;
+  const want=r=>!f||(f==='miss'&&(r.s.en==='miss'||r.s.zh==='miss'))||(f==='ai'&&(r.s.en==='ai'||r.s.zh==='ai'||r.s.en==='wait'||r.s.zh==='wait'))||(f==='ok'&&r.s.en==='ok'&&r.s.zh==='ok');
+  document.getElementById('trtab').innerHTML=TRI.map((r,i)=>want(r)?`<tr><td class="ttl">${r.n}</td><td><span class="ch">${r.k}</span></td><td>${lb('ok')}</td><td>${lb(r.s.en)}</td><td>${lb(r.s.zh)}</td><td><button class="btn sm" type="button" data-tred="${i}">Sửa</button></td></tr>`:'').join('');
+  const pct=l=>Math.round(TRI.filter(r=>r.s[l]==='ok').length/TRI.length*100), has=l=>Math.round(TRI.filter(r=>r.s[l]!=='miss').length/TRI.length*100);
+  document.getElementById('trprog').innerHTML=[['vi','Tiếng Việt (gốc)',100,100],['en','English',pct('en'),has('en')],['zh','中文',pct('zh'),has('zh')]].map(x=>`<div class="card kpi prog"><span class="l">${x[1]}</span><span class="v">${x[2]}%</span><span class="bar"><i style="width:${x[2]}%"></i></span><span class="d" style="color:var(--muted)">${x[0]==='vi'?'Bản gốc':'Đã duyệt '+x[2]+'% · có bản dịch '+x[3]+'%'}</span></div>`).join('');
+  document.getElementById('ntr').textContent=TRI.filter(r=>r.s.en!=='ok'||r.s.zh!=='ok').length;
+}
+function openTr(i){trCur=i;const r=TRI[i];document.getElementById('tred').hidden=false;document.getElementById('tredt').textContent=r.n;
+  document.getElementById('tvi').value=r.vi;document.getElementById('ten').value=r.en;document.getElementById('tzh').value=r.zh;
+  document.getElementById('sen').innerHTML=lb(r.s.en);document.getElementById('szh').innerHTML=lb(r.s.zh);document.getElementById('tred').scrollIntoView({behavior:'smooth',block:'nearest'});}
+const AIFILL={en:'[Bản dịch AI mẫu] '+'Agree on the household list, areas and area boundaries.',zh:'[AI 翻译草稿] 确定农户名单、面积和种植区边界。'};
+document.addEventListener('click',e=>{
+  const ed=e.target.closest('[data-tred]');if(ed)openTr(+ed.dataset.tred);
+  const ai=e.target.closest('[data-trai]');if(ai&&trCur!=null){const l=ai.dataset.trai,r=TRI[trCur];if(!r[l])r[l]=AIFILL[l];r.s[l]='ai';document.getElementById('t'+l).value=r[l];openTr(trCur);renderTr();toast('Đã tạo bản dịch nháp '+LN[l]+'. Cần người rà soát trước khi duyệt');}
+  const ok=e.target.closest('[data-trok]');if(ok&&trCur!=null){const l=ok.dataset.trok,r=TRI[trCur];r[l]=document.getElementById('t'+l).value;if(!r[l]){toast('Chưa có nội dung '+LN[l]+' để duyệt');return;}r.s[l]='ok';openTr(trCur);renderTr();toast('Đã duyệt bản '+LN[l]+'. Sẽ hiện trên website');}
+});
+document.getElementById('tredx').addEventListener('click',()=>{document.getElementById('tred').hidden=true;trCur=null;});
+document.getElementById('trf').addEventListener('change',renderTr);
+document.getElementById('trall').addEventListener('click',()=>{let n=0;TRI.forEach(r=>['en','zh'].forEach(l=>{if(r.s[l]==='miss'){r.s[l]='ai';if(!r[l])r[l]=AIFILL[l];n++;}}));renderTr();if(trCur!=null)openTr(trCur);toast(n?`Đã tạo ${n} bản dịch nháp. Vào từng mục để rà soát và duyệt`:'Không còn mục nào thiếu bản dịch');});
+renderTr();
+/* khối Con số: tab ngôn ngữ */
+const BLK={vi:{l:['Nhãn: vùng trồng','Nhãn: nông hộ','Nhãn: diện tích','Nhãn: nông hộ được tập huấn'],v:['vùng trồng trên FarmBase','nông hộ có dữ liệu','ha diện tích quản lý','nông hộ được tập huấn'],n:'Dữ liệu FarmBase tại Đắk Lắk ngày 28/10/2026.',s:'ok'},
+ en:{l:['Label: growing areas','Label: households','Label: area','Label: farmers trained'],v:['growing areas on FarmBase','households with data','ha under management','farmers trained'],n:'FarmBase data for Dak Lak as of 28/10/2026.',s:'ok'},
+ zh:{l:['标签:种植区','标签:农户','标签:面积','标签:受训农户'],v:['个种植区在 FarmBase 上','户农户已有数据','公顷管理面积','人次农户接受培训'],n:'FarmBase 多乐省数据,截至 2026年10月28日。',s:'ai'}};
+let bl='vi';
+function renderBlk(){const b=BLK[bl];document.querySelectorAll('[data-bl]').forEach((x,i)=>x.textContent=b.l[i]);['k1','k2','k3','k4'].forEach((id,i)=>document.getElementById(id).value=b.v[i]);document.getElementById('k5').value=b.n;
+ document.getElementById('bst').innerHTML=bl==='vi'?lb('ok')+' bản gốc':lb(b.s,bl);document.getElementById('bai').hidden=bl==='vi';document.getElementById('bok').hidden=bl==='vi'||b.s==='ok';
+ document.querySelectorAll('#blt button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.l===bl)));}
+document.querySelectorAll('#blt button').forEach(x=>x.addEventListener('click',()=>{bl=x.dataset.l;renderBlk();}));
+document.getElementById('bai').addEventListener('click',()=>{BLK[bl].s='ai';renderBlk();toast('Đã dịch lại bằng AI, trạng thái nháp');});
+document.getElementById('bok').addEventListener('click',()=>{BLK[bl].s='ok';renderBlk();toast('Đã duyệt bản '+LN[bl]);});
+renderBlk();
 window.addEventListener('hashchange',route);renderPosts();route();
 </script>
