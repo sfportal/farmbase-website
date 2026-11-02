@@ -46,7 +46,7 @@ export async function onRequestPost({ request, env }) {
         body: JSON.stringify({
           from: env.LEAD_EMAIL_FROM || "FarmBase <onboarding@resend.dev>",
           to: (env.LEAD_EMAIL_TO || "info@salefronts.com").split(",").map((s) => s.trim()),
-          subject: `${/nguồn hàng/i.test(lead.source || "") ? "Người mua quốc tế" : "Khách mới"} từ website FarmBase: ${lead.name} · ${lead.crop || lead.need || "tư vấn"}`,
+          subject: `${/đối tác/i.test(lead.source || "") ? "Đăng ký đối tác đồng hành" : /nguồn hàng/i.test(lead.source || "") ? "Người mua quốc tế" : "Khách mới"} từ website FarmBase: ${lead.name} · ${lead.crop || lead.need || "tư vấn"}`,
           html: `<h2 style="font-family:sans-serif">Khách để lại liên hệ trên website</h2><table style="font-family:sans-serif;font-size:14px">${rows}</table><p style="font-family:sans-serif;font-size:13px;color:#5A6B63">Xem và cập nhật trạng thái trong trang quản lý FarmBase.</p>`,
         }),
       });
