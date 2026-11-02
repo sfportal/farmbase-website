@@ -1,0 +1,1053 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Trang chủ FarmBase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: website nhiều trang (định tuyến bằng #), dải ngang toàn chiều rộng, nội dung 1180px; điện thoại xếp 1 cột */
+:root{
+  --forest:#084C46; --gold:#E3A72F; --leaf:#35A576; --sprout:#DDF1E6; --husk:#E9A23B;
+  --bg:#F6F8F5; --surface:#FFFFFF; --fg:#13231F; --muted:#56675F; --line:#D8E2DB; --head:#084C46;
+  --band:#084C46; --band-fg:#F1F7F3; --band-muted:#A9C9BC; --land:#E3EEE7; --land-line:#B9CFC2;
+  --font:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1715; --surface:#14211E; --fg:#E6EFEA; --muted:#9DB2A8; --line:#25362F; --sprout:#173A2E; --head:#E6EFEA;
+  --band:#06332F; --band-fg:#E6EFEA; --band-muted:#8FB6A6; --leaf:#4CC08F; --husk:#F0B455; --gold:#F0B455; --land:#1A2C27; --land-line:#2F4A41; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1715; --surface:#14211E; --fg:#E6EFEA; --muted:#9DB2A8; --line:#25362F; --sprout:#173A2E; --head:#E6EFEA;
+  --band:#06332F; --band-fg:#E6EFEA; --band-muted:#8FB6A6; --leaf:#4CC08F; --husk:#F0B455; --gold:#F0B455; --land:#1A2C27; --land-line:#2F4A41; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.6}
+h1,h2,h3,h4{line-height:1.2;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:72px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--leaf)}
+.lead{color:var(--muted);max-width:64ch;font-size:17px}
+.h1{font-size:clamp(32px,4.6vw,52px);font-weight:800;letter-spacing:-.02em;color:var(--head)}
+.h2{font-size:clamp(26px,3.4vw,38px);font-weight:800;letter-spacing:-.01em}
+.stack{display:grid;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid transparent;font-size:15px;cursor:pointer;font-family:inherit}
+.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--husk);outline-offset:2px}
+.btn-primary{background:var(--leaf);color:#06231F}
+.btn-ghost{border-color:currentColor;background:transparent;color:inherit}
+.ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.draft{background:var(--husk);color:#2A1A00;font-size:13px;font-weight:700;text-align:center;padding:6px 16px}
+.note{font-size:12px;color:var(--muted);font-style:italic}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--leaf);flex:none;display:inline-block}
+.photo{aspect-ratio:16/9;max-width:100%;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;text-align:center;color:var(--muted);font-size:13px;padding:12px;background:repeating-linear-gradient(135deg,transparent 0 12px,color-mix(in srgb,var(--leaf) 8%,transparent) 12px 24px)}
+.photo b{display:block;color:var(--fg);font-size:14px}
+.view[hidden],[hidden]{display:none!important}
+.photo.has{padding:0;border:0;overflow:hidden;background:var(--line)}.photo.has img{width:100%;height:100%;object-fit:cover;display:block}
+.press{display:grid;gap:10px;align-content:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;min-width:0}
+.press .src-n{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.press h3{font-size:18px;font-weight:700}.press p{font-size:14px;color:var(--muted)}
+.press a.rd{font-weight:700;color:var(--leaf);text-decoration:none;font-size:14px}
+.dark{background:var(--band);color:var(--band-fg)}
+.dark .lead{color:var(--band-muted)}
+.dark .h1{color:#fff}
+.fine{font-size:13px;color:var(--muted);margin-top:20px;max-width:90ch}
+
+/* Thanh thông báo + header */
+.notice{background:var(--band);color:var(--band-fg);font-size:14px}
+.notice .wrap{display:flex;gap:10px;align-items:center;justify-content:center;padding-block:10px;flex-wrap:wrap;text-align:center}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+header .wrap{display:flex;align-items:center;gap:20px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none;color:var(--fg)}
+.mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--forest),var(--leaf));display:grid;place-items:center;color:#fff;font-weight:800;flex:none}
+nav.menu{display:flex;gap:4px;font-size:15px;font-weight:600;margin-left:auto;align-items:center}
+nav.menu>a,.dd>button{white-space:nowrap;text-decoration:none;color:var(--muted);padding:8px 10px;border-radius:999px;background:none;border:0;font:inherit;cursor:pointer}
+nav.menu>a:hover,.dd>button:hover,nav.menu a.on,.dd.on>button{color:var(--fg);background:var(--sprout)}
+.dd{position:relative}
+.dd-panel{position:absolute;top:calc(100% + 8px);left:0;width:330px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px;box-shadow:0 20px 40px -20px rgba(0,0,0,.35);display:grid;gap:2px}
+.dd-panel a{display:block;padding:10px 12px;border-radius:10px;text-decoration:none;color:var(--fg)}
+.dd-panel a small{display:block;color:var(--muted);font-weight:400;font-size:13px}
+.dd-panel a:hover{background:var(--sprout)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;font-size:13px;font-weight:700}
+.lang button{border:0;background:transparent;color:var(--muted);padding:6px 10px;cursor:pointer;font-family:inherit;font-weight:700}
+.lang button[aria-pressed="true"]{background:var(--forest);color:#fff}
+.burger{display:none;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;padding:8px 12px;font:inherit;font-weight:700;cursor:pointer}
+.mnav{border-top:1px solid var(--line);background:var(--surface)}
+.mnav .wrap{display:grid;gap:2px;padding-block:10px}
+.mnav a{padding:10px 4px;text-decoration:none;font-weight:600;border-bottom:1px solid var(--line)}
+.mnav a.sub{padding-left:18px;font-weight:500;color:var(--muted)}
+@media (max-width:1240px){nav.menu{display:none}.burger{display:block}.lang{margin-left:auto}.hdr-cta{display:none}}
+
+/* Hero trang chủ */
+.hero{background:radial-gradient(1200px 500px at 85% 0%,var(--sprout),transparent 60%),var(--bg);padding-block:64px 72px}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(34px,5.4vw,60px);font-weight:800;letter-spacing:-.02em;color:var(--head)}
+.hero h1 em{font-style:normal;color:var(--leaf)}
+.hero .lead{margin-top:18px}
+.hero .ctas .btn-ghost{color:var(--fg)}
+.trust{margin-top:28px;display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.trust b{color:var(--fg)}
+.qr-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 24px 60px -30px rgba(8,76,70,.45);min-width:0}
+.qr-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tag{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--sprout);color:var(--leaf)}
+.qr-card .photo{margin-top:14px}
+.kv{margin:14px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;font-size:14px}
+.kv dt{color:var(--muted);font-size:12px}
+.kv dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.sync{margin-top:14px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}}
+
+/* Sơ đồ chuỗi giá trị */
+.chain{margin-top:36px;border:1px solid var(--line);border-radius:20px;background:var(--surface);padding:22px;display:grid;gap:16px}
+.band{border-radius:12px;padding:12px 16px;display:flex;gap:10px 16px;align-items:center;flex-wrap:wrap;font-size:14px}
+.band b{font-size:14px}
+.band.top{background:color-mix(in srgb,var(--husk) 16%,transparent);border:1px solid color-mix(in srgb,var(--husk) 45%,transparent)}
+.band.bot{background:color-mix(in srgb,#3D7FD6 13%,transparent);border:1px solid color-mix(in srgb,#3D7FD6 40%,transparent)}
+.band .pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px}
+.stages{display:grid;grid-template-columns:repeat(6,1fr);gap:22px;position:relative}
+.stage{position:relative;border:2px solid var(--leaf);border-radius:14px;padding:14px 12px 12px;background:var(--bg);display:flex;flex-direction:column;gap:6px;min-width:0}
+.stage:not(:last-child)::after{content:"";position:absolute;right:-19px;top:34px;border:8px solid transparent;border-left:10px solid var(--leaf)}
+.stage .ic{width:36px;height:36px;border-radius:50%;background:var(--forest);display:grid;place-items:center}
+.stage .ic svg{stroke:#fff}
+.stage h4{font-size:15px;font-weight:800}
+.stage p{font-size:13px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;padding-top:6px}
+.chip{font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;color:#fff;white-space:nowrap}
+.c1{background:#1F7A5C}.c2{background:#2F6FB5}.c3{background:#B0701A}.c4{background:#7A4FB0}.c5{background:#3C5A57}
+.soon{display:inline-block;font-size:11px;font-weight:700;color:var(--husk)}
+.ends{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+.legend span{display:flex;gap:6px;align-items:center}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+@media (max-width:980px){.stages{grid-template-columns:1fr 1fr 1fr}.stage:nth-child(3)::after{display:none}}
+@media (max-width:560px){.stages{grid-template-columns:1fr;gap:20px}.stage:not(:last-child)::after{right:auto;left:30px;top:auto;bottom:-19px;border:8px solid transparent;border-top:10px solid var(--leaf)}.stage:nth-child(3)::after{display:block}}
+
+/* Thẻ giải pháp */
+.sols{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:32px}
+.sol{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px;text-decoration:none;min-width:0}
+.sol:hover{border-color:var(--leaf)}
+.sol h3{font-size:17px;font-weight:800}
+.sol p{font-size:14px;color:var(--muted)}
+.sol .go{margin-top:auto;font-weight:700;color:var(--leaf);font-size:14px}
+@media (max-width:1100px){.sols{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:700px){.sols{grid-template-columns:1fr}}
+
+/* Bản đồ hiện diện */
+.presence{display:grid;grid-template-columns:.95fr 1.05fr;gap:40px;align-items:center}
+.mapbox{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.mapbox svg{width:100%;max-width:300px;height:auto}
+.land{fill:var(--land);stroke:var(--land-line);stroke-width:1.5}
+.city{fill:var(--muted)}
+.map-t{font-size:11px;fill:var(--muted);font-family:var(--font)}
+.map-b{font-size:12px;font-weight:700;fill:var(--fg);font-family:var(--font)}
+.pin{fill:var(--leaf);stroke:var(--surface);stroke-width:2}
+.pin.hq{fill:var(--forest)}
+.pin.ex{fill:var(--surface);stroke:var(--husk);stroke-width:2.5}
+.halo{fill:var(--leaf);opacity:.18}
+@media (prefers-reduced-motion:no-preference){.halo{animation:pulse 2.4s ease-out infinite;transform-box:fill-box;transform-origin:center}@keyframes pulse{0%{transform:scale(.6);opacity:.35}100%{transform:scale(1.6);opacity:0}}}
+.prov{display:grid;gap:12px}
+.prov div{border-left:3px solid var(--leaf);padding-left:12px}
+.prov div.ex{border-color:var(--husk)}
+.prov b{display:block}
+.prov span{font-size:14px;color:var(--muted)}
+.areas{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.areas span{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--fg)}
+@media (max-width:900px){.presence{grid-template-columns:1fr}}
+@media (max-width:560px){.mapbox{grid-template-columns:1fr}.mapbox svg{max-width:240px;margin:0 auto}}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:color-mix(in srgb,var(--band-fg) 18%,transparent);border-radius:var(--r);overflow:hidden;margin-top:28px}
+.stat{background:var(--band);padding:22px}
+.stat b{display:block;font-size:clamp(28px,3.6vw,42px);font-weight:800;font-variant-numeric:tabular-nums;color:#fff;letter-spacing:-.02em}
+.stat span{font-size:14px;color:var(--band-muted)}
+.src{font-size:12px;color:var(--band-muted);margin-top:12px}
+@media (max-width:760px){.stats{grid-template-columns:1fr 1fr}}
+
+/* Thư viện ảnh sự kiện */
+.mosaic{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:12px;margin-top:32px}
+.mosaic figure{margin:0;position:relative;min-width:0}
+.mosaic .photo{height:100%;aspect-ratio:auto;border-radius:12px}
+.mosaic figcaption{position:absolute;left:8px;bottom:8px;right:8px;background:var(--surface);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;box-shadow:0 4px 12px -6px rgba(0,0,0,.3)}
+.mosaic figcaption small{display:block;font-weight:400;color:var(--muted)}
+.w2{grid-column:span 2}.h2r{grid-row:span 2}
+@media (max-width:760px){.mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:140px}}
+@media (max-width:420px){.mosaic{grid-template-columns:1fr}.w2{grid-column:auto}}
+
+/* Giá trị, câu chuyện */
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:36px}
+.value h3{font-size:20px;font-weight:800;margin-top:12px}
+.value p{color:var(--muted);margin-top:6px}
+.icon{width:44px;height:44px;border-radius:12px;background:var(--sprout);display:grid;place-items:center}
+.icon svg{stroke:var(--leaf)}
+@media (max-width:760px){.values{grid-template-columns:1fr}}
+.story{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center}
+.story .photo{aspect-ratio:4/3}
+blockquote{margin:16px 0 0;font-size:clamp(20px,2.4vw,26px);font-weight:700;line-height:1.35}
+.big{font-size:64px;font-weight:800;color:var(--leaf);line-height:1;font-variant-numeric:tabular-nums}
+.partners ul{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-wrap:wrap;gap:12px}
+.partners li{border:1px dashed var(--line);border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;color:var(--muted)}
+@media (max-width:860px){.story{grid-template-columns:1fr}}
+
+/* Tin, bài viết */
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:28px}
+.post{min-width:0;display:grid;gap:10px;align-content:start}
+.post .photo{aspect-ratio:16/10}
+.post .meta{font-size:13px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+.post .label{font-weight:700;color:var(--leaf)}
+.post h3{font-size:18px;font-weight:700}
+.post p{font-size:14px;color:var(--muted)}
+@media (max-width:860px){.posts{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.posts{grid-template-columns:1fr}}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.tabs button{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:8px 16px;font:inherit;font-weight:600;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--forest);color:#fff;border-color:var(--forest)}
+
+/* Trang con */
+.phero{padding-block:56px 48px;background:radial-gradient(900px 400px at 90% 0%,var(--sprout),transparent 60%),var(--bg);border-bottom:1px solid var(--line)}
+.crumb{font-size:13px;color:var(--muted);margin-bottom:14px}
+.crumb a{text-decoration:none}
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;min-width:0}
+.card h3{font-size:18px;font-weight:800;margin-bottom:10px}
+.card ul{margin:0;padding-left:20px;color:var(--muted);display:grid;gap:6px}
+.steps{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:12px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.steps li::before{counter-increment:s;content:counter(s);width:32px;height:32px;border-radius:50%;background:var(--forest);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.steps b{display:block}
+.steps span{color:var(--muted);font-size:14px}
+.for{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.for span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:600}
+.pricebox{border:2px solid var(--leaf)}
+.pricebox .price{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
+.alert{border-left:4px solid var(--husk);background:color-mix(in srgb,var(--husk) 10%,transparent);padding:12px 16px;border-radius:8px;font-size:14px;margin-top:20px}
+.timeline{list-style:none;margin:28px 0 0;padding:0 0 0 22px;border-left:2px solid var(--line);display:grid;gap:18px}
+.timeline li{position:relative}
+.timeline li::before{content:"";position:absolute;left:-30px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--leaf);border:3px solid var(--bg)}
+.timeline time{font-size:13px;font-weight:700;color:var(--leaf)}
+.timeline p{color:var(--muted);font-size:15px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:24px}
+@media (max-width:900px){.grid3,.grid5{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.grid3,.grid5{grid-template-columns:1fr}}
+.cv b{display:block;font-size:17px}
+.cv span{color:var(--muted);font-size:14px}
+.evt{display:grid;grid-template-columns:1fr 1.3fr;gap:24px;align-items:center;padding-block:28px;border-top:1px solid var(--line)}
+.evt .gal{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:8px;height:240px}
+.evt .gal .photo{aspect-ratio:auto;height:100%;font-size:12px;padding:6px}
+.evt .gal .photo:first-child{grid-row:span 2}
+.evt h3{font-size:22px;font-weight:800;margin-top:6px}
+.evt p{color:var(--muted);margin-top:8px}
+@media (max-width:820px){.evt{grid-template-columns:1fr}}
+
+/* Liên hệ */
+.consult{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+form{background:var(--surface);color:var(--fg);border-radius:var(--r);padding:24px;display:grid;gap:14px;min-width:0;border:1px solid var(--line)}
+label{font-size:13px;font-weight:600;display:grid;gap:6px}
+input,select,textarea{font:inherit;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg);width:100%}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ok{font-size:14px;color:var(--leaf);font-weight:600}
+.contact-list{display:grid;gap:14px;margin-top:22px}
+.contact-list>*{display:flex;gap:12px;align-items:center;text-decoration:none;font-weight:600}
+.contact-list small{display:block;font-weight:400;color:var(--band-muted)}
+@media (max-width:860px){.consult{grid-template-columns:1fr}}
+@media (max-width:420px){.row2{grid-template-columns:1fr}}
+
+footer{background:#041F1C;color:#C8DCD3;font-size:14px;padding-block:48px 110px}
+footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
+footer h4{color:#fff;margin:0 0 10px;font-size:14px}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+footer a{text-decoration:none}
+footer a:hover{color:#fff}
+.co{margin-top:28px;padding-top:18px;border-top:1px solid #1C3A35;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:#8FB0A4}
+@media (max-width:860px){footer .cols{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){footer .cols{grid-template-columns:1fr}}
+
+.fab{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));display:grid;gap:10px;z-index:40}
+.fab a{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:12px;text-decoration:none;box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
+.fab .zalo{background:#0068FF}.fab .call{background:var(--leaf);color:#06231F}.fab .msg{background:#7B4DFF}.fab .bot{background:var(--forest)}
+.bar{display:none}
+@media (max-width:640px){
+  .fab{display:none}
+  .bar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);padding:8px max(8px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+  .bar a{display:grid;justify-items:center;gap:2px;font-size:12px;font-weight:700;text-decoration:none;color:var(--fg);padding:4px}
+  .bar i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-style:normal;font-size:11px}
+}
+.review{background:var(--surface);border:2px solid var(--husk);border-radius:var(--r);padding:22px}
+.review h2{font-size:20px}
+.review ol{margin:12px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.btn{transition:transform .15s}.btn:hover{transform:translateY(-1px)}}
+
+.logo img{height:28px;width:auto;display:block}
+.lg-w{display:none!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lg-d{display:none!important}:root:not([data-theme="light"]) .lg-w{display:block!important}}
+:root[data-theme="dark"] .lg-d{display:none!important}:root[data-theme="dark"] .lg-w{display:block!important}
+nav.menu a.hot{color:var(--forest);background:color-mix(in srgb,var(--gold) 28%,transparent)}
+/* Chiến dịch 10.000 ha */
+.btn-gold{background:var(--gold);color:#2A1A00}
+.cd-hero{background:linear-gradient(120deg,#063F3A 0%,#0B5E52 55%,#7A6A1F 100%);color:#fff;padding-block:56px 40px;overflow:hidden}
+.cd-hero-in{display:grid;grid-template-columns:1.3fr .7fr;gap:32px;align-items:center}
+.cd-badge{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
+.cd-title{font-size:clamp(34px,5.4vw,62px);font-weight:800;letter-spacing:-.02em;margin-top:16px}
+.cd-title span{color:var(--gold);white-space:nowrap}
+.cd-sub{font-size:clamp(22px,2.8vw,30px);font-weight:700;margin-top:6px;color:#DDF1E6}
+.cd-slogan{margin-top:16px;font-weight:700;letter-spacing:.02em;color:var(--gold)}
+.cd-lead{margin-top:14px;max-width:62ch;color:#CFE3DA;font-size:17px}
+.cd-sun svg{width:100%;max-width:320px;height:auto;display:block;margin-left:auto}
+@media (max-width:820px){.cd-hero-in{grid-template-columns:1fr}.cd-sun svg{max-width:220px;margin:0 auto}}
+.cd-goals-band{background:var(--band);color:var(--band-fg);padding-block:44px}
+.cd-goals{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:16px}
+.cd-goals b{display:block;font-size:clamp(30px,4vw,46px);font-weight:800;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cd-goals span{font-size:14px;color:var(--band-muted)}
+@media (max-width:760px){.cd-goals{grid-template-columns:1fr 1fr}}
+.cd-req{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:r}
+.cd-req li{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.cd-req li::before{counter-increment:r;content:counter(r);width:36px;height:36px;border-radius:10px;background:color-mix(in srgb,var(--gold) 25%,transparent);color:var(--fg);display:grid;place-items:center;font-weight:800}
+.cd-req li::before{grid-row:span 2}.cd-req li>*{grid-column:2}
+.cd-req b{display:block}.cd-req span{font-size:14px;color:var(--muted)}
+.cd-pillar{border-top:4px solid var(--leaf)}
+.cd-num{font-size:13px;font-weight:800;color:var(--gold)}
+.cd-road{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:32px;position:relative}
+.cd-phase{padding:22px 18px 18px;border-top:4px solid var(--leaf);position:relative;min-width:0}
+.cd-phase:nth-child(2){border-color:#5BB585}.cd-phase:nth-child(3){border-color:var(--gold)}.cd-phase:nth-child(4){border-color:#C7432F}
+.cd-phase::before{content:"";position:absolute;top:-11px;left:18px;width:18px;height:18px;border-radius:50%;background:var(--surface);border:4px solid currentColor;color:var(--leaf)}
+.cd-phase:nth-child(3)::before{color:var(--gold)}.cd-phase:nth-child(4)::before{color:#C7432F}
+.cd-when{display:block;font-weight:800;font-variant-numeric:tabular-nums}
+.cd-crop{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;background:var(--sprout);color:var(--leaf);border-radius:999px;padding:2px 10px}
+.cd-phase h3{font-size:18px;font-weight:800;margin-top:10px}
+.cd-phase p{color:var(--muted);font-size:14px;margin-top:6px}
+@media (max-width:860px){.cd-road{grid-template-columns:1fr 1fr;row-gap:24px}}
+@media (max-width:480px){.cd-road{grid-template-columns:1fr}}
+.cd-crops{display:grid;grid-template-columns:1fr 1fr 2fr;gap:12px;margin-top:32px}
+.cd-crops div{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg)}
+.cd-crops b{display:block;font-size:17px}
+.cd-pri{font-size:12px;font-weight:700;color:var(--gold)}
+@media (max-width:640px){.cd-crops{grid-template-columns:1fr}}
+.cd-photos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cd-photos .photo:first-child{grid-column:span 2;aspect-ratio:16/9}
+.cd-photos .photo{aspect-ratio:1/1}
+.cd-values{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+@media (max-width:900px){.cd-values{grid-template-columns:1fr 1fr}}@media (max-width:560px){.cd-values{grid-template-columns:1fr}}
+.cd-units{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.cd-units p{color:var(--muted);font-size:14px}
+.cd-role{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--gold)}
+.cd-units h3{margin-top:6px}
+@media (max-width:860px){.cd-units{grid-template-columns:1fr}}
+.cd-partners{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-wrap:wrap;gap:10px}
+.cd-partners li{border:1px dashed var(--line);border-radius:10px;padding:8px 14px;font-size:14px;font-weight:600;color:var(--muted)}
+.cd-join{background:linear-gradient(120deg,#063F3A,#0B5E52);color:#fff}
+.cd-join .contact-list small{color:#B9D3C8}
+.cd-ways{display:grid;gap:12px;margin-top:20px}
+.cd-ways div{border-left:3px solid var(--gold);padding-left:12px}
+.cd-ways b{display:block}.cd-ways span{color:#CFE3DA;font-size:14px}
+.home-cd{background:linear-gradient(120deg,#063F3A,#0B5E52 60%,#6F611C);color:#fff;border-radius:20px;padding:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center}
+.home-cd h2{font-size:clamp(24px,3vw,34px);font-weight:800}
+.home-cd h2 span{color:var(--gold)}
+.home-cd p{color:#CFE3DA;margin-top:10px}
+.home-cd .mini{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.home-cd .mini div{background:rgba(255,255,255,.08);border-radius:12px;padding:12px}
+.home-cd .mini b{display:block;font-size:24px;color:#fff;white-space:nowrap}
+.home-cd .mini span{font-size:13px;color:#CFE3DA}
+@media (max-width:820px){.home-cd{grid-template-columns:1fr}}
+
+/* ===== Chi tiết bài viết ===== */
+a.cardlink{color:inherit;text-decoration:none}
+a.cardlink:hover h3,.evt h3 a:hover,.press h3 a:hover{color:var(--leaf)}
+.press h3 a,.evt h3 a{color:inherit;text-decoration:none}
+.evt .more{display:inline-block;margin-top:12px;font-weight:700;color:var(--leaf);text-decoration:none;font-size:14px}
+.post .photo.has{border:0}
+.art-hero{padding-block:40px 28px;border-bottom:1px solid var(--line);background:radial-gradient(900px 400px at 90% 0%,var(--sprout),transparent 60%),var(--bg)}
+.art-hero .h1{font-size:clamp(28px,4vw,44px);max-width:900px}
+.art-meta{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:16px;font-size:14px;color:var(--muted)}
+.art-meta b{color:var(--leaf)}
+.art-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:start;padding-block:40px}
+.art-body{min-width:0;font-size:17px;line-height:1.75}
+.art-body>*+*{margin-top:18px}
+.art-body h2{font-size:24px;font-weight:800;margin-top:34px;line-height:1.3}
+.art-body ul,.art-body ol{padding-left:22px}.art-body li+li{margin-top:8px}
+.art-body figure{margin:0}.art-body .cover{aspect-ratio:16/9;border-radius:14px}
+.art-body figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+.art-body .src{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--surface);font-size:15px}
+.art-body .src a{font-weight:700;color:var(--leaf)}
+.art-gal{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.art-gal a{display:block;border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--line)}
+.art-gal img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.art-gal a:hover img{transform:scale(1.04)}
+.art-side{position:sticky;top:96px;display:grid;gap:16px}
+.art-side .card h3{font-size:17px;font-weight:800}
+.art-side .card p{font-size:14px;color:var(--muted);margin-top:6px}
+.art-side .btn{width:100%;justify-content:center;margin-top:10px}
+.share{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.share a,.share button{font:inherit;font-size:13px;font-weight:600;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--fg);text-decoration:none;cursor:pointer}
+.art-nav{display:grid;grid-template-columns:1fr 1fr;gap:16px;border-top:1px solid var(--line);padding-top:24px;margin-top:40px}
+.art-nav a{display:grid;gap:4px;text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.art-nav a span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.art-nav a b{font-size:15px;line-height:1.4}
+.art-nav a.nx{text-align:right}
+.draftnote{font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:10px 14px}
+@media (max-width:960px){.art-wrap{grid-template-columns:1fr;gap:32px}.art-side{position:static}}
+@media (max-width:560px){.art-gal{grid-template-columns:1fr 1fr;gap:6px}.art-nav{grid-template-columns:1fr}.art-body{font-size:16px}}
+</style>
+
+<div class="draft">Bản phác để duyệt · website nhiều trang · ảnh thật từ thư mục Drive, khung kẻ sọc là chỗ còn chờ ảnh · <a href="quan-tri/" style="color:inherit">Mở trang quản lý →</a></div>
+<div class="notice"><div class="wrap"><span class="dot" aria-hidden="true"></span><span>FarmBase đã kết nối Hệ thống truy xuất nguồn gốc nông sản của Bộ NN&amp;MT từ 01/07/2026</span><a href="#truy-xuat" style="font-weight:700">Tìm hiểu →</a><span aria-hidden="true">·</span><a href="#chien-dich-10000ha" style="font-weight:700;color:var(--gold)">Chiến dịch 10.000 ha niên vụ 2026–2027 →</a></div></div>
+
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#trang-chu" aria-label="FarmBase trang chủ"><img class="lg-d" src="data:image/png;base64,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" alt="farmbase"><img class="lg-w" src="data:image/png;base64,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" alt="farmbase"></a>
+    <nav class="menu" aria-label="Menu chính">
+      <a href="#trang-chu" data-nav="trang-chu">Trang chủ</a>
+      <a href="#ve-chung-toi" data-nav="ve-chung-toi">Về chúng tôi</a>
+      <div class="dd" id="dd"><button type="button" aria-expanded="false" aria-controls="ddp" id="ddb">Giải pháp ▾</button>
+        <div class="dd-panel" id="ddp" hidden></div></div>
+      <a href="#chien-dich-10000ha" data-nav="chien-dich-10000ha" class="hot">10.000 ha</a>
+      <a href="#su-kien" data-nav="su-kien">Sự kiện</a>
+      <a href="#blog" data-nav="blog">Blog</a>
+      <a href="#lien-he" data-nav="lien-he">Liên hệ</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Ngôn ngữ"><button type="button" aria-pressed="true" data-l="vi">VI</button><button type="button" aria-pressed="false" data-l="en">EN</button><button type="button" aria-pressed="false" data-l="zh">中文</button></div>
+    <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="mnav">Menu</button>
+    <a class="btn btn-primary hdr-cta" href="#lien-he" style="padding:10px 16px">Nhận tư vấn</a>
+  </div>
+  <div class="mnav" id="mnav" hidden><div class="wrap" id="mnavlist"></div></div>
+</header>
+<p id="langnote" class="note wrap" hidden style="padding-top:8px">Bản EN và 中文 sẽ được dịch sau khi bạn duyệt nội dung tiếng Việt.</p>
+
+<main>
+<!-- ============ TRANG CHỦ ============ -->
+<div class="view" data-view="trang-chu">
+<section class="hero"><div class="wrap">
+  <div>
+    <p class="eyebrow">Nền tảng số hóa vùng trồng</p>
+    <h1>Dữ liệu vườn trồng, <em>minh bạch từ gốc</em></h1>
+    <p class="lead">FarmBase giúp HTX, doanh nghiệp và địa phương quản lý vùng trồng, lô đất và nhật ký canh tác trên một nền tảng. Bà con ghi nhật ký ngay trên Zalo, dữ liệu sẵn sàng khi cơ quan quản lý hậu kiểm và khi người mua quét mã QR.</p>
+    <div class="ctas"><a class="btn btn-primary" href="https://zalo.me/0911423839" target="_blank" rel="noopener">Nhắn Zalo chuyên gia</a><a class="btn btn-ghost" href="#giai-phap">Xem các giải pháp</a></div>
+    <p style="margin-top:14px;font-size:14px;color:var(--muted)">Bà con nông dân: <a href="https://zalo.me/s/3146448650831889838/" target="_blank" rel="noopener" style="font-weight:700;color:var(--leaf)">mở Zalo Mini App FarmBase →</a></p>
+    <div class="trust"><span><b>66</b> vùng trồng</span><span><b>1.415</b> nông hộ</span><span><b>~1.600 ha</b> trên FarmBase</span><span>Đắk Lắk, 28/10/2026</span></div>
+  </div>
+  <div class="qr-card" aria-label="Minh họa trang truy xuất khi quét QR">
+    <div class="qr-top"><b>Trang truy xuất vùng trồng</b><span class="tag">Quét QR</span></div>
+    <div class="photo has"><img src="img/08.jpg" alt="Vườn sầu riêng tại Đắk Lắk" loading="lazy"></div>
+    <dl class="kv">
+      <div><dt>Cây trồng</dt><dd>Sầu riêng</dd></div><div><dt>Mã vùng trồng</dt><dd>VN-DLxx-xxxx</dd></div>
+      <div><dt>Tổ chức quản lý</dt><dd>HTX ví dụ</dd></div><div><dt>Diện tích</dt><dd>24,6 ha · 38 lô</dd></div>
+      <div><dt>Nông hộ</dt><dd>31 hộ</dd></div><div><dt>Vụ mùa</dt><dd>2026</dd></div>
+    </dl>
+    <div class="sync"><span class="dot" aria-hidden="true"></span>Nhật ký đã đồng bộ hệ thống TXNG quốc gia</div>
+    <p class="note" style="margin-top:8px">Số liệu minh họa, không phải vùng thật.</p>
+  </div>
+</div></section>
+
+<section style="padding-top:8px"><div class="wrap">
+  <p class="eyebrow">FarmBase trong chuỗi giá trị</p>
+  <h2 class="h2">Đồng hành từ vật tư đầu vào đến tay người mua</h2>
+  <p class="lead" style="margin-top:12px">Mỗi khâu trong chuỗi sầu riêng, cà phê đều có công cụ hoặc dịch vụ FarmBase đi kèm. Dữ liệu ghi một lần ở vườn được dùng lại ở thu mua, đóng gói và khi cơ quan quản lý kiểm tra.</p>
+  <div class="chain" id="chain"></div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <p class="eyebrow">Giải pháp</p>
+  <h2 class="h2">Năm nhóm giải pháp cho vùng nguyên liệu</h2>
+  <div class="sols" id="solcards"></div>
+</div></section>
+
+<section style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap presence">
+  <div>
+    <p class="eyebrow">Hiện diện</p>
+    <h2 class="h2">Có mặt tại vườn ở Tây Nguyên và Đông Nam Bộ</h2>
+    <p class="lead" style="margin-top:12px">Trụ sở tại Đắk Lắk. Đội kỹ thuật BVI trực tiếp khảo sát, tập huấn và hỗ trợ tại vùng trồng.</p>
+    <div class="prov" style="margin-top:24px">
+      <div><b>Đắk Lắk · địa bàn chính</b><span>Sáu địa bàn trọng điểm</span>
+        <div class="areas"><span>Krông Pắc</span><span>Pơng Drang</span><span>Ea Drông</span><span>Buôn Hồ</span><span>Cư M'gar</span><span>Ea Tul</span></div></div>
+      <div><b>Gia Lai</b><span>Vùng trồng HTX tại Đức Cơ</span></div>
+      <div><b>Đồng Nai</b><span>Khu vực Bình Phước cũ</span></div>
+      <div class="ex"><b>Đang mở rộng</b><span>Lâm Đồng, Đồng Tháp</span></div>
+    </div>
+  </div>
+  <div class="mapbox">
+    <svg viewBox="0 0 320 620" role="img" aria-label="Sơ đồ các tỉnh FarmBase có mặt">
+      <polygon class="land" points="13.6,48.0 32.0,34.0 64.0,32.0 86.8,44.0 104.0,32.0 140.0,10.0 164.0,26.0 196.0,30.0 194.0,52.0 204.0,66.0 224.0,78.0 250.0,82.0 224.0,94.0 212.0,106.0 200.0,116.0 188.0,134.0 168.0,146.0 162.0,164.0 158.0,190.0 172.0,212.0 188.0,236.0 202.0,258.0 220.0,274.0 242.0,290.0 256.0,302.0 274.0,326.0 286.0,350.0 292.0,376.0 298.0,400.0 300.0,422.0 298.0,448.0 296.0,474.0 286.0,490.0 270.0,500.0 248.0,514.0 224.0,526.0 200.0,532.0 194.0,546.0 182.0,562.0 166.0,576.0 144.0,594.0 120.0,600.0 122.0,576.0 124.0,556.0 130.0,544.0 112.0,534.0 106.0,527.2 130.0,508.0 162.0,510.0 174.0,500.0 166.0,478.0 186.0,466.0 206.0,460.0 230.0,452.0 228.0,432.0 230.0,408.0 226.0,384.0 230.0,356.0 226.0,332.0 218.0,314.0 216.0,296.0 194.0,282.0 184.0,264.0 160.0,240.0 136.0,214.0 116.0,200.0 88.0,178.0 110.0,146.0 118.0,132.0 88.0,114.0 56.0,110.0 42.0,92.0 14.0,86.0 12.0,64.0"/>
+      <circle class="city" cx="162" cy="102.8" r="3"/><text class="map-t" x="120" y="98">Hà Nội</text>
+      <circle class="city" cx="196" cy="512.8" r="3"/><text class="map-t" x="150" y="555">TP.HCM</text>
+      <circle class="halo" cx="252" cy="437" r="26"/>
+      <circle class="pin" cx="236" cy="393.2" r="7"/><text class="map-b" x="176" y="384">Gia Lai</text>
+      <circle class="pin" cx="261.2" cy="436" r="6"/>
+      <circle class="pin hq" cx="250" cy="437.2" r="8"/><text class="map-b" x="158" y="426">Đắk Lắk</text><text class="map-t" x="158" y="440">Trụ sở BVI</text>
+      <circle class="pin" cx="204" cy="480" r="7"/><text class="map-b" x="140" y="484">Đồng Nai</text>
+      <circle class="pin ex" cx="265.6" cy="466.4" r="6"/><text class="map-t" x="250" y="490">Lâm Đồng</text>
+      <circle class="pin ex" cx="153.2" cy="525.6" r="6"/><text class="map-t" x="96" y="522">Đồng Tháp</text>
+    </svg>
+    <div class="stack" style="font-size:13px;color:var(--muted)">
+      <span><span class="dot" style="background:var(--forest);width:12px;height:12px"></span> Trụ sở</span>
+      <span><span class="dot" style="width:12px;height:12px"></span> Có vùng trồng</span>
+      <span><span class="dot" style="background:var(--surface);border:2.5px solid var(--husk);width:12px;height:12px"></span> Đang mở rộng</span>
+      <span class="note">Sơ đồ minh họa, không theo tỷ lệ.</span>
+    </div>
+  </div>
+</div></section>
+
+<section class="dark"><div class="wrap">
+  <p class="eyebrow">Con số</p>
+  <h2 class="h2">Dữ liệu thật từ vườn</h2>
+  <div class="stats">
+    <div class="stat"><b>66</b><span>vùng trồng trên FarmBase</span></div>
+    <div class="stat"><b>1.415</b><span>nông hộ có dữ liệu</span></div>
+    <div class="stat"><b>~1.600</b><span>ha diện tích quản lý</span></div>
+    <div class="stat"><b>~3.000</b><span>nông hộ được tập huấn</span></div>
+  </div>
+  <p class="src">Dữ liệu FarmBase tại Đắk Lắk ngày 28/10/2026. Số nông hộ được tập huấn là số được đào tạo, hướng dẫn.</p>
+</div></section>
+
+<section style="padding-bottom:0"><div class="wrap"><div class="home-cd">
+  <div><p class="eyebrow" style="color:var(--gold)">Niên vụ 2026–2027 · Chương trình đề xuất</p><h2>Chiến dịch <span>10.000 ha</span> cây trồng chủ lực: Chuẩn hóa vùng trồng</h2><p>Số hóa sản xuất · Nâng chuẩn chất lượng · Kết nối thương mại. Cùng HTX DaLa và các đơn vị đồng hành tại Đắk Lắk.</p><div class="ctas" style="margin-top:18px"><a class="btn btn-gold" href="#chien-dich-10000ha">Xem chiến dịch</a><a class="btn btn-ghost" href="#cd-dang-ky" style="color:#fff">Đăng ký tham gia</a></div></div>
+  <div class="mini"><div><b>10.000 ha</b><span>mục tiêu có dữ liệu</span></div><div><b>20.000</b><span>nông dân tham gia</span></div><div><b>100</b><span>sự kiện tại xã, thôn</span></div><div><b>4</b><span>giai đoạn theo mùa vụ</span></div></div>
+</div></div></section>
+<section><div class="wrap">
+  <p class="eyebrow">Vì sao chọn FarmBase</p>
+  <h2 class="h2">Nông sản tốt cần được chứng minh bằng hồ sơ vùng trồng minh bạch</h2>
+  <div class="values">
+    <div class="value"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div><h3>Minh bạch từ gốc</h3><p>Từng lô có tọa độ, ảnh vườn, nhật ký phân thuốc và thu hoạch. Người mua quét QR là xem được hồ sơ vùng.</p></div>
+    <div class="value"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><h3>Dễ dùng cho bà con</h3><p>Ghi nhật ký ngay trên Zalo, chọn phân thuốc từ danh mục, người thân ghi giúp được.</p></div>
+    <div class="value"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Sẵn sàng hậu kiểm</h3><p>Nhật ký đúng, đủ, kịp thời là bằng chứng giữ mã vùng trồng. Vùng đã có mã được đồng bộ với hệ thống của Bộ.</p></div>
+  </div>
+  <p class="fine">Việc cấp mã số vùng trồng thuộc thẩm quyền cơ quan quản lý nhà nước. BVI hỗ trợ kỹ thuật, hồ sơ và vận hành hệ thống truy xuất.</p>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap">
+    <div><p class="eyebrow">Hình ảnh thực tế</p><h2 class="h2">Tại vườn, tại hội nghị, cùng bà con</h2></div>
+    <a class="btn btn-ghost" href="#su-kien" style="color:var(--fg)">Xem tất cả sự kiện</a>
+  </div>
+  <div class="mosaic">
+    <figure class="w2 h2r"><div class="photo has"><img src="img/15.jpg" alt="Tập huấn nông dân tại xã Krông Pắc" loading="lazy"></div><figcaption>Tập huấn nông dân tại xã Krông Pắc<small>Lớp ToF</small></figcaption></figure>
+    <figure><div class="photo has"><img src="img/01.jpg" alt="Lớp ToT thực hành tại vườn" loading="lazy"></div><figcaption>Lớp ToT thực hành tại vườn<small>05/2026</small></figcaption></figure>
+    <figure><div class="photo has"><img src="img/07.jpg" alt="Bay flycam khảo sát vùng trồng" loading="lazy"></div><figcaption>Bay flycam khảo sát vùng<small>Vùng trồng 07, Ea Kly</small></figcaption></figure>
+    <figure class="w2"><div class="photo has"><img src="img/11.jpg" alt="Học viên lớp ToT sầu riêng" loading="lazy"></div><figcaption>Lớp ToT sầu riêng<small>14–17/05/2026</small></figcaption></figure>
+    <figure><div class="photo has"><img src="img/13.jpg" alt="Hướng dẫn quét QR, dùng ứng dụng" loading="lazy"></div><figcaption>Hướng dẫn dùng ứng dụng<small>Hội nghị truy xuất nguồn gốc</small></figcaption></figure>
+    <figure><div class="photo has"><img src="img/12.jpg" alt="Lấy mẫu nước kiểm tra" loading="lazy"></div><figcaption>Lấy mẫu kiểm tra<small>Phối hợp Hiệp hội</small></figcaption></figure>
+    <figure class="w2"><div class="photo has"><img src="img/03.jpg" alt="Tập huấn vùng trồng HTX NN Xanh Krông Pắc" loading="lazy"></div><figcaption>Tập huấn vùng trồng<small>HTX NN Xanh Krông Pắc</small></figcaption></figure>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="story">
+    <div class="photo has" style="aspect-ratio:4/3"><img src="img/00.jpg" alt="Tập huấn tại vùng trồng 07, Ea Kly" loading="lazy"></div>
+    <div>
+      <p class="eyebrow">Câu chuyện thực tế</p>
+      <div class="big" style="margin-top:12px">100%</div>
+      <blockquote>nông hộ vùng trồng 07 (Ea Kly) của HTX Nông nghiệp Xanh Krông Pắc tự cài ứng dụng và tự nhập nhật ký canh tác.</blockquote>
+      <p class="lead" style="margin-top:14px">Ngày 28/10/2026, tài khoản truy xuất của xã Krông Pắc được bàn giao cho UBND xã để theo dõi và hậu kiểm vùng trồng trên địa bàn.</p>
+    </div>
+  </div>
+  <div class="partners" style="margin-top:48px;border-top:1px solid var(--line);padding-top:24px">
+    <p class="eyebrow">Đối tác đồng hành</p>
+    <ul><li>Hiệp hội Sầu riêng tỉnh Đắk Lắk</li><li>GIZ</li><li>Viện Cây ăn quả miền Nam</li><li>Liên hiệp HTX Cư M'gar</li><li>HTX DaLa</li></ul>
+    <p class="note" style="margin-top:8px">Logo đặt sau khi được đối tác đồng ý.</p>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap"><div><p class="eyebrow">Blog</p><h2 class="h2">Báo chí ghi nhận và hướng dẫn</h2></div><a class="btn btn-ghost" href="#blog" style="color:var(--fg)">Xem blog</a></div>
+  <div class="posts" id="homeposts"></div>
+</div></section>
+</div>
+
+<!-- ============ VỀ CHÚNG TÔI ============ -->
+<div class="view" data-view="ve-chung-toi" hidden>
+<section class="phero"><div class="wrap">
+  <div class="crumb"><a href="#trang-chu">Trang chủ</a> / Về chúng tôi</div>
+  <h1 class="h1">Đối tác chuyển đổi số vùng nguyên liệu</h1>
+  <p class="lead" style="margin-top:14px">Công ty Cổ phần BVI thành lập ngày 13/3/2019 tại Đắk Lắk, là doanh nghiệp công nghệ nông nghiệp: số hóa vùng trồng, tư vấn hồ sơ mã số vùng trồng, vận hành truy xuất nguồn gốc. Giải pháp FarmBase do BVI và Salefronts đồng phát triển.</p>
+</div></section>
+<section><div class="wrap split">
+  <div class="stack" style="gap:20px">
+    <div class="card"><h3>Tầm nhìn</h3><p style="color:var(--muted)">Trở thành đơn vị dữ liệu vùng trồng uy tín hàng đầu Tây Nguyên, góp phần nâng tầm nông sản Việt.</p></div>
+    <div class="card"><h3>Sứ mệnh</h3><p style="color:var(--muted)">Số hóa và chuẩn hóa dữ liệu vùng trồng, giúp nông hộ đáp ứng tiêu chuẩn xuất khẩu, doanh nghiệp truy xuất minh bạch.</p></div>
+    <div class="card"><h3>Cam kết</h3><p style="color:var(--muted)">Triển khai trực tiếp tại vùng trồng, tuân thủ quy chuẩn và đồng hành duy trì dữ liệu sau khi được cấp mã.</p></div>
+  </div>
+  <div class="photo has" style="aspect-ratio:4/5"><img src="img/11.jpg" alt="Lớp ToT sầu riêng 05/2026" loading="lazy"></div>
+</div></section>
+<section style="padding-top:0"><div class="wrap">
+  <p class="eyebrow">Giá trị cốt lõi</p>
+  <div class="grid5">
+    <div class="card cv"><b>Trung thực</b><span>Dữ liệu có định vị, minh chứng, xác nhận thực địa.</span></div>
+    <div class="card cv"><b>Tận tâm</b><span>Đồng hành cả sau khi vùng được cấp mã.</span></div>
+    <div class="card cv"><b>Kết nối</b><span>Nền dữ liệu chung cho nông hộ, HTX, doanh nghiệp, địa phương.</span></div>
+    <div class="card cv"><b>Hiệu quả</b><span>Dễ dùng, đáp ứng yêu cầu thị trường nhập khẩu.</span></div>
+    <div class="card cv"><b>Bền vững</b><span>Vùng nguyên liệu minh bạch, giá trị lâu dài.</span></div>
+  </div>
+</div></section>
+<section style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap split">
+  <div>
+    <p class="eyebrow">Hành trình</p>
+    <h2 class="h2">Từ vườn sầu riêng Đắk Lắk</h2>
+    <ul class="timeline">
+      <li><time>13/3/2019</time><p>Thành lập Công ty Cổ phần BVI.</p></li>
+      <li><time>09/11/2023</time><p>Ký MOU xúc tiến xuất khẩu sầu riêng Đắk Lắk sang Ấn Độ trong đoàn công tác của UBND tỉnh.</p></li>
+      <li><time>20/04/2026</time><p>Hiệp hội Sầu riêng tỉnh Đắk Lắk ban hành chương trình hợp tác với BVI.</p></li>
+      <li><time>14–17/05/2026</time><p>Lớp ToT sầu riêng cùng GIZ, Viện Cây ăn quả miền Nam, Trung tâm Khuyến nông tỉnh.</p></li>
+      <li><time>01/07/2026</time><p>FarmBase kết nối Hệ thống truy xuất nguồn gốc nông sản của Bộ NN&amp;MT.</p></li>
+      <li><time>28/10/2026</time><p>Bàn giao tài khoản truy xuất cho UBND xã Krông Pắc.</p></li>
+      <li><time>11/2026 (dự kiến)</time><p>Kết nối GS1 Việt Nam, ra mắt module cơ sở đóng gói.</p></li>
+    </ul>
+  </div>
+  <div class="stack" style="gap:20px">
+    <div class="card"><h3>Đồng phát triển FarmBase</h3><p style="color:var(--muted)">Giải pháp FarmBase do BVI và Salefronts đồng phát triển. BVI vận hành, triển khai tại vùng trồng.</p><div style="display:flex;gap:12px;margin-top:14px"><div class="photo" style="aspect-ratio:3/1;flex:1"><span>Logo BVI</span></div><div class="photo" style="aspect-ratio:3/1;flex:1"><span>Logo Salefronts</span></div></div></div>
+    <div class="card"><h3>Ban điều hành</h3><ul><li>Ông Trương Công Tài, Giám đốc</li><li>Ông Minh Đức Uy, Phó Giám đốc Công nghệ và Chuyển đổi số, Trưởng Ban Công nghệ Hiệp hội Sầu riêng tỉnh Đắk Lắk</li></ul></div>
+    <div class="card"><h3>Thông tin pháp lý</h3><ul><li>Công ty Cổ phần BVI · MST 6001653877</li><li>150 Phan Huy Chú, P. Thành Nhất, Đắk Lắk</li><li>info@bvi.vn</li></ul></div>
+  </div>
+</div></section>
+</div>
+
+<!-- ============ GIẢI PHÁP (tổng quan) ============ -->
+<div class="view" data-view="giai-phap" hidden>
+<section class="phero"><div class="wrap">
+  <div class="crumb"><a href="#trang-chu">Trang chủ</a> / Giải pháp</div>
+  <h1 class="h1">Giải pháp cho từng khâu của vùng nguyên liệu</h1>
+  <p class="lead" style="margin-top:14px">Chọn một giải pháp riêng hoặc kết hợp nhiều giải pháp. Tất cả dùng chung dữ liệu trên nền tảng FarmBase.</p>
+</div></section>
+<section><div class="wrap"><div class="sols" id="solcards2"></div><div class="chain" id="chain2"></div></div></section>
+</div>
+
+<!-- ============ TRANG GIẢI PHÁP CHI TIẾT (dựng bằng script) ============ -->
+<div id="solpages"></div>
+
+<!-- ============ CHIẾN DỊCH 10.000 HA ============ -->
+<div class="view" data-view="chien-dich-10000ha" hidden>
+<section class="cd-hero"><div class="wrap cd-hero-in">
+  <div>
+    <div class="crumb" style="color:#CFE3DA"><a href="#trang-chu">Trang chủ</a> / Chiến dịch 10.000 ha</div>
+    <span class="cd-badge">Niên vụ 2026–2027 · Chương trình đề xuất</span>
+    <h1 class="cd-title">Chiến dịch <span>10.000 ha</span> cây trồng chủ lực</h1>
+    <p class="cd-sub">Chuẩn hóa vùng trồng</p>
+    <p class="cd-slogan">Số hóa sản xuất · Nâng chuẩn chất lượng · Kết nối thương mại</p>
+    <p class="cd-lead">Một niên vụ đồng hành cùng nông dân, HTX và doanh nghiệp Đắk Lắk: tập huấn đúng nhịp cây trồng, số hóa dữ liệu vùng trồng trên FarmBase, hỗ trợ hồ sơ mã vùng trồng và kết nối đầu ra.</p>
+    <div class="ctas"><a class="btn btn-gold" href="#cd-dang-ky">Đăng ký tham gia</a><a class="btn btn-ghost" href="https://zalo.me/0911423839" target="_blank" rel="noopener" style="color:#fff">Nhắn Zalo tư vấn</a></div>
+  </div>
+  <div class="cd-sun" aria-hidden="true"><svg viewBox="0 0 300 300"><circle cx="150" cy="130" r="70" fill="#F2B544"/><g stroke="#F2B544" stroke-width="6" stroke-linecap="round" opacity=".7"><path d="M150 30v-18M150 248v-10M50 130H32M268 130h-18M80 60 68 48M220 60l12-12"/></g><path d="M0 210c60-40 110-40 160-10s100 30 140 0v100H0z" fill="#35A576"/><path d="M0 240c70-30 130-20 180 5s90 20 120 5v50H0z" fill="#0B6B58"/><path d="M0 268c80-18 150-10 210 6 40 10 70 6 90 0v26H0z" fill="#063F3A"/></svg></div>
+</div></section>
+
+<section class="cd-goals-band"><div class="wrap">
+  <p class="eyebrow" style="color:var(--gold)">Mục tiêu niên vụ 11/2026 – 11/2027</p>
+  <div class="cd-goals">
+    <div><b>10.000 ha</b><span>cây trồng chủ lực có dữ liệu vùng trồng trên FarmBase</span></div>
+    <div><b>20.000</b><span>nông dân tham gia, khoảng 2 người mỗi ha</span></div>
+    <div><b>100</b><span>sự kiện: 10 hội nghị, 20 đào tạo, 70 tập huấn tại xã, thôn</span></div>
+    <div><b>4</b><span>giai đoạn theo nhịp cây trồng, mỗi giai đoạn 25% chỉ tiêu</span></div>
+  </div>
+  <p class="note" style="color:var(--band-muted);margin-top:14px">Các con số là mục tiêu của chương trình đề xuất, chưa phải kết quả.</p>
+</div></section>
+
+<section><div class="wrap split">
+  <div>
+    <p class="eyebrow">Vì sao cần chiến dịch</p>
+    <h2 class="h2">Thị trường nhập khẩu đòi hỏi hồ sơ, không chỉ trái ngon</h2>
+    <p class="lead" style="margin-top:12px">Nhiều vùng trồng ở Đắk Lắk có sản phẩm tốt nhưng dữ liệu còn nằm trong sổ tay, nhóm Zalo. Khi thị trường yêu cầu, vùng trồng phải chứng minh được bằng hồ sơ. Chiến dịch giúp chuẩn bị 5 yêu cầu này một cách bài bản.</p>
+  </div>
+  <ol class="cd-req">
+    <li><b>Mã số vùng trồng</b><span>Hồ sơ, bản đồ, điều kiện tại vườn</span></li>
+    <li><b>Mã cơ sở đóng gói</b><span>Liên kết vùng với cơ sở đóng gói có mã</span></li>
+    <li><b>Nhật ký và truy xuất</b><span>Ghi đúng, đủ, kịp thời trên FarmBase</span></li>
+    <li><b>Kiểm nghiệm theo lô</b><span>Phối hợp đơn vị kiểm nghiệm chuyên môn</span></li>
+    <li><b>Báo cáo và hậu kiểm</b><span>Dữ liệu sẵn sàng khi cơ quan quản lý kiểm tra</span></li>
+  </ol>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <p class="eyebrow">Ba trụ cột</p>
+  <h2 class="h2">Làm thật tại vườn, đo lường được</h2>
+  <div class="grid3">
+    <div class="card cd-pillar"><span class="cd-num">01</span><h3>Số hóa sản xuất</h3><ul><li>Chuẩn hóa dữ liệu vùng trồng</li><li>Nhật ký sản xuất và minh chứng</li><li>Nền tảng FarmBase cho HTX và nông dân</li></ul></div>
+    <div class="card cd-pillar"><span class="cd-num">02</span><h3>Nâng chuẩn chất lượng</h3><ul><li>Hồ sơ mã vùng trồng, mã cơ sở đóng gói</li><li>Kiểm nghiệm, kiểm định phù hợp</li><li>Tập huấn kỹ thuật và giám sát</li></ul></div>
+    <div class="card cd-pillar"><span class="cd-num">03</span><h3>Kết nối thương mại</h3><ul><li>Đối tác mua hàng trong và ngoài nước</li><li>Truyền thông, xúc tiến</li><li>Dùng thử, trải nghiệm sản phẩm</li></ul></div>
+  </div>
+  <p class="fine">Nguyên tắc: bám sát nhu cầu thực tế, không hình thức, phối hợp nhiều đối tác theo từng chuyên đề.</p>
+</div></section>
+
+<section style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+  <p class="eyebrow">Lộ trình</p>
+  <h2 class="h2">Bốn giai đoạn theo nhịp cây trồng</h2>
+  <div class="cd-road">
+    <div class="cd-phase"><span class="cd-when">11/2026 – 01/2027</span><span class="cd-crop">Sau thu hoạch</span><h3>Khởi động</h3><p>Đánh giá vùng trồng, kết nối đối tác, kế hoạch năm, hội nghị đầu vụ.</p></div>
+    <div class="cd-phase"><span class="cd-when">02 – 04/2027</span><span class="cd-crop">Xử lý bông</span><h3>Số hóa và tập huấn</h3><p>Tập huấn kỹ thuật, số hóa dữ liệu vùng, tư vấn vật tư, khảo sát và dùng thử.</p></div>
+    <div class="cd-phase"><span class="cd-when">05 – 07/2027</span><span class="cd-crop">Xử lý trái</span><h3>Nâng chuẩn chất lượng</h3><p>Giám sát chất lượng, kiểm nghiệm, kiểm định, truyền thông, kết nối doanh nghiệp.</p></div>
+    <div class="cd-phase"><span class="cd-when">08 – 11/2027</span><span class="cd-crop">Thu hoạch</span><h3>Kết nối và tổng kết</h3><p>Kết nối thương mại, báo cáo kết quả, nghiệm thu, đề xuất mở rộng.</p></div>
+  </div>
+  <div class="cd-crops">
+    <div><span class="cd-pri">Ưu tiên 1</span><b>Sầu riêng</b></div>
+    <div><span class="cd-pri">Ưu tiên 2</span><b>Cà phê</b></div>
+    <div><span class="cd-pri">Mở rộng</span><b>Chuối, thanh long, dứa, vải, bưởi, mít</b></div>
+  </div>
+</div></section>
+
+<section><div class="wrap split">
+  <div>
+    <p class="eyebrow">Một buổi tập huấn tại xã</p>
+    <h2 class="h2">Học buổi sáng, xuống vườn buổi chiều</h2>
+    <p class="lead" style="margin-top:12px">Mỗi buổi khoảng 15–20 nông dân của một vùng trồng. Nội dung bám đúng giai đoạn cây trồng lúc đó, bà con về làm được ngay.</p>
+    <ol class="steps">
+      <li><div><b>Buổi sáng · tại hội trường thôn</b><span>Hoàn thiện hồ sơ mã số vùng trồng; canh tác theo hướng VietGAP, ISPM 6; ghi nhật ký trên Zalo Mini App FarmBase.</span></div></li>
+      <li><div><b>Buổi chiều · tại vườn</b><span>Chuyên gia hướng dẫn kỹ thuật cơ bản, kiểm tra kho thuốc, bẫy, biển hiệu; chuẩn bị cho đợt xã kiểm tra mã vùng.</span></div></li>
+      <li><div><b>Sau buổi học</b><span>Điểm danh QR, phiếu khảo sát nhu cầu, bảng kiểm mã vùng cho từng hộ; HTX theo dõi tiếp trên FarmBase.</span></div></li>
+    </ol>
+  </div>
+  <div class="cd-photos">
+    <div class="photo has"><img src="img/16.jpg" alt="Tập huấn nông dân tại hội trường thôn" loading="lazy"></div>
+    <div class="photo has"><img src="img/06.jpg" alt="Chuyên gia hướng dẫn tại vườn" loading="lazy"></div>
+    <div class="photo has"><img src="img/13.jpg" alt="Hướng dẫn nông dân dùng điện thoại" loading="lazy"></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <p class="eyebrow">Giá trị cho từng bên</p>
+  <h2 class="h2">Ai tham gia cũng có việc cụ thể để nhận về</h2>
+  <div class="cd-values">
+    <div class="card"><h3>Nông dân</h3><ul><li>Tập huấn đúng nhịp mùa vụ, miễn phí tại xã</li><li>Có nhật ký, dữ liệu vườn để đáp ứng yêu cầu mã vùng và truy xuất</li><li>Thêm cơ hội gặp doanh nghiệp thu mua</li></ul></div>
+    <div class="card"><h3>HTX, vùng trồng</h3><ul><li>Chuẩn hóa hồ sơ, dữ liệu vùng nguyên liệu</li><li>Công cụ quản lý thành viên, diện tích, nhật ký</li><li>Dữ liệu minh bạch khi làm việc với doanh nghiệp</li></ul></div>
+    <div class="card"><h3>Doanh nghiệp đồng hành</h3><ul><li>Gặp trực tiếp nông dân, HTX ở vùng sầu riêng, cà phê trọng điểm</li><li>Hiện diện thương hiệu xuyên mùa vụ, gian hàng, dùng thử</li><li>Báo cáo minh chứng sau từng chương trình</li></ul></div>
+    <div class="card"><h3>Doanh nghiệp thu mua</h3><ul><li>Nguồn hàng có dữ liệu vùng trồng, nhật ký</li><li>Phiên kết nối với HTX theo mùa vụ</li></ul></div>
+    <div class="card"><h3>Địa phương</h3><ul><li>Dữ liệu vùng trồng tập trung, liên thông hệ thống truy xuất</li><li>Hỗ trợ xây dựng vùng nguyên liệu minh bạch</li></ul></div>
+  </div>
+</div></section>
+
+<section style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+  <p class="eyebrow">Đơn vị triển khai</p>
+  <h2 class="h2">Hệ sinh thái đề xuất</h2>
+  <div class="cd-units">
+    <div class="card"><span class="cd-role">Điều phối</span><h3>HTX Nông nghiệp Công nghệ Cao DaLa</h3><p>Đầu mối địa phương, kết nối hệ sinh thái dịch vụ nông nghiệp Tây Nguyên.</p></div>
+    <div class="card"><span class="cd-role">Công nghệ</span><h3>Công ty Cổ phần BVI · FarmBase</h3><p>Nhật ký số, điểm danh QR, dữ liệu vùng trồng; hỗ trợ hồ sơ mã vùng trồng, mã cơ sở đóng gói.</p></div>
+    <div class="card"><span class="cd-role">Kỹ thuật, thu mua</span><h3>HTX Nông nghiệp Xanh Krông Pắc</h3><p>Chuyên môn kỹ thuật canh tác và thu mua.</p></div>
+  </div>
+  <p style="margin-top:22px;font-weight:700">Đơn vị đồng hành trong hệ sinh thái đề xuất</p>
+  <ul class="cd-partners"><li>Hiệp hội Sầu riêng tỉnh Đắk Lắk</li><li>Bazan Lab</li><li>Liên hiệp HTX NN CNC Cư M'gar</li><li>HTX NN Công nghệ Xanh An Nông</li></ul>
+</div></section>
+
+<section id="cd-dang-ky" class="cd-join"><div class="wrap consult">
+  <div>
+    <p class="eyebrow" style="color:var(--gold)">Tham gia chiến dịch</p>
+    <h2 class="h2" style="color:#fff">Cùng chuẩn hóa 10.000 ha vùng trồng</h2>
+    <div class="cd-ways">
+      <div><b>HTX, tổ hợp tác, vùng trồng</b><span>Đăng ký vùng tham gia đợt khảo sát và tập huấn đầu vụ.</span></div>
+      <div><b>UBND xã, phường</b><span>Mời tổ chức hội nghị, tập huấn trên địa bàn.</span></div>
+      <div><b>Doanh nghiệp vật tư, tài chính, thu mua</b><span>Nhận hồ sơ đồng hành và quyền lợi theo từng hạng.</span></div>
+    </div>
+    <div class="contact-list">
+      <a href="https://zalo.me/0911423839" target="_blank" rel="noopener"><span class="mark" style="background:#0068FF">Z</span><span>BVI · Ngọc · 0911 423 839<small>Zalo, điện thoại · info@bvi.vn</small></span></a>
+      <div><span class="mark" style="background:var(--gold);color:#2A1A00">D</span><span>HTX DaLa · 0917 202 527<small>htxdala.vn · htxdala@gmail.com</small></span></div>
+    </div>
+  </div>
+  <form id="f2" novalidate>
+    <label for="cd-name">Họ tên<input id="cd-name" placeholder="Nguyễn Văn A"></label>
+    <div class="row2">
+      <label for="cd-phone">Số điện thoại / Zalo<input id="cd-phone" inputmode="tel" placeholder="09xx xxx xxx"></label>
+      <label for="cd-role">Bạn là<select id="cd-role"><option>HTX, tổ hợp tác</option><option>Nông hộ</option><option>UBND xã, phường</option><option>Doanh nghiệp đồng hành</option><option>Doanh nghiệp thu mua</option></select></label>
+    </div>
+    <div class="row2">
+      <label for="cd-crop">Cây trồng<select id="cd-crop"><option>Sầu riêng</option><option>Cà phê</option><option>Cây khác</option></select></label>
+      <label for="cd-place">Xã, phường<input id="cd-place" placeholder="Ví dụ Krông Pắc"></label>
+    </div>
+    <button class="btn btn-gold" type="submit" style="justify-content:center">Đăng ký tham gia</button>
+    <p id="ok2" class="ok" hidden>Bản phác: form chưa gửi đi đâu.</p>
+  </form>
+</div></section>
+<section style="padding-block:28px"><div class="wrap"><p class="fine" style="margin:0">Chiến dịch là chương trình đề xuất cho niên vụ 2026–2027; mọi con số là mục tiêu. Việc cấp mã số vùng trồng thuộc thẩm quyền cơ quan quản lý nhà nước. Thông tin nông dân chỉ chia sẻ với đối tác khi có sự đồng ý của nông dân.</p></div></section>
+</div>
+
+<!-- ============ SỰ KIỆN ============ -->
+<div class="view" data-view="su-kien" hidden>
+<section class="phero"><div class="wrap">
+  <div class="crumb"><a href="#trang-chu">Trang chủ</a> / Sự kiện</div>
+  <h1 class="h1">Sự kiện và triển khai thực tế</h1>
+  <p class="lead" style="margin-top:14px">Hình ảnh từ các buổi khảo sát, tập huấn, hội nghị và bàn giao mà BVI thực hiện hoặc đồng hành.</p>
+</div></section>
+<section style="padding-top:24px"><div class="wrap" id="events"></div></section>
+</div>
+
+<!-- ============ CHI TIẾT BÀI VIẾT ============ -->
+<div class="view" data-view="bai-viet" hidden><div id="article"></div></div>
+
+<!-- ============ BLOG ============ -->
+<div class="view" data-view="blog" hidden>
+<section class="phero"><div class="wrap">
+  <div class="crumb"><a href="#trang-chu">Trang chủ</a> / Blog</div>
+  <h1 class="h1">Blog FarmBase</h1>
+  <p class="lead" style="margin-top:14px">Báo chí ghi nhận, kiến thức mã số vùng trồng và hướng dẫn dùng FarmBase hiệu quả.</p>
+  <div class="tabs" role="tablist" id="tabs">
+    <button role="tab" aria-selected="true" data-t="all">Tất cả</button>
+    <button role="tab" aria-selected="false" data-t="bao-chi">Báo chí</button>
+    <button role="tab" aria-selected="false" data-t="huong-dan">Hướng dẫn sử dụng</button>
+    <button role="tab" aria-selected="false" data-t="kien-thuc">Kiến thức</button>
+  </div>
+</div></section>
+<section style="padding-top:36px"><div class="wrap"><div class="posts" id="blogposts"></div></div></section>
+</div>
+
+<!-- ============ LIÊN HỆ ============ -->
+<div class="view" data-view="lien-he" hidden>
+<section class="dark" style="padding-block:64px"><div class="wrap consult">
+  <div>
+    <div class="crumb" style="color:var(--band-muted)"><a href="#trang-chu">Trang chủ</a> / Liên hệ</div>
+    <h1 class="h1">Bắt đầu số hóa vùng trồng của bạn</h1>
+    <p class="lead" style="margin-top:12px">Để lại thông tin, chuyên viên FarmBase gọi lại trong giờ làm việc. Cần gấp, nhắn Zalo trực tiếp.</p>
+    <div class="contact-list">
+      <a href="https://zalo.me/0911423839" target="_blank" rel="noopener"><span class="mark" style="background:#0068FF">Z</span><span>Zalo: Ngọc · 0911 423 839<small>Phản hồi nhanh nhất</small></span></a>
+      <div><span class="mark">☎</span><span>Hotline: 0911 423 839 (Ngọc)<small>Giờ hành chính</small></span></div>
+      <a href="https://zalo.me/1461539868993925462" target="_blank" rel="noopener"><span class="mark" style="background:#0068FF">OA</span><span>Zalo OA FarmBase<small>Nhận tin, hỏi đáp</small></span></a>
+      <a href="https://www.facebook.com/durianbase" target="_blank" rel="noopener"><span class="mark" style="background:#1877F2">f</span><span>Fanpage Facebook<small>facebook.com/durianbase</small></span></a>
+      <a href="https://zalo.me/s/3146448650831889838/" target="_blank" rel="noopener"><span class="mark" style="background:var(--leaf)">App</span><span>Zalo Mini App FarmBase<small>Dành cho nông dân, mở ngay trong Zalo</small></span></a>
+      <div><span class="mark">@</span><span>info@bvi.vn<small>Gửi hồ sơ, yêu cầu báo giá</small></span></div>
+      <div><span class="mark">⌂</span><span>150 Phan Huy Chú, P. Thành Nhất, Đắk Lắk<small>Công ty Cổ phần BVI</small></span></div>
+    </div>
+  </div>
+  <form id="f" novalidate>
+    <label for="name">Họ tên<input id="name" required placeholder="Nguyễn Văn A"></label>
+    <div class="row2">
+      <label for="phone">Số điện thoại / Zalo<input id="phone" required inputmode="tel" placeholder="09xx xxx xxx"></label>
+      <label for="org">Loại đơn vị<select id="org"><option>HTX, tổ hợp tác</option><option>Doanh nghiệp</option><option>Cơ sở đóng gói</option><option>UBND xã, phường</option><option>Nông hộ</option><option>Khác</option></select></label>
+    </div>
+    <div class="row2">
+      <label for="need">Nhu cầu<select id="need"><option>Truy xuất nguồn gốc</option><option>Tư vấn mã vùng trồng</option><option>Tư vấn mã đóng gói</option><option>Liên kết thu mua và kỹ thuật</option><option>Giải pháp công nghệ riêng</option></select></label>
+      <label for="area">Diện tích ước tính (ha)<input id="area" inputmode="decimal" placeholder="Ví dụ 20"></label>
+    </div>
+    <label for="msg">Ghi chú<textarea id="msg" rows="3" placeholder="Cây trồng, địa phương, thời gian mong muốn"></textarea></label>
+    <button class="btn btn-primary" type="submit" style="justify-content:center">Gửi yêu cầu tư vấn</button>
+    <p id="ok" class="ok" hidden>Bản phác: form chưa gửi đi đâu. Bản thật sẽ lưu vào trang quản lý và báo về info@bvi.vn.</p>
+  </form>
+</div></section>
+</div>
+
+<section style="padding-block:40px"><div class="wrap"><div class="review">
+  <h2>Cần bạn xác nhận khi duyệt</h2>
+  <ol>
+    <li>Có hiện giá tham khảo trên các trang giải pháp không, hay chỉ để nút "Nhận báo giá"?</li>
+    <li>Bản đồ đang ghi Lâm Đồng, Đồng Tháp là "đang mở rộng" vì danh sách vùng hiện chỉ có 3 tỉnh. Giữ cách ghi này chứ?</li>
+    <li>Được nêu tên ban điều hành, HTX Nông nghiệp Xanh Krông Pắc và các đối tác chưa?</li>
+    <li>Trang "Liên kết thu mua và kỹ thuật": BVI muốn nói tới mức nào về kho, thu mua, xuất khẩu?</li>
+    <li>Trang chiến dịch ghi liên hệ BVI là Ngọc 0911 423 839 (thay vì anh Minh Đức Uy như hồ sơ tài trợ) và không công khai gói tài trợ, ngân sách. Đúng ý bạn chứ?</li>
+    <li>Ảnh đã lấy từ thư mục Drive. Ảnh nào có khuôn mặt nông dân rõ, bạn xác nhận đã được phép dùng công khai chưa? Còn thiếu ảnh cà phê, cơ sở đóng gói, logo BVI và Salefronts.</li>
+    <li>Đường dẫn Fanpage đang là facebook.com/durianbase (tên cũ). Nên đổi tên người dùng trang sang farmbase để thống nhất thương hiệu.</li>
+  </ol>
+</div></div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="logo" href="#trang-chu"><img src="data:image/png;base64,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" alt="farmbase" style="height:28px;width:auto"></a>
+      <p style="margin-top:12px">Giải pháp FarmBase do BVI và Salefronts đồng phát triển.</p>
+      <p style="margin-top:10px">Công ty Cổ phần BVI · MST 6001653877<br>150 Phan Huy Chú, P. Thành Nhất, Đắk Lắk</p></div>
+    <div><h4>Giải pháp</h4><ul id="footsols"></ul></div>
+    <div><h4>Công ty</h4><ul><li><a href="#ve-chung-toi">Về chúng tôi</a></li><li><a href="#chien-dich-10000ha">Chiến dịch 10.000 ha</a></li><li><a href="#su-kien">Sự kiện</a></li><li><a href="#blog">Blog</a></li><li><a href="#lien-he">Liên hệ</a></li></ul></div>
+    <div><h4>Liên hệ</h4><ul><li>Hotline: Ngọc · 0911 423 839</li><li>info@bvi.vn</li><li><a href="https://www.facebook.com/durianbase" target="_blank" rel="noopener">Facebook</a> · <a href="https://zalo.me/1461539868993925462" target="_blank" rel="noopener">Zalo OA</a></li><li><a href="https://zalo.me/s/3146448650831889838/" target="_blank" rel="noopener">Zalo Mini App FarmBase</a></li><li><a href="quan-tri/">Trang quản lý (bản phác) →</a></li></ul></div>
+  </div>
+  <div class="co"><span>© 2026 Công ty Cổ phần BVI</span><span>Chính sách bảo mật · Điều khoản sử dụng</span></div>
+</div></footer>
+
+<div class="fab" aria-label="Liên hệ nhanh">
+  <a class="bot" href="#lien-he" title="Chatbot tư vấn (giai đoạn 4)">Chat</a>
+  <a class="msg" href="https://m.me/durianbase" target="_blank" rel="noopener" title="Nhắn Messenger Fanpage FarmBase">Mess</a>
+  <a class="call" href="tel:0911423839" title="Gọi 0911 423 839">Gọi</a>
+  <a class="zalo" href="https://zalo.me/1461539868993925462" target="_blank" rel="noopener" title="Zalo OA FarmBase">Zalo</a>
+</div>
+<nav class="bar" aria-label="Liên hệ nhanh">
+  <a href="https://zalo.me/1461539868993925462" target="_blank" rel="noopener"><i style="background:#0068FF">Z</i>Zalo</a>
+  <a href="tel:0911423839"><i style="background:var(--leaf);color:#06231F">☎</i>Gọi</a>
+  <a href="https://m.me/durianbase" target="_blank" rel="noopener"><i style="background:#7B4DFF">M</i>Messenger</a>
+  <a href="#lien-he"><i style="background:var(--forest)">?</i>Tư vấn</a>
+</nav>
+
+<script>
+const SOLS=[
+ {id:'truy-xuat',img:'13',c:'c1',short:'Truy xuất',name:'Truy xuất nguồn gốc',desc:'Nền tảng FarmBase: trang quản lý web và Zalo Mini App, QR vùng và lô, đồng bộ hệ thống quốc gia.',
+  lead:'Quản lý vùng trồng, lô đất, nhật ký canh tác và thu hoạch trên một nền tảng. Nông dân ghi trên Zalo, HTX và doanh nghiệp theo dõi trên web, người mua quét QR xem hồ sơ vùng.',
+  for:['HTX, tổ hợp tác','Doanh nghiệp thu mua, xuất khẩu','UBND xã, phường','Nông hộ'],
+  inc:['Trang quản lý web: vùng trồng, lô đất, nhật ký, thu hoạch, bản đồ vệ tinh, nhân viên và phân quyền','Zalo Mini App: không cần cài, quét QR là mở, chụp ảnh bao bì phân thuốc để ghi nhật ký, người thân ghi giúp được','Nhập tọa độ tự ra số tờ, số thửa; ảnh sổ đỏ chỉ phục vụ hồ sơ, không hiển thị công khai','Nhập, xuất Excel hàng loạt; hệ thống báo dòng lỗi','QR vùng và QR lô dẫn tới trang truy xuất có ảnh, tài liệu, video','Đồng bộ nhật ký với Hệ thống TXNG Bộ NN&MT (áp dụng cho vùng đã có mã); GS1 theo lộ trình'],
+  steps:[['Khảo sát, tạo vùng','Định vị lô, tạo vùng, vườn, tài khoản'],['Tập huấn','Hướng dẫn HTX và nông hộ dùng web, Zalo Mini App'],['Ghi nhật ký','Nông hộ ghi theo mùa vụ, HTX nhắc và kiểm tra'],['Đồng bộ, truy xuất','Đồng bộ hệ thống quốc gia, in QR cho vùng và lô']],
+  price:'Sầu riêng: thiết lập 800.000 đ/ha/năm; hỗ trợ nhập liệu 700.000 đ/ha/năm. Cây khác: thiết lập 5.000.000 đ/vùng, duy trì 5.000.000 đ/năm.'},
+ {id:'ma-vung-trong',img:'07',c:'c2',short:'Mã vùng trồng',name:'Hỗ trợ tư vấn mã vùng trồng',desc:'Khảo sát, GPS, flycam, bản đồ và hồ sơ kỹ thuật, đồng hành duy trì sau khi có mã.',
+  lead:'BVI hỗ trợ kỹ thuật, hồ sơ và dữ liệu để vùng trồng đáp ứng điều kiện đăng ký mã số vùng trồng nội địa và xuất khẩu, rồi đồng hành duy trì để giữ mã khi hậu kiểm.',
+  for:['HTX, tổ hợp tác','Doanh nghiệp liên kết vùng nguyên liệu','Nhóm nông hộ có vườn liền kề'],
+  inc:['Khảo sát, sàng lọc vườn, họp dân, tổ chức vùng','Đo đạc GPS 100% lô, flycam, bản đồ lô và bản đồ tổng thể','Hướng dẫn điều kiện tại vườn: biển hiệu song ngữ, kho thuốc, bẫy, điểm tập kết','Tập huấn nhật ký, sử dụng thuốc an toàn, sinh vật gây hại thị trường nhập khẩu quan tâm','Chuẩn hóa nhật ký và hồ sơ kỹ thuật, bản song ngữ','Đồng hành duy trì dữ liệu sau khi vùng được cấp mã'],
+  steps:[['Khảo sát, sàng lọc','Họp dân, phiếu khảo sát từng vườn, xác nhận diện tích'],['Tổ chức vùng, giấy tờ','Xác nhận tham gia, ủy quyền, cam kết, giấy tờ đất'],['Đo đạc, số hóa, bản đồ','Polygon GPS, flycam, tạo vùng trên FarmBase'],['Điều kiện tại vườn, tập huấn','Biển hiệu, kho thuốc, bẫy, lớp tập huấn'],['Nhật ký, hồ sơ kỹ thuật','5 loại nhật ký cho 100% hộ, quy trình canh tác'],['Nộp hồ sơ, kiểm tra thực địa','Hỗ trợ lập hồ sơ nộp qua Cổng dịch vụ công'],['Duy trì sau cấp mã','Theo dõi nhật ký, phối hợp hậu kiểm']],
+  price:'Sầu riêng từ 3.000.000 đ/ha; gói kèm thiết lập truy xuất 3.500.000 đ/ha; gói kèm nhập liệu 12 tháng 4.500.000 đ/ha.',
+  warn:'Việc cấp mã số vùng trồng thuộc thẩm quyền cơ quan quản lý nhà nước và nước nhập khẩu. BVI hỗ trợ kỹ thuật, hồ sơ và vận hành hệ thống truy xuất; không cam kết thời gian cấp mã. Diện tích 10 ha mỗi mã là mức BVI khuyến nghị, không bắt buộc.'},
+ {id:'ma-dong-goi',c:'c3',short:'Mã đóng gói',name:'Hỗ trợ tư vấn mã đóng gói',desc:'Tư vấn hồ sơ mã cơ sở đóng gói và quản lý CSĐG, SKU, tem QR trên FarmBase.',
+  lead:'Sầu riêng xuất khẩu chính ngạch phải đi qua cơ sở đóng gói có mã được phê duyệt. BVI tư vấn hồ sơ mã cơ sở đóng gói và kết nối dữ liệu vùng trồng với cơ sở đóng gói trên FarmBase.',
+  for:['Cơ sở đóng gói','Doanh nghiệp xuất khẩu','HTX có nhà sơ chế'],
+  inc:['Tư vấn hồ sơ mã cơ sở đóng gói theo phạm vi từng cơ sở','Liên kết vùng trồng có mã với cơ sở đóng gói','Module cơ sở đóng gói: mã CSĐG, quản lý SKU, tem QR động (dự kiến 11/2026)','Kết nối GS1 Việt Nam và Hệ thống TXNG (theo lộ trình)','Tên miền truy xuất của BVI miễn phí hoặc tên miền riêng'],
+  steps:[['Khảo sát cơ sở','Đánh giá hiện trạng nhà xưởng, quy trình'],['Hoàn thiện hồ sơ','Hướng dẫn chuẩn bị hồ sơ và điều kiện'],['Thiết lập trên FarmBase','Tạo CSĐG, SKU, liên kết vùng nguồn (khi module ra mắt)'],['Vận hành tem QR','In tem, theo dõi lô hàng truy về vùng']],
+  price:'Tư vấn hồ sơ: báo giá theo phạm vi. Module CSĐG (dự kiến 11/2026): thiết lập 5.000.000 đ, duy trì 5.000.000 đ/năm, tích hợp GS1 + TXNG 5.000.000 đ/năm (gồm 3 SKU).',
+  warn:'Module cơ sở đóng gói, SKU và QR động dự kiến chính thức từ 11/2026.'},
+ {id:'thu-mua-ky-thuat',img:'09',c:'c4',short:'Thu mua, kỹ thuật',name:'Liên kết thu mua và kỹ thuật',desc:'Chuẩn hóa kỹ thuật canh tác, tập huấn tại vườn và kết nối đầu ra cho vùng trồng.',
+  lead:'BVI có kinh nghiệm thực tế trong chuỗi thu mua, đóng gói, xuất khẩu sầu riêng. Chúng tôi giúp vùng trồng chuẩn hóa kỹ thuật canh tác và kết nối với đơn vị thu mua phù hợp.',
+  for:['HTX, tổ hợp tác','Doanh nghiệp thu mua','Vùng trồng mới có mã'],
+  inc:['Tập huấn kỹ thuật theo nhu cầu: chống sượng, phòng ngừa cadimi, sử dụng thuốc an toàn, thời gian cách ly','Chuẩn hóa quy trình canh tác và quy trình thu hoạch','Theo dõi vườn chờ thu hoạch, sản lượng, người mua trên FarmBase','Kết nối vùng trồng với doanh nghiệp thu mua, tiêu thụ theo thỏa thuận'],
+  steps:[['Đánh giá vùng','Hiện trạng canh tác, sản lượng, thị trường mục tiêu'],['Chuẩn hóa kỹ thuật','Tập huấn, quy trình, nhật ký'],['Kết nối đầu ra','Giới thiệu đơn vị thu mua, theo dõi thu hoạch']],
+  price:'Tập huấn: online 2.000.000 đ/chuyên gia/buổi; trực tiếp 4.000.000 đ/chuyên gia/buổi (tối đa 20 người). Liên kết thu mua: theo thỏa thuận.'},
+ {id:'giai-phap-rieng',img:'14',c:'c5',short:'Công nghệ riêng',name:'Giải pháp công nghệ theo nhu cầu doanh nghiệp',desc:'Tích hợp, báo cáo, tên miền truy xuất và tính năng riêng trên nền FarmBase.',
+  lead:'Doanh nghiệp có quy trình riêng có thể dùng FarmBase làm nền và bổ sung tính năng, báo cáo, tích hợp theo nhu cầu. Dữ liệu thuộc về chủ thể sản xuất, có thể xuất, sao lưu, chuyển đổi.',
+  for:['Doanh nghiệp xuất khẩu','Chuỗi liên kết nhiều vùng','Tổ chức dự án, hiệp hội'],
+  inc:['Báo cáo, dashboard theo chỉ tiêu riêng','Tích hợp với hệ thống sẵn có của doanh nghiệp','Trang truy xuất mang thương hiệu, tên miền riêng','Phân quyền nhiều cấp: doanh nghiệp, HTX, vùng, địa phương','Cam kết không khóa dữ liệu: quyền xuất, sao lưu, chuyển đổi'],
+  steps:[['Trao đổi nhu cầu','Quy trình, dữ liệu, người dùng'],['Đề xuất giải pháp','Phạm vi, lộ trình, chi phí'],['Triển khai, nghiệm thu','Phát triển, tập huấn, bàn giao']],
+  price:'Báo giá theo phạm vi sau buổi trao đổi nhu cầu.'}
+];
+const ICON={
+ vt:'<path d="M5 10h14l-1 10H6z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/>',
+ nh:'<circle cx="12" cy="7" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/>',
+ htx:'<path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M10 21v-5h4v5"/>',
+ tm:'<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>',
+ dg:'<path d="M12 3l8 4v10l-8 4-8-4V7z"/><path d="M4 7l8 4 8-4"/><path d="M12 11v10"/>',
+ qr:'<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2"/>'
+};
+const STAGES=[
+ ['vt','Vật tư đầu vào','Danh mục phân thuốc: hoạt chất, liều lượng, thời gian cách ly',['c1']],
+ ['nh','Nông hộ','Ghi nhật ký trên Zalo Mini App, chụp ảnh bao bì',['c1','c4']],
+ ['htx','HTX, vùng trồng','Quản lý vùng, lô, hộ; bản đồ; hồ sơ mã vùng trồng',['c1','c2']],
+ ['tm','Thu mua','Vườn chờ thu hoạch, sản lượng, người mua',['c4']],
+ ['dg','Cơ sở đóng gói','Mã CSĐG, SKU, tem QR',['c3'],true],
+ ['qr','Xuất khẩu, người mua','Quét QR xem hồ sơ vùng, không cần tài khoản',['c1']]
+];
+const sol=id=>SOLS.find(s=>s.id===id);
+function chainHTML(){
+  const chip=c=>{const s=SOLS.find(x=>x.c===c);return `<a class="chip ${c}" href="#${s.id}" style="text-decoration:none">${s.short}</a>`};
+  return `<div class="band top"><b>BVI đồng hành tại hiện trường</b><span class="pill">Khảo sát GPS, flycam</span><span class="pill">Hồ sơ mã vùng trồng</span><span class="pill">Hồ sơ mã đóng gói</span><span class="pill">Tập huấn kỹ thuật</span></div>
+  <div class="ends"><span>Từ gốc</span><span>Đến tay người mua</span></div>
+  <div class="stages">${STAGES.map(s=>`<div class="stage"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[s[0]]}</svg></span><h4>${s[1]}</h4><p>${s[2]}</p>${s[4]?'<span class="soon">Module dự kiến 11/2026</span>':''}<div class="chips">${s[3].map(chip).join('')}</div></div>`).join('')}</div>
+  <div class="band bot"><b>Cơ quan quản lý, hệ thống quốc gia</b><span class="pill">UBND xã theo dõi, hậu kiểm</span><span class="pill">Hệ thống TXNG Bộ NN&amp;MT</span><span class="pill">GS1 Việt Nam (theo lộ trình)</span></div>
+  <div class="legend">${SOLS.map(s=>`<span><i class="${s.c}"></i>${s.name}</span>`).join('')}<span class="note">Giải pháp công nghệ riêng áp dụng cho toàn chuỗi theo nhu cầu.</span></div>`;
+}
+document.getElementById('chain').innerHTML=chainHTML();
+document.getElementById('chain2').innerHTML=chainHTML();
+document.getElementById('chain2').style.marginTop='40px';
+const cards=SOLS.map(s=>`<a class="sol" href="#${s.id}"><span class="chip ${s.c}" style="align-self:flex-start">${s.short}</span><h3>${s.name}</h3><p>${s.desc}</p><span class="go">Xem chi tiết →</span></a>`).join('');
+document.getElementById('solcards').innerHTML=cards;document.getElementById('solcards2').innerHTML=cards;
+document.getElementById('footsols').innerHTML=SOLS.map(s=>`<li><a href="#${s.id}">${s.name}</a></li>`).join('');
+document.getElementById('ddp').innerHTML=`<a href="#giai-phap"><b>Tổng quan giải pháp</b><small>Sơ đồ chuỗi giá trị</small></a>`+SOLS.map(s=>`<a href="#${s.id}"><b>${s.name}</b><small>${s.desc}</small></a>`).join('');
+document.getElementById('mnavlist').innerHTML=`<a href="#trang-chu">Trang chủ</a><a href="#ve-chung-toi">Về chúng tôi</a><a href="#giai-phap">Giải pháp</a>${SOLS.map(s=>`<a class="sub" href="#${s.id}">${s.name}</a>`).join('')}<a href="#chien-dich-10000ha">Chiến dịch 10.000 ha</a><a href="#su-kien">Sự kiện</a><a href="#blog">Blog</a><a href="#lien-he">Liên hệ</a>`;
+document.getElementById('solpages').innerHTML=SOLS.map(s=>`<div class="view" data-view="${s.id}" hidden>
+<section class="phero"><div class="wrap"><div class="crumb"><a href="#trang-chu">Trang chủ</a> / <a href="#giai-phap">Giải pháp</a> / ${s.name}</div>
+<span class="chip ${s.c}">${s.short}</span><h1 class="h1" style="margin-top:12px">${s.name}</h1><p class="lead" style="margin-top:14px">${s.lead}</p>
+<div class="for">${s.for.map(f=>`<span>${f}</span>`).join('')}</div>
+<div class="ctas"><a class="btn btn-primary" href="https://zalo.me/0911423839" target="_blank" rel="noopener">Nhắn Zalo tư vấn</a><a class="btn btn-ghost" href="#lien-he" style="color:var(--fg)">Nhận báo giá</a>${s.id==='truy-xuat'?`<a class="btn btn-ghost" href="https://zalo.me/s/3146448650831889838/" target="_blank" rel="noopener" style="color:var(--fg)">Mở Zalo Mini App</a>`:''}</div></div></section>
+<section><div class="wrap split"><div><h2 class="h2">Quy trình triển khai</h2><ol class="steps">${s.steps.map(x=>`<li><div><b>${x[0]}</b><span>${x[1]}</span></div></li>`).join('')}</ol></div>
+<div class="stack" style="gap:20px"><div class="card"><h3>Bao gồm</h3><ul>${s.inc.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+${s.img?`<div class="photo has" style="aspect-ratio:4/3"><img src="img/${s.img}.jpg" alt="${s.name}" loading="lazy"></div>`:`<div class="photo" style="aspect-ratio:4/3"><span><b>Cần ảnh</b>hình triển khai thực tế cho ${s.name.toLowerCase()}</span></div>`}
+<div class="card pricebox"><h3>Chi phí tham khảo</h3><p style="color:var(--muted)">${s.price}</p><p class="note" style="margin-top:8px">Giá tham khảo, chưa gồm VAT, áp dụng đến hết 12/2026.</p></div></div></div>
+${s.warn?`<div class="wrap"><div class="alert">${s.warn}</div></div>`:''}</section></div>`).join('');
+
+const ALBUMS=[
+ ['05/2026','Đắk Lắk','Lớp ToT sầu riêng','Lớp đào tạo giảng viên nguồn (ToT) cùng GIZ, giảng viên Viện Cây ăn quả miền Nam và Trung tâm Khuyến nông tỉnh. Học viên học trên lớp và thực hành tại vườn; chuyên gia BVI giảng về hệ thống truy xuất nguồn gốc quốc gia.',['11','01','04','02']],
+ ['2026','Các xã tại Đắk Lắk','Tập huấn nông dân (ToF) tại xã','Các lớp tập huấn cho nông dân tại hội trường xã, thôn: ghi nhật ký canh tác, sử dụng thuốc an toàn và yêu cầu của mã số vùng trồng. Bốn lớp ToF với khoảng 3.000 lượt nông dân.',['15','16','19','20']],
+ ['2026','Đắk Lắk','Hội nghị triển khai truy xuất nguồn gốc','Hội nghị hướng dẫn HTX, tổ hợp tác và nông hộ sử dụng hệ thống truy xuất; cán bộ hướng dẫn trực tiếp trên điện thoại của bà con.',['17','13','14','21']],
+ ['2026','Ea Kly, Krông Pắc','Số hóa vùng trồng 07, HTX NN Xanh Krông Pắc','Khảo sát bằng flycam, tập huấn tại vùng và hướng dẫn nhật ký. 100% nông hộ của vùng tự cài ứng dụng và tự nhập nhật ký canh tác.',['03','07','00','08']],
+ ['2026','Đắk Lắk','Phối hợp Hiệp hội Sầu riêng: lấy mẫu kiểm tra','Phối hợp Hiệp hội Sầu riêng tỉnh Đắk Lắk kiểm tra tại vườn và lấy mẫu phục vụ đánh giá.',['12','09','18','06']]
+];
+const PRESS=[
+ ['28/10/2026','Tạp chí Hữu Cơ Việt Nam','Đắk Lắk tập huấn chống sượng, phòng ngừa cadimi, nâng cao chất lượng sầu riêng bền vững','Tại xã Krông Pắc, UBND xã và Hiệp hội Sầu riêng tỉnh tập huấn chống sượng trái, kiểm soát cadimi và chăm sóc sau thu hoạch. Hiệp hội bàn giao tài khoản hệ thống truy xuất nguồn gốc cho UBND xã; ông Minh Đức Uy, Trưởng Ban Công nghệ Hiệp hội, tham dự.','https://nongnghiephuuco.vn/dak-lak-tap-huan-chong-suong-phong-ngua-cadimi-nang-cao-chat-luong-sau-rieng-ben-vung-18164.html','Báo chí ghi nhận'],
+ ['02/10/2026','Báo Nông nghiệp và Môi trường','Xây vùng sầu riêng bền vững, bài 5: Đưa cả hệ sinh thái đến vùng trồng','Loạt bài về vùng sầu riêng bền vững, ghi nhận việc kết nối hệ thống truy xuất nguồn gốc quốc gia.','https://nongnghiepmoitruong.vn/xay-vung-sau-rieng-ben-vung-bai-5-dua-ca-he-sinh-thai-den-vung-trong-d831075.html','Báo chí'],
+ ['28/08/2026','Tạp chí Hữu Cơ Việt Nam','Ea Drông đẩy mạnh xây dựng mã số hóa cho vùng trồng, nâng chuẩn chuỗi giá trị sầu riêng','Khoảng 200 hộ trồng sầu riêng dự hội nghị về xây dựng, duy trì mã số vùng trồng, mã cơ sở đóng gói và phần mềm số hóa vùng trồng. Ông Minh Đức Uy, Trưởng Ban Công nghệ Hiệp hội, là một trong các diễn giả.','https://nongnghiephuuco.vn/ea-drong-day-manh-xay-dung-ma-so-hoa-cho-vung-trong-nang-chuan-chuoi-gia-tri-sau-rieng-16841.html','BVI đồng hành'],
+ ['17/07/2026','Tạp chí Hữu Cơ Việt Nam','Đắk Lắk triển khai hệ thống truy xuất nguồn gốc sầu riêng, nâng cao giá trị ngành hàng','Hội nghị tại xã Quảng Phú phổ biến lộ trình truy xuất, quản lý vùng trồng, cơ sở đóng gói bằng phần mềm, cùng Hiệp hội Sầu riêng và Quatest 3.','https://nongnghiephuuco.vn/dak-lak-trien-khai-he-thong-truy-xuat-nguon-goc-sau-rieng-nang-cao-gia-tri-nganh-hang-15938.html','Báo chí ghi nhận'],
+ ['16/07/2025','Chi cục QLCL NLS&TS Đắk Lắk','Nâng cao năng lực cho nông dân, hợp tác xã và doanh nghiệp xuất khẩu sầu riêng','Hiệp hội Sầu riêng Đắk Lắk phối hợp GIZ tổ chức 3 lớp cho khoảng 500 nông dân, chủ HTX và doanh nghiệp, gồm nội dung nhật ký canh tác điện tử gắn với truy xuất nguồn gốc.','https://daklakafiqad.gov.vn/nang-cao-nang-luc-cho-nong-dan-hop-tac-xa-va-doanh-nghiep-xuat-khau-sau-rieng-691.html','BVI đồng hành']
+];
+const ph=(n,a)=>`<div class="photo has"><img src="img/${n}.jpg" alt="${a}" loading="lazy"></div>`;
+document.getElementById('events').innerHTML=ALBUMS.map((e,i)=>`<article class="evt"><a class="gal" href="#bai-viet/sk-${i}" aria-label="${e[2]}">${e[4].slice(0,3).map(n=>ph(n,e[2])).join('')}</a><div><p class="eyebrow">${e[0]} · ${e[1]}</p><h3><a href="#bai-viet/sk-${i}">${e[2]}</a></h3><p>${e[3]}</p><a class="more" href="#bai-viet/sk-${i}">Xem chi tiết và ${e[4].length} ảnh →</a></div></article>`).join('')
+ +`<h2 class="h2" style="margin-top:48px">Báo chí đưa tin về các sự kiện</h2><div class="posts">${PRESS.map(pressHTML).join('')}</div>`;
+
+/* ---------- Nội dung chi tiết ---------- */
+const EVX=[
+ {act:['Học trên lớp về kỹ thuật canh tác sầu riêng và yêu cầu của thị trường nhập khẩu.','Thực hành tại vườn cùng giảng viên Viện Cây ăn quả miền Nam và Trung tâm Khuyến nông tỉnh.','Chuyên gia BVI trình bày về hệ thống truy xuất nguồn gốc quốc gia và cách ghi nhật ký số.'],res:'Học viên ToT trở thành giảng viên nguồn, tiếp tục hướng dẫn lại cho nông dân tại các xã.',rel:[4,0]},
+ {act:['Hướng dẫn ghi nhật ký canh tác: ngày, công việc, vật tư sử dụng và ảnh minh chứng.','Sử dụng thuốc bảo vệ thực vật an toàn, đúng thời gian cách ly.','Giải thích các yêu cầu cơ bản của mã số vùng trồng khi cơ quan chức năng kiểm tra.'],res:'Bốn lớp ToF với khoảng 3.000 lượt nông dân tham dự.',rel:[0,2]},
+ {act:['Giới thiệu lộ trình truy xuất nguồn gốc cho HTX, tổ hợp tác và nông hộ.','Cán bộ hướng dẫn trực tiếp trên điện thoại của bà con: đăng nhập, tạo lô, ghi nhật ký.','Hỏi đáp các tình huống thường gặp khi nhập dữ liệu.'],res:'Bà con ra về với tài khoản đã đăng nhập được và biết cách ghi một nhật ký đầu tiên.',rel:[3,2]},
+ {act:['Khảo sát vùng trồng bằng flycam để có bản đồ ranh giới và hiện trạng.','Tập huấn ngay tại vùng cho các nông hộ thành viên HTX NN Xanh Krông Pắc.','Hướng dẫn tự cài ứng dụng và tự nhập nhật ký canh tác.'],res:'100% nông hộ của vùng tự cài ứng dụng và tự nhập nhật ký canh tác.',rel:[2,1]},
+ {act:['Phối hợp Hiệp hội Sầu riêng tỉnh Đắk Lắk kiểm tra hiện trạng vườn.','Lấy mẫu theo hướng dẫn phục vụ đánh giá chất lượng.','Ghi nhận thông tin lô, vườn để đối chiếu với nhật ký canh tác.'],res:'Mẫu và thông tin vườn được ghi nhận để phục vụ đánh giá; kết quả thuộc đơn vị kiểm nghiệm.',rel:[0,3]}
+];
+const PRX=[
+ {img:'12',pts:['Tập huấn kỹ thuật chống sượng trái và chăm sóc cây sau thu hoạch cho nông dân xã Krông Pắc.','Nội dung phòng ngừa, kiểm soát cadimi để giữ chất lượng trái khi xuất khẩu.','Hiệp hội Sầu riêng tỉnh bàn giao tài khoản hệ thống truy xuất nguồn gốc cho UBND xã.'],why:'Truy xuất nguồn gốc bắt đầu được giao về cấp xã. Khi xã có tài khoản, dữ liệu vùng trồng và nhật ký của nông hộ cần sẵn sàng để đối chiếu.'},
+ {img:'03',pts:['Bài thứ năm trong loạt bài về xây dựng vùng sầu riêng bền vững.','Nhấn mạnh việc đưa cả hệ sinh thái dịch vụ đến tận vùng trồng.','Ghi nhận việc kết nối hệ thống truy xuất nguồn gốc quốc gia.'],why:'Vùng trồng bền vững cần nhiều bên cùng làm: kỹ thuật, kiểm nghiệm, dữ liệu và thu mua. Dữ liệu số là phần nối các bên lại với nhau.'},
+ {img:'17',pts:['Khoảng 200 hộ trồng sầu riêng tại Ea Drông dự hội nghị.','Nội dung gồm xây dựng và duy trì mã số vùng trồng, mã cơ sở đóng gói.','Giới thiệu phần mềm số hóa vùng trồng, với ông Minh Đức Uy (Trưởng Ban Công nghệ Hiệp hội) là một trong các diễn giả.'],why:'Có mã đã khó, giữ mã khi hậu kiểm còn khó hơn. Nhật ký đầy đủ trên phần mềm là bằng chứng quan trọng nhất của nông hộ.'},
+ {img:'13',pts:['Hội nghị tại xã Quảng Phú phổ biến lộ trình truy xuất nguồn gốc sầu riêng.','Quản lý vùng trồng và cơ sở đóng gói bằng phần mềm.','Có sự tham gia của Hiệp hội Sầu riêng và Quatest 3.'],why:'Lộ trình truy xuất áp dụng cho cả vùng trồng và cơ sở đóng gói, nên hai bên cần dùng chung một nguồn dữ liệu.'},
+ {img:'11',pts:['Hiệp hội Sầu riêng Đắk Lắk phối hợp GIZ tổ chức 3 lớp nâng cao năng lực.','Khoảng 500 người tham gia gồm nông dân, chủ HTX và doanh nghiệp xuất khẩu.','Có nội dung nhật ký canh tác điện tử gắn với truy xuất nguồn gốc.'],why:'Nhật ký điện tử là nền của truy xuất nguồn gốc. Người làm vườn, HTX và doanh nghiệp đều cần hiểu cùng một cách ghi.'}
+];
+const BODY={
+ 1:{img:'15',html:`<p>FarmBase chạy ngay trong Zalo dưới dạng Mini App, nên bà con không cần tải thêm ứng dụng.</p><h2>Các bước mở lần đầu</h2><ol><li>Mở Zalo trên điện thoại, bấm biểu tượng quét mã QR ở góc trên.</li><li>Quét mã QR FarmBase do cán bộ hoặc HTX cung cấp, hoặc bấm vào <a href="https://zalo.me/s/3146448650831889838/" target="_blank" rel="noopener">link Zalo Mini App</a>.</li><li>Cho phép FarmBase dùng số điện thoại Zalo để đăng nhập.</li><li>Chọn vườn hoặc lô của mình trong danh sách.</li></ol><h2>Đưa ra màn hình chính</h2><p>Trong Mini App, bấm dấu ba chấm ở góc trên, chọn "Thêm vào màn hình chính". Lần sau chỉ cần bấm biểu tượng FarmBase như một ứng dụng thường.</p>`},
+ 3:{img:'16',html:`<p>Ghi nhật ký phân bón, thuốc bảo vệ thực vật là phần bà con hay bỏ sót nhất. FarmBase rút gọn còn vài thao tác.</p><h2>Cách ghi</h2><ol><li>Mở FarmBase trong Zalo, chọn lô cần ghi.</li><li>Bấm "Ghi nhật ký", chọn loại công việc "Bón phân" hoặc "Phun thuốc".</li><li>Chọn sản phẩm trong danh mục có sẵn, nhập liều lượng.</li><li>Chụp ảnh bao bì sản phẩm làm minh chứng, bấm Lưu.</li></ol><h2>Lưu ý</h2><ul><li>Ghi ngay trong ngày, đừng để dồn cuối tháng.</li><li>Ảnh bao bì cần rõ tên sản phẩm và số lô.</li></ul>`},
+ 4:{img:'07',html:`<p>Mã số vùng trồng không phải có rồi là xong. Cơ quan chức năng hậu kiểm định kỳ, và nhật ký canh tác là bằng chứng chính để vùng giữ mã.</p><h2>Thế nào là đúng, đủ, kịp thời</h2><ul><li><b>Đúng:</b> ghi đúng sản phẩm, liều lượng, ngày thực hiện, đúng lô.</li><li><b>Đủ:</b> mọi lần bón phân, phun thuốc, tưới, thu hoạch đều có ghi chép.</li><li><b>Kịp thời:</b> ghi trong ngày, có ảnh minh chứng.</li></ul><h2>Vì sao một hộ ảnh hưởng cả vùng</h2><p>Mã số vùng trồng gắn với cả vùng. Nếu một hộ dùng thuốc không có trong danh mục hoặc thiếu nhật ký, cả vùng có thể bị yêu cầu khắc phục. Vì vậy HTX nên kiểm tra nhật ký của thành viên hàng tuần.</p>`},
+ 5:{img:'14',html:`<p>Với HTX có nhiều thành viên, nhập từng lô bằng tay rất mất thời gian. Trang quản lý FarmBase cho phép nhập hàng loạt bằng file Excel mẫu.</p><h2>Các bước</h2><ol><li>Vào Trang quản lý, chọn "Nhập dữ liệu", tải file Excel mẫu.</li><li>Điền thông tin lô đất hoặc nhật ký theo từng cột, giữ nguyên tiêu đề cột.</li><li>Tải file lên. Hệ thống kiểm tra và báo dòng nào bị lỗi, lỗi gì.</li><li>Sửa các dòng lỗi rồi tải lại, bấm Lưu khi không còn lỗi.</li></ol>`},
+ 7:{img:'00',html:`<p>Nhiều bà con lớn tuổi nhờ con cháu ghi nhật ký giúp. FarmBase cho phép thêm người thân vào vườn mà vẫn biết ai đã ghi.</p><h2>Cách thêm</h2><ol><li>Mở FarmBase trong Zalo, vào mục "Vườn của tôi".</li><li>Chọn "Thành viên", bấm "Mời người thân".</li><li>Gửi lời mời qua Zalo; người thân bấm nhận là có thể ghi nhật ký cho vườn.</li></ol><p>Mỗi ghi chép đều lưu tên người ghi, nên khi kiểm tra vẫn rõ ràng.</p>`},
+ 8:{img:'08',html:`<p>Việc cấp mã số vùng trồng thuộc thẩm quyền cơ quan quản lý nhà nước. BVI hỗ trợ bà con và HTX chuẩn bị hồ sơ, dữ liệu và vận hành theo yêu cầu.</p><h2>7 bước chuẩn bị</h2><ol><li>Thống nhất danh sách hộ, diện tích và ranh giới vùng.</li><li>Đo đạc, lập bản đồ vùng trồng.</li><li>Lập danh sách nông hộ kèm thông tin vườn.</li><li>Tập huấn ghi nhật ký canh tác và quản lý dịch hại.</li><li>Ghi nhật ký đầy đủ trên FarmBase.</li><li>Rà soát hồ sơ, bổ sung minh chứng còn thiếu.</li><li>Nộp hồ sơ và chuẩn bị cho đợt kiểm tra của cơ quan chức năng.</li></ol>`}
+};
+function artShell(o){
+  const url=location.href;
+  return `<section class="art-hero"><div class="wrap"><div class="crumb"><a href="#trang-chu">Trang chủ</a> / <a href="#${o.back}">${o.backName}</a></div><span class="eyebrow">${o.tag}</span><h1 class="h1" style="margin-top:10px">${o.title}</h1><div class="art-meta">${o.meta.map(m=>`<span>${m}</span>`).join('')}</div></div></section>
+  <section style="padding-top:0"><div class="wrap art-wrap"><article class="art-body">${o.body}
+  <div class="art-nav">${o.prev?`<a href="${o.prev[0]}"><span>← Bài trước</span><b>${o.prev[1]}</b></a>`:'<span></span>'}${o.next?`<a class="nx" href="${o.next[0]}"><span>Bài tiếp →</span><b>${o.next[1]}</b></a>`:''}</div></article>
+  <aside class="art-side"><div class="card"><h3>Cần tư vấn cho vùng trồng của bạn?</h3><p>Liên hệ Ngọc, phụ trách tư vấn FarmBase.</p><a class="btn btn-primary" href="https://zalo.me/0911423839" target="_blank" rel="noopener">Nhắn Zalo 0911 423 839</a><a class="btn btn-ghost" href="tel:0911423839" style="color:var(--fg)">Gọi ngay</a></div>
+  <div class="card"><h3>Chia sẻ bài viết</h3><div class="share"><a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">Facebook</a><a href="https://zalo.me/share?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">Zalo</a><button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(location.href);this.textContent='Đã chép link'">Chép link</button></div></div>
+  ${o.related.length?`<div class="card"><h3>Có thể bạn quan tâm</h3><ul style="list-style:none;padding:0;margin-top:8px;display:grid;gap:12px">${o.related.map(r=>`<li><a href="${r[0]}" style="font-weight:600;font-size:14px;text-decoration:none;color:var(--fg)">${r[1]}</a></li>`).join('')}</ul></div>`:''}</aside></div></section>`;
+}
+function renderArticle(id){
+  const BV=POSTS.map((p,i)=>i).filter(i=>POSTS[i][0]!=='bao-chi');const [k,n]=id.split('-'),i=+n; let o;
+  if(k==='sk'&&ALBUMS[i]){const e=ALBUMS[i],x=EVX[i];
+    o={back:'su-kien',backName:'Sự kiện',tag:'Sự kiện · '+e[1],title:e[2],meta:[e[0],e[1],e[4].length+' ảnh thực tế'],
+    body:`<figure><div class="photo has cover"><img src="img/${e[4][0]}.jpg" alt="${e[2]}"></div><figcaption>Ảnh thực tế: ${e[1]}.</figcaption></figure><p>${e[3]}</p><h2>Hoạt động chính</h2><ul>${x.act.map(a=>`<li>${a}</li>`).join('')}</ul><h2>Kết quả ghi nhận</h2><p>${x.res}</p><h2>Hình ảnh</h2><div class="art-gal">${e[4].map(m=>`<a href="img/${m}.jpg" target="_blank" rel="noopener"><img src="img/${m}.jpg" alt="${e[2]}" loading="lazy"></a>`).join('')}</div>`,
+    prev:ALBUMS[i-1]&&['#bai-viet/sk-'+(i-1),ALBUMS[i-1][2]],next:ALBUMS[i+1]&&['#bai-viet/sk-'+(i+1),ALBUMS[i+1][2]],
+    related:x.rel.map(r=>['#bai-viet/bc-'+r,PRESS[r][2]])};}
+  else if(k==='bc'&&PRESS[i]){const p=PRESS[i],x=PRX[i];
+    o={back:'blog',backName:'Blog',tag:p[5],title:p[2],meta:[p[0],p[1]],
+    body:`<figure><div class="photo has cover"><img src="img/${x.img}.jpg" alt=""></div><figcaption>Ảnh minh họa từ hoạt động thực tế của FarmBase, không phải ảnh của bài báo.</figcaption></figure><p>${p[3]}</p><h2>Điểm chính của bài báo</h2><ul>${x.pts.map(a=>`<li>${a}</li>`).join('')}</ul><h2>Ý nghĩa với nông dân và HTX</h2><p>${x.why}</p><div class="src">Nguồn: <b>${p[1]}</b>, ${p[0]}. Đây là phần tóm tắt của FarmBase; nội dung đầy đủ xem tại <a href="${p[4]}" target="_blank" rel="noopener">bài gốc →</a></div>`,
+    prev:PRESS[i-1]&&['#bai-viet/bc-'+(i-1),PRESS[i-1][2]],next:PRESS[i+1]&&['#bai-viet/bc-'+(i+1),PRESS[i+1][2]],
+    related:[(i+1)%PRESS.length,(i+2)%PRESS.length].map(r=>['#bai-viet/bc-'+r,PRESS[r][2]]).concat([['#bai-viet/sk-'+(i%ALBUMS.length),ALBUMS[i%ALBUMS.length][2]]])};}
+  else if(k==='bv'&&POSTS[i]&&POSTS[i][0]!=='bao-chi'){const p=POSTS[i],b=BODY[i]||{},j=BV.indexOf(i);
+    o={back:'blog',backName:'Blog',tag:p[1],title:p[3],meta:[p[2],'Đọc khoảng 3 phút'],
+    body:`${b.img?`<figure><div class="photo has cover"><img src="img/${b.img}.jpg" alt=""></div></figure>`:''}${p[4]?`<p><b>${p[4]}</b></p>`:''}${b.html||'<p>Nội dung đang được biên soạn.</p>'}<p class="draftnote">Bản nháp nội dung để duyệt: thao tác và tên nút cần BVI đối chiếu với ứng dụng thật, kèm ảnh chụp màn hình trước khi đăng.</p>`,
+    prev:j>0&&['#bai-viet/bv-'+BV[j-1],POSTS[BV[j-1]][3]],next:j<BV.length-1&&['#bai-viet/bv-'+BV[j+1],POSTS[BV[j+1]][3]],
+    related:BV.filter(r=>r!==i&&POSTS[r][0]===p[0]).slice(0,3).map(r=>['#bai-viet/bv-'+r,POSTS[r][3]])};}
+  else o={back:'blog',backName:'Blog',tag:'Không tìm thấy',title:'Bài viết không tồn tại',meta:[],body:'<p><a href="#blog">Quay lại Blog</a></p>',related:[]};
+  document.getElementById('article').innerHTML=artShell(o);
+  document.title=o.title+' | FarmBase';
+  return o.back;
+}
+
+const POSTS=[
+ ['bao-chi','Báo chí ghi nhận','28/10/2026 · Tạp chí Hữu Cơ Việt Nam','Tập huấn chống sượng, cadimi và bàn giao tài khoản truy xuất cho xã Krông Pắc','Hiệp hội bàn giao tài khoản truy xuất cho UBND xã tại hội nghị tập huấn.'],
+ ['huong-dan','Hướng dẫn','Zalo Mini App','Mở FarmBase trên Zalo bằng mã QR và đưa ra màn hình chính','Không cần cài ứng dụng, chỉ cần quét mã QR trong Zalo.'],
+ ['bao-chi','Báo chí','02/10/2026 · Báo Nông nghiệp và Môi trường','Xây vùng sầu riêng bền vững: ghi nhận kết nối truy xuất nguồn gốc','Loạt bài "Xây vùng sầu riêng bền vững", bài 5.'],
+ ['huong-dan','Hướng dẫn','Zalo Mini App','Ghi nhật ký phân thuốc bằng ảnh chụp bao bì','Chọn phân thuốc từ danh mục, chụp ảnh bao bì là xong một ghi chép.'],
+ ['kien-thuc','Kiến thức','Mã số vùng trồng','Nhật ký đúng, đủ, kịp thời: bằng chứng giữ mã vùng trồng khi hậu kiểm','Vì sao một hộ ghi thiếu có thể ảnh hưởng cả vùng.'],
+ ['huong-dan','Hướng dẫn','Trang quản lý','Nhập lô đất và nhật ký hàng loạt bằng file Excel mẫu','Hệ thống báo dòng lỗi để sửa trước khi lưu.'],
+ ['bao-chi','BVI đồng hành','28/08/2026 · Tạp chí Hữu Cơ Việt Nam','Ea Drông mã số hóa vùng trồng, khoảng 200 hộ dự hội nghị',''],
+ ['huong-dan','Hướng dẫn','Zalo Mini App','Thêm người thân ghi nhật ký giúp',''],
+ ['kien-thuc','Kiến thức','Mã số vùng trồng','7 bước chuẩn bị hồ sơ mã số vùng trồng sầu riêng','']
+];
+function pressHTML(p){const i=PRESS.indexOf(p);return `<article class="press"><span class="src-n">${p[1]} · ${p[0]}</span><span class="label" style="font-size:13px;font-weight:700;color:var(--leaf)">${p[5]}</span><h3><a href="#bai-viet/bc-${i}">${p[2]}</a></h3><p>${p[3]}</p><a class="rd" href="#bai-viet/bc-${i}">Xem tóm tắt →</a></article>`}
+const postHTML=p=>{const i=POSTS.indexOf(p),b=BODY[i]||{};return `<article class="post"><a class="cardlink" href="#bai-viet/bv-${i}">${b.img?`<div class="photo has"><img src="img/${b.img}.jpg" alt="" loading="lazy"></div>`:`<div class="photo"><span>Ảnh bìa bài viết</span></div>`}<div class="meta" style="margin-top:10px"><span class="label">${p[1]}</span><span>${p[2]}</span></div><h3 style="margin-top:8px">${p[3]}</h3>${p[4]?`<p style="margin-top:6px;color:var(--muted);font-size:14px">${p[4]}</p>`:''}</a></article>`};
+document.getElementById('homeposts').innerHTML=pressHTML(PRESS[0])+pressHTML(PRESS[2])+postHTML(POSTS[1]);
+function renderBlog(t){const pr=(t==='all'||t==='bao-chi')?PRESS.map(pressHTML):[];document.getElementById('blogposts').innerHTML=pr.concat(POSTS.filter(p=>p[0]!=='bao-chi'&&(t==='all'||p[0]===t)).map(postHTML)).join('');}
+renderBlog('all');
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-selected',String(x===b)));renderBlog(b.dataset.t);}));
+
+const SOLIDS=SOLS.map(s=>s.id);const DEF_TITLE=document.title;
+function route(){
+  let h=(location.hash||'#trang-chu').slice(1); const sub=h==='cd-dang-ky'; if(sub) h='chien-dich-10000ha';
+  let navOn=null; if(h.startsWith('bai-viet/')){navOn=renderArticle(h.slice(9));h='bai-viet';} else document.title=DEF_TITLE;
+  const views=[...document.querySelectorAll('.view')];
+  const target=views.find(v=>v.dataset.view===h)?h:'trang-chu';
+  views.forEach(v=>v.hidden=v.dataset.view!==target);
+  document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===(navOn||target)));
+  document.getElementById('dd').classList.toggle('on',target==='giai-phap'||SOLIDS.includes(target));
+  closeMenus();
+  if(sub){document.getElementById('cd-dang-ky').scrollIntoView();} else window.scrollTo(0,0);
+}
+function closeMenus(){document.getElementById('ddp').hidden=true;document.getElementById('ddb').setAttribute('aria-expanded','false');document.getElementById('mnav').hidden=true;document.getElementById('burger').setAttribute('aria-expanded','false');}
+document.getElementById('ddb').addEventListener('click',e=>{e.stopPropagation();const p=document.getElementById('ddp');p.hidden=!p.hidden;e.currentTarget.setAttribute('aria-expanded',String(!p.hidden));});
+document.addEventListener('click',e=>{if(!e.target.closest('#dd'))document.getElementById('ddp').hidden=true;});
+document.getElementById('burger').addEventListener('click',e=>{const m=document.getElementById('mnav');m.hidden=!m.hidden;e.currentTarget.setAttribute('aria-expanded',String(!m.hidden));});
+window.addEventListener('hashchange',route);route();
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.lang button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.getElementById('langnote').hidden=b.dataset.l==='vi';}));
+document.getElementById('f2').addEventListener('submit',e=>{e.preventDefault();document.getElementById('ok2').hidden=false;});
+document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();document.getElementById('ok').hidden=false;});
+</script>
