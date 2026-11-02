@@ -11,8 +11,10 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
     Chủ sở hữu mặc định `minhducuy@gmail.com` (đổi bằng biến `OWNER_EMAIL`), tạo hoặc đặt lại mật khẩu bằng mã `ADMIN_TOKEN`.
   - `GET|POST|PATCH|DELETE /api/admin/users`: chủ sở hữu cấp, đổi vai trò, khóa, đặt lại mật khẩu tài khoản khác.
   - `GET|PUT /api/admin/settings`: mã Google Analytics 4 và Facebook Pixel; `functions/_middleware.js` tự gắn vào trang công khai.
+  - `GET /api/content`, `GET|PUT /api/admin/content`: chữ VI/EN/中文 và ảnh thay thế sửa trong trang quản lý (khóa là câu tiếng Việt gốc, ảnh dùng khóa `img:<đường dẫn>`). Trang quản lý xuất, nhập Excel.
+  - `POST /api/admin/media`, `GET /api/media/:id`: ảnh tải lên (lưu trong D1, tối đa 1,5 MB, trang quản lý tự thu nhỏ về 1600 px).
   - `GET /api/admin/stats`, `GET|PATCH /api/admin/leads`: thống kê và khách liên hệ, theo vai trò.
-- Vai trò: Chủ sở hữu (mọi thứ), Quản trị (trừ tài khoản), Duyệt bài (thêm thống kê), Biên tập, Kinh doanh (khách liên hệ).
+- Vai trò: Chủ sở hữu (mọi thứ), Quản trị (trừ tài khoản), Duyệt bài (thống kê, nội dung), Biên tập (nội dung, hình ảnh), Kinh doanh (khách liên hệ).
 - Cơ sở dữ liệu: Cloudflare D1, tên biến `DB`. Bảng tự tạo ở lần gọi đầu.
 
 ## Cài đặt trên Cloudflare (không cần lệnh)

@@ -28,6 +28,11 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS sessions (
      token TEXT PRIMARY KEY, user_id INTEGER NOT NULL, expires INTEGER NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS settings (k TEXT PRIMARY KEY, v TEXT)`,
+  `CREATE TABLE IF NOT EXISTS content (
+     k TEXT PRIMARY KEY, vi TEXT, en TEXT, zh TEXT, updated INTEGER, updated_by TEXT)`,
+  `CREATE TABLE IF NOT EXISTS media (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, mime TEXT NOT NULL, data BLOB NOT NULL,
+     size INTEGER, created INTEGER, created_by TEXT)`,
 ];
 
 let ready = false;
@@ -64,6 +69,7 @@ export const CAN = {
   settings: ["owner", "admin"],
   stats: ["owner", "admin", "approver"],
   leads: ["owner", "admin", "sales"],
+  content: ["owner", "admin", "approver", "editor"],
 };
 
 const enc = new TextEncoder();
@@ -154,4 +160,20 @@ export async function cachedSettings(env) {
 export async function getSettings(D) {
   const { results } = await D.prepare("SELECT k,v FROM settings").all();
   return Object.fromEntries(results.map((r) => [r.k, r.v]));
+}
+
+// Nội dung chỉnh sửa trong trang quản lý (chữ 3 ngôn ngữ và ảnh thay thế), đệm 60 giây
+let CCACHE = { at: 0, v: null };
+export const clearContentCache = () => { CCACHE = { at: 0, v: null }; };
+export async function cachedContent(env) {
+  if (CCACHE.v && Date.now() - CCACHE.at < 60000) return CCACHE.v;
+  const D = await db(env);
+  const { results } = await D.prepare("SELECT k,vi,en,zh FROM content").all();
+  const t = {}, img = {};
+  for (const r of results) {
+    if (r.k.startsWith("img:")) { if (r.vi) img[r.k.slice(4)] = r.vi; }
+    else t[r.k] = [r.vi || null, r.en || null, r.zh || null];
+  }
+  CCACHE = { at: Date.now(), v: { t, img } };
+  return CCACHE.v;
 }

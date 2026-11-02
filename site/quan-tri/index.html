@@ -194,6 +194,30 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 .note-ok{font-size:12px;color:var(--muted);margin-top:8px}
 .uform{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:8px;align-items:end}
 @media (max-width:900px){.uform{grid-template-columns:1fr 1fr}}
+
+/* Nội dung đa ngôn ngữ */
+.cbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.cbar input[type=search]{max-width:320px}
+.cbar select{width:auto}
+.ctab{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.ctab th{text-align:left;font-size:12px;color:var(--muted);padding:8px;border-bottom:1px solid var(--line)}
+.ctab td{padding:6px;border-bottom:1px solid var(--line);vertical-align:top}
+.ctab textarea{width:100%;min-height:54px;resize:vertical;font-size:13px;padding:6px 8px;border-radius:8px;line-height:1.4}
+.ctab textarea.ch-ed{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--bg))}
+.ctab textarea.ovr{border-color:var(--leaf)}
+.ctab .orig{font-size:11px;color:var(--muted);margin-top:4px}
+.ctab .miss{border-color:var(--s-err)}
+.cpager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px;font-size:13px;color:var(--muted)}
+.cnote{font-size:12px;color:var(--muted)}
+@media (max-width:900px){.ctab,.ctab tbody,.ctab tr,.ctab td{display:block;width:100%}.ctab thead{display:none}.ctab tr{border-bottom:2px solid var(--line);padding:6px 0}.ctab td{border:0}.ctab td::before{content:attr(data-l);display:block;font-size:11px;font-weight:700;color:var(--muted)}}
+.imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.imgc{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.imgc .pv{aspect-ratio:4/3;background:var(--bg);position:relative;overflow:hidden}
+.imgc .pv img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.imgc .b{padding:10px;display:grid;gap:6px;font-size:12px}
+.imgc .b b{font-size:13px}
+.imgc .b .acts{display:flex;gap:6px;flex-wrap:wrap}
+.imgc.changed{border-color:var(--leaf);box-shadow:0 0 0 2px color-mix(in srgb,var(--leaf) 30%,transparent)}
 </style>
 
 <div id="login" hidden>
@@ -220,7 +244,8 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
   <a href="#bai-viet" data-v="bai-viet">Bài viết <span class="n" id="nwait">0</span></a>
   <a href="#thu-vien" data-v="thu-vien">Thư viện ảnh</a>
   <a href="#trang" data-v="trang">Trang và khối nội dung</a>
-  <a href="#ban-dich" data-v="ban-dich">Bản dịch EN · 中文 <span class="n" id="ntr">0</span></a>
+  <a href="#noi-dung" data-v="noi-dung" data-cap="content">Nội dung và bản dịch <span class="n" id="ntr" hidden>0</span></a>
+  <a href="#hinh-anh" data-v="hinh-anh" data-cap="content">Hình ảnh website</a>
   <span class="sep">Marketing tự động</span>
   <a href="#lich" data-v="lich">Lịch nội dung</a>
   <a href="#tao-nhanh" data-v="tao-nhanh">Tạo bài nhanh</a>
@@ -398,7 +423,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
     <div class="top"><div><h1>Kết nối và cài đặt</h1></div></div>
     <div class="grid g2">
       <div class="card"><h2>Kết nối</h2>
-        <div class="conn"><span class="ic" style="background:#1877F2">f</span><div class="t"><b>Fanpage Facebook</b><small>facebook.com/durianbase · đăng bài, đọc số liệu</small></div><span class="todo">Giai đoạn 3</span></div>
+        <div class="conn"><span class="ic" style="background:#1877F2">f</span><div class="t"><b>Fanpage Facebook</b><small>facebook.com/farmbasevn · đăng bài, đọc số liệu</small></div><span class="todo">Giai đoạn 3</span></div>
         <div class="conn"><span class="ic" style="background:#0068FF">OA</span><div class="t"><b>Zalo OA</b><small>zalo.me/1461539868993925462</small></div><span class="ok">Đã có link</span></div>
         <div class="conn"><span class="ic" style="background:#E37400">GA</span><div class="t"><b>Google Analytics 4</b><small>Cài mã ở khung "Mã đo lường" bên dưới</small></div><span id="gast" class="todo">Chưa cài</span></div>
         <div class="conn"><span class="ic" style="background:#1877F2">px</span><div class="t"><b>Facebook Pixel</b><small>Đo chuyển đổi cho quảng cáo Facebook</small></div><span id="pxst" class="todo">Chưa cài</span></div>
@@ -429,6 +454,30 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
       <div class="acts" style="margin-top:12px"><button class="btn dark" type="button" id="mesave">Lưu mã đo lường</button><span id="mest" style="font-size:12px;color:var(--muted);align-self:center"></span></div>
       <p class="note-ok">Sự kiện gửi kèm: xem trang (page_view / PageView), bấm Zalo, Gọi, Messenger (cta_click / Contact), gửi form liên hệ (generate_lead / Lead).</p>
     </div>
+  </section>
+
+  <!-- NỘI DUNG ĐA NGÔN NGỮ -->
+  <section data-view="noi-dung" hidden>
+    <div class="top"><div><h1>Nội dung và bản dịch</h1><p class="sub">Sửa chữ trên website theo 3 ngôn ngữ. Ô để trống sẽ dùng nội dung gốc. Website cập nhật sau khoảng 1 phút khi lưu.</p></div>
+      <div class="right"><button class="btn" type="button" id="cexp">Xuất Excel</button><label class="btn" for="cimp" style="cursor:pointer">Nhập Excel<input id="cimp" type="file" accept=".xlsx,.xls,.csv" hidden></label><button class="btn dark" type="button" id="csave" disabled>Lưu thay đổi</button></div></div>
+    <p class="src-line" id="csrc"><i></i><span>Đang tải nội dung website…</span></p>
+    <div class="card">
+      <div class="cbar">
+        <input type="search" id="cq" placeholder="Tìm theo nội dung (VI, EN, 中文)" aria-label="Tìm nội dung">
+        <select id="cf" aria-label="Lọc"><option value="">Tất cả</option><option value="noen">Chưa có tiếng Anh</option><option value="nozh">Chưa có tiếng Trung</option><option value="ovr">Đã chỉnh sửa</option><option value="dirty">Chưa lưu</option></select>
+        <span class="cnote" id="ccount"></span>
+      </div>
+      <table class="ctab"><thead><tr><th style="width:34%">Tiếng Việt</th><th style="width:33%">English</th><th style="width:33%">中文</th></tr></thead><tbody id="cbody"></tbody></table>
+      <div class="cpager"><button class="btn sm" type="button" id="cprev">← Trước</button><span id="cpg"></span><button class="btn sm" type="button" id="cnext">Sau →</button></div>
+      <p class="cnote" style="margin-top:10px">Cách sửa nhanh bằng Excel: bấm <b>Xuất Excel</b>, sửa các cột Tiếng Việt, English, 中文 (không sửa cột Mã), lưu file rồi bấm <b>Nhập Excel</b>, kiểm tra các dòng được đánh dấu và bấm <b>Lưu thay đổi</b>. Bản tiếng Trung cần người bản ngữ duyệt. Không viết "BVI cấp mã".</p>
+    </div>
+  </section>
+
+  <!-- HÌNH ẢNH WEBSITE -->
+  <section data-view="hinh-anh" hidden>
+    <div class="top"><div><h1>Hình ảnh website</h1><p class="sub">Thay ảnh trên website. Nên dùng ảnh cùng tỉ lệ với ảnh gốc để không bị cắt khi xem trên máy tính và điện thoại. Chú thích ảnh (alt) sửa ở mục Nội dung và bản dịch.</p></div></div>
+    <p class="src-line" id="isrc"><i></i><span>Đang tải…</span></p>
+    <div class="imgs" id="imgs"></div>
   </section>
 
   <!-- TÀI KHOẢN -->
@@ -533,7 +582,7 @@ document.getElementById('gen').addEventListener('click',()=>{
 document.getElementById('sendWait').addEventListener('click',()=>{POSTS.push({id:Date.now(),t:src==='anh'?'Ôn cách ghi nhật ký trên Zalo cùng bà con vùng 07':'Báo chí ghi nhận: Ea Drông mã số hóa vùng trồng',sub:'Tạo nhanh · AI viết nháp',ch:'FB + Web',lang:'VI',st:'wait',d:'2026-11-04',h:'19:30',img:src==='anh'?picked:'17'});renderPosts();toast('Đã gửi duyệt. Bài nằm trong mục Bài viết');});
 /* ---------- Kết nối API (Cloudflare) với dữ liệu mẫu dự phòng ---------- */
 let ME=null,MODE='?';/* MODE: live (có máy chủ) | demo (bản xem thử) */
-const CAPS={users:['owner'],settings:['owner','admin'],stats:['owner','admin','approver'],leads:['owner','admin','sales']};
+const CAPS={users:['owner'],settings:['owner','admin'],stats:['owner','admin','approver'],leads:['owner','admin','sales'],content:['owner','admin','approver','editor']};
 const can=c=>MODE==='demo'||(ME&&CAPS[c].includes(ME.role));
 async function api(path,opt={}){const r=await fetch(path,Object.assign({credentials:'same-origin'},opt,{headers:Object.assign({'content-type':'application/json'},opt.headers||{})}));
  const j=await r.json().catch(()=>null);if(r.status===401&&!/\/api\/auth\//.test(path)){showLogin();}if(!r.ok||!j){const e=new Error((j&&j.error)||r.status);e.status=r.status;throw e;}return j;}
@@ -629,7 +678,7 @@ renderBlk();
 window.addEventListener('hashchange',route);renderPosts();route();
 /* ---------- Đăng nhập, tài khoản, mã đo lường ---------- */
 const $=id=>document.getElementById(id);
-const ERRS={wrong:'Email hoặc mật khẩu chưa đúng.',locked:'Sai quá nhiều lần. Tài khoản tạm khóa 15 phút.',disabled:'Tài khoản đã bị khóa. Liên hệ chủ sở hữu.',no_users:'Chưa có tài khoản nào. Chủ sở hữu bấm "cài đặt lần đầu" bên dưới.',wrong_code:'Mã cài đặt chưa đúng.',weak_password:'Mật khẩu cần ít nhất 8 ký tự.',no_admin_token:'Chưa cài biến ADMIN_TOKEN trên Cloudflare.',exists:'Email này đã có tài khoản.',bad_email:'Email chưa hợp lệ.',bad_role:'Vai trò chưa hợp lệ.',owner_locked:'Không sửa được tài khoản chủ sở hữu.',bad_ga_id:'Mã GA4 phải có dạng G-XXXXXXXXXX.',bad_fb_pixel_id:'Pixel ID chỉ gồm chữ số.',forbidden:'Bạn không có quyền làm việc này.'};
+const ERRS={bad_image:'Đường dẫn ảnh không hợp lệ.',bad_type:'Chỉ nhận ảnh JPG, PNG, WebP.',too_large:'Ảnh quá lớn.',wrong:'Email hoặc mật khẩu chưa đúng.',locked:'Sai quá nhiều lần. Tài khoản tạm khóa 15 phút.',disabled:'Tài khoản đã bị khóa. Liên hệ chủ sở hữu.',no_users:'Chưa có tài khoản nào. Chủ sở hữu bấm "cài đặt lần đầu" bên dưới.',wrong_code:'Mã cài đặt chưa đúng.',weak_password:'Mật khẩu cần ít nhất 8 ký tự.',no_admin_token:'Chưa cài biến ADMIN_TOKEN trên Cloudflare.',exists:'Email này đã có tài khoản.',bad_email:'Email chưa hợp lệ.',bad_role:'Vai trò chưa hợp lệ.',owner_locked:'Không sửa được tài khoản chủ sở hữu.',bad_ga_id:'Mã GA4 phải có dạng G-XXXXXXXXXX.',bad_fb_pixel_id:'Pixel ID chỉ gồm chữ số.',forbidden:'Bạn không có quyền làm việc này.'};
 const em=e=>ERRS[e.message]||'Có lỗi, thử lại sau.';
 let SETUP=false,OWNER='minhducuy@gmail.com';
 function setupMode(on){SETUP=on;$('lgcodew').hidden=!on;$('lgw2w').hidden=!on;$('lgt').textContent=on?'Cài đặt tài khoản chủ sở hữu':'Đăng nhập trang quản trị';
@@ -648,7 +697,7 @@ function applyUser(){document.querySelectorAll('aside [data-cap]').forEach(a=>a.
  document.querySelector('.demo').hidden=MODE==='live';
  $('who').innerHTML=ME?`<b>${esc(ME.name||ME.email)}</b>${esc(ME.email)}<br><span class="rolechip ${ME.role==='owner'?'owner':''}">${esc(ME.role_name||ME.role)}</span><div class="wl">${MODE==='live'?'<button type="button" id="chpw">Đổi mật khẩu</button><button type="button" id="lgout">Đăng xuất</button>':'<button type="button" id="lgout">Thoát bản mẫu</button>'}</div>`:'';
  const h=(location.hash||'').slice(1);const a=document.querySelector(`aside a[data-v="${h}"]`);if(a&&a.hidden)location.hash='#tong-quan';
- loadStats();loadLeads();if(can('users'))loadUsers();if(can('settings'))loadMeasure();}
+ loadStats();loadLeads();if(can('users'))loadUsers();if(can('settings'))loadMeasure();if(can('content'))loadContent();}
 function enter(u){ME=u;MODE='live';$('login').hidden=true;applyUser();toast('Xin chào '+(u.name||u.email));}
 document.addEventListener('click',async e=>{
  if(e.target.id==='lgout'){if(MODE==='live'){try{await api('/api/auth/logout',{method:'POST'});}catch(err){}}ME=null;$('who').innerHTML='';showLogin();}
@@ -692,5 +741,69 @@ async function loadMeasure(){if(MODE!=='live'){measureState();return;}try{const 
 $('mesave').addEventListener('click',async()=>{const body={ga_id:$('gaid').value.trim().toUpperCase(),fb_pixel_id:$('pxid').value.trim()};$('gaid').value=body.ga_id;
  if(body.ga_id&&!/^G-[A-Z0-9]{4,15}$/.test(body.ga_id)){$('mest').textContent=ERRS.bad_ga_id;return;}if(body.fb_pixel_id&&!/^\d{8,20}$/.test(body.fb_pixel_id)){$('mest').textContent=ERRS.bad_fb_pixel_id;return;}
  try{if(MODE==='live'){await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(body)});$('mest').textContent='✓ Đã lưu. Website gắn mã mới trong khoảng 1 phút.';}else $('mest').textContent='Bản mẫu: chưa lưu thật.';measureState();}catch(e){$('mest').textContent=em(e);}});
+
+/* ---------- Nội dung đa ngôn ngữ + hình ảnh ---------- */
+const CSAMPLE={"Dữ liệu vườn trồng,":["Orchard data,","果园数据，"],"minh bạch từ gốc":["transparent from the root","源头透明"],"Nền tảng số hóa vùng trồng":["Growing-area digitisation platform","种植区数字化平台"],"Liên hệ chuyên viên qua Zalo":["Contact a specialist on Zalo","通过 Zalo 联系专员"],"Năm nhóm giải pháp cho vùng nguyên liệu":["Five solution groups for raw-material areas","面向原料产区的五类解决方案"],"Cây trồng chủ lực":["Key crops","主要作物"],"Tìm nguồn nông sản Việt Nam có dữ liệu vùng trồng":["Source Vietnamese produce with growing-area data","寻找有种植区数据的越南农产品货源"]};
+let CDICT={},CKEYS=[],COV={},CED={},CPAGE=0,CLIVE=false;const CPER=40;
+const siteBase=()=>location.pathname.replace(/quan-tri\/?(index\.html)?$/,'');
+async function loadSiteDict(){try{const r=await fetch(siteBase()||'../',{cache:'no-store'});const h=await r.text();const a=h.indexOf('/*I18N_START*/'),b=h.indexOf('/*I18N_END*/');if(a<0||b<0)throw 0;
+  window.SITE_HTML=h;return JSON.parse(h.slice(a+14,b));}catch(e){return null;}}
+async function loadContent(){const d=await loadSiteDict();CDICT=d||CSAMPLE;CKEYS=Object.keys(CDICT).filter(k=>!/^[\dA-Z~/·→←.\s'’-]{1,6}$/.test(k));
+ COV={};CLIVE=false;try{if(MODE!=='live')throw 0;const r=await api('/api/admin/content');(r.items||[]).forEach(x=>COV[x.k]=x);CLIVE=true;}catch(e){}
+ srcLine('csrc',CLIVE,CLIVE?`Dữ liệu thật · ${CKEYS.length} đoạn nội dung · ${Object.keys(COV).filter(k=>!k.startsWith('img:')).length} đoạn đã chỉnh sửa`:(d?`${CKEYS.length} đoạn nội dung từ website · chưa kết nối máy chủ nên chỉ xuất, nhập và xem trước được, chưa lưu lên website`:'Dữ liệu mẫu: bản xem thử không đọc được nội dung website'));
+ drawContent();drawImages();}
+const cval=(k,l)=>{const e=CED[k];if(e&&e[l]!==undefined)return e[l];const o=COV[k];if(o&&o[l])return o[l];return l==='vi'?k:((CDICT[k]||[])[l==='en'?0:1]||'');};
+const cdef=(k,l)=>l==='vi'?k:((CDICT[k]||[])[l==='en'?0:1]||'');
+function cfiltered(){const q=($('cq').value||'').toLowerCase().trim(),f=$('cf').value;return CKEYS.filter(k=>{
+  if(f==='noen'&&cval(k,'en'))return false;if(f==='nozh'&&cval(k,'zh'))return false;if(f==='ovr'&&!COV[k])return false;if(f==='dirty'&&!CED[k])return false;
+  if(q&&!(k+' '+cval(k,'vi')+' '+cval(k,'en')+' '+cval(k,'zh')).toLowerCase().includes(q))return false;return true;});}
+function drawContent(){const list=cfiltered();const pages=Math.max(1,Math.ceil(list.length/CPER));CPAGE=Math.min(CPAGE,pages-1);
+ $('ccount').textContent=`${list.length} đoạn${Object.keys(CED).length?` · ${Object.keys(CED).length} chưa lưu`:''}`;$('cpg').textContent=`Trang ${CPAGE+1}/${pages}`;
+ $('csave').disabled=!Object.keys(CED).length;$('csave').textContent=Object.keys(CED).length?`Lưu thay đổi (${Object.keys(CED).length})`:'Lưu thay đổi';
+ $('cbody').innerHTML=list.slice(CPAGE*CPER,(CPAGE+1)*CPER).map(k=>{const i=CKEYS.indexOf(k);const cell=(l,lab)=>{const v=cval(k,l),dirty=CED[k]&&CED[k][l]!==undefined,ovr=COV[k]&&COV[k][l];
+   return `<td data-l="${lab}"><textarea data-ck="${i}" data-cl="${l}" class="${dirty?'ch-ed':ovr?'ovr':''} ${!v&&l!=='vi'?'miss':''}" aria-label="${lab}">${esc(v)}</textarea>${l==='vi'&&cval(k,'vi')!==k?`<div class="orig">Gốc: ${esc(k)}</div>`:''}</td>`;};
+   return `<tr>${cell('vi','Tiếng Việt')}${cell('en','English')}${cell('zh','中文')}</tr>`;}).join('')||'<tr><td colspan="3" class="cnote">Không có nội dung phù hợp.</td></tr>';}
+document.addEventListener('input',e=>{const t=e.target.closest('[data-ck]');if(!t)return;const k=CKEYS[+t.dataset.ck],l=t.dataset.cl;const cur=(COV[k]&&COV[k][l])||cdef(k,l);
+ CED[k]=CED[k]||{};if(t.value===cur)delete CED[k][l];else CED[k][l]=t.value;if(!Object.keys(CED[k]).length)delete CED[k];t.classList.toggle('ch-ed',!!(CED[k]&&CED[k][l]!==undefined));
+ $('csave').disabled=!Object.keys(CED).length;$('csave').textContent=Object.keys(CED).length?`Lưu thay đổi (${Object.keys(CED).length})`:'Lưu thay đổi';});
+$('cq').addEventListener('input',()=>{CPAGE=0;drawContent();});$('cf').addEventListener('change',()=>{CPAGE=0;drawContent();});
+$('cprev').addEventListener('click',()=>{if(CPAGE>0){CPAGE--;drawContent();}});$('cnext').addEventListener('click',()=>{CPAGE++;drawContent();});
+function payloadFor(k){const out={k};['vi','en','zh'].forEach(l=>{const v=cval(k,l);out[l]=v&&v!==cdef(k,l)?v:null;});return out;}
+$('csave').addEventListener('click',async()=>{const keys=Object.keys(CED);if(!keys.length)return;
+ if(!CLIVE){toast('Chưa kết nối máy chủ: thay đổi chưa được lưu lên website');return;}
+ const items=keys.map(payloadFor);try{const r=await api('/api/admin/content',{method:'PUT',body:JSON.stringify({items})});
+  items.forEach(x=>{if(!x.vi&&!x.en&&!x.zh)delete COV[x.k];else COV[x.k]=x;});CED={};drawContent();toast(`Đã lưu ${r.saved} đoạn. Website cập nhật sau khoảng 1 phút`);}catch(e){toast(em(e));}});
+/* Excel */
+let XLSXP=null;function xlsx(){if(window.XLSX)return Promise.resolve(window.XLSX);if(XLSXP)return XLSXP;XLSXP=new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';s.onload=()=>ok(window.XLSX);s.onerror=()=>{XLSXP=null;no(new Error('xlsx'));};document.head.appendChild(s);});return XLSXP;}
+$('cexp').addEventListener('click',async()=>{try{const X=await xlsx();const rows=[['Mã (không sửa)','Tiếng Việt','English','中文']].concat(CKEYS.map(k=>[k,cval(k,'vi'),cval(k,'en'),cval(k,'zh')]));
+ const ws=X.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:40},{wch:60},{wch:60},{wch:50}];const wb=X.utils.book_new();X.utils.book_append_sheet(wb,ws,'Noi dung');
+ const g=[['Tiếng Việt','English','中文'],['Mã số vùng trồng','Planting area code','种植基地注册号'],['Mã cơ sở đóng gói','Packing house code','包装厂注册号'],['Truy xuất nguồn gốc','Traceability','溯源'],['Nhật ký canh tác','Farm diary','农事日志'],['Hợp tác xã (HTX)','Cooperative','合作社'],['Lưu ý','Không viết "BVI cấp mã". Việc cấp mã thuộc cơ quan có thẩm quyền.','']];
+ X.utils.book_append_sheet(wb,X.utils.aoa_to_sheet(g),'Thuat ngu');X.writeFile(wb,`farmbase-noi-dung-${new Date().toISOString().slice(0,10)}.xlsx`);toast('Đã xuất file Excel');}catch(e){toast('Chưa tải được thư viện Excel, thử lại sau');}});
+$('cimp').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{const X=await xlsx();const wb=X.read(await f.arrayBuffer());const ws=wb.Sheets[wb.SheetNames[0]];
+ const rows=X.utils.sheet_to_json(ws,{header:1,defval:''});let n=0,skip=0;const head=rows[0]||[];const ix={k:0,vi:1,en:2,zh:3};
+ rows.slice(1).forEach(r=>{const k=String(r[ix.k]||'').trim();if(!k)return;const key=CKEYS.find(x=>x===k)||CKEYS.find(x=>x.replace(/\s+/g,' ')===k.replace(/\s+/g,' '));if(!key){skip++;return;}
+  let ch=false;['vi','en','zh'].forEach(l=>{const v=String(r[ix[l]]??'').trim();const cur=cval(key,l);if(v&&v!==cur){CED[key]=CED[key]||{};CED[key][l]=v;ch=true;}});if(ch)n++;});
+ $('cf').value='dirty';CPAGE=0;drawContent();toast(`Đã nhập ${n} đoạn thay đổi${skip?`, bỏ qua ${skip} dòng không khớp mã`:''}. Kiểm tra rồi bấm Lưu thay đổi`);}catch(err){toast('Không đọc được file. Hãy dùng file xuất từ trang này');}});
+/* Hình ảnh */
+const IP='im'+'g/';/* tách chuỗi để công cụ build không đổi đường dẫn */
+const IMGS=['08','15','01','07','11','13','12','03','00','02','04','06','09','14','16','17','18','19','20','21'].map(n=>IP+n+'.jpg').concat(['sau-rieng','ca-phe','thanh-long','chanh-leo','dua','chuoi','mit','buoi','vai','nhan','xoai','dua-xiem'].map(n=>IP+'crops/'+n+'.svg'));
+function imgAlt(p){const h=window.SITE_HTML||'';const m=h.match(new RegExp('src="'+p.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&')+'"[^>]*alt="([^"]*)"'))||h.match(new RegExp('alt="([^"]*)"[^>]*src="'+p.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&')+'"'));return m?m[1]:'';}
+const imgUrl=p=>{const o=COV['img:'+p];return o&&o.vi?o.vi:(siteBase()||'../')+p;};
+function drawImages(){srcLine('isrc',CLIVE,CLIVE?'Dữ liệu thật · ảnh thay thế lưu trên máy chủ':'Chưa kết nối máy chủ: xem được ảnh, chưa thay ảnh được');
+ $('imgs').innerHTML=IMGS.map((p,i)=>{const ch=!!COV['img:'+p];return `<div class="imgc ${ch?'changed':''}"><div class="pv"><img src="${esc(imgUrl(p))}" alt="" loading="lazy" data-ii="${i}"></div><div class="b"><b>${esc(imgAlt(p)||p.split('/').pop())}</b><span class="cnote" data-ir="${i}">${esc(p)}${ch?' · đã thay':''}</span>
+ <div class="acts"><label class="btn sm" style="cursor:pointer">Thay ảnh<input type="file" accept="image/jpeg,image/png,image/webp" hidden data-iu="${i}"></label>${ch?`<button class="btn sm" type="button" data-irs="${i}">Dùng ảnh gốc</button>`:''}</div></div></div>`;}).join('');
+ document.querySelectorAll('[data-ii]').forEach(im=>im.addEventListener('load',()=>{const r=document.querySelector(`[data-ir="${im.dataset.ii}"]`);if(r&&!r.dataset.sz){r.dataset.sz=1;r.textContent+=` · ${im.naturalWidth}×${im.naturalHeight} (tỉ lệ ${(im.naturalWidth/im.naturalHeight).toFixed(2)})`;}},{once:true}));}
+function shrink(file){return new Promise((ok,no)=>{const u=URL.createObjectURL(file);const im=new Image();im.onload=()=>{const M=1600;let w=im.naturalWidth,h=im.naturalHeight;const s=Math.min(1,M/Math.max(w,h));w=Math.round(w*s);h=Math.round(h*s);
+ const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');const png=file.type==='image/png';if(!png){g.fillStyle='#fff';g.fillRect(0,0,w,h);}g.drawImage(im,0,0,w,h);URL.revokeObjectURL(u);
+ c.toBlob(b=>b?ok(b):no(new Error('img')),png?'image/png':'image/jpeg',.85);};im.onerror=()=>no(new Error('img'));im.src=u;});}
+document.addEventListener('change',async e=>{const t=e.target.closest('[data-iu]');if(!t)return;const f=t.files[0];t.value='';if(!f)return;const p=IMGS[+t.dataset.iu];
+ if(!CLIVE){toast('Chưa kết nối máy chủ: chưa thay ảnh được');return;}
+ try{toast('Đang tải ảnh lên…');const b=await shrink(f);if(b.size>1.5*1024*1024)throw new Error('too_large');
+  const r=await fetch('/api/admin/media?name='+encodeURIComponent(f.name),{method:'POST',credentials:'same-origin',headers:{'content-type':b.type},body:b});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||r.status);
+  await api('/api/admin/content',{method:'PUT',body:JSON.stringify({items:[{k:'img:'+p,vi:j.url}]})});COV['img:'+p]={k:'img:'+p,vi:j.url};drawImages();toast('Đã thay ảnh. Website cập nhật sau khoảng 1 phút');}
+ catch(err){toast(err.message==='too_large'?'Ảnh quá lớn, hãy chọn ảnh nhỏ hơn':'Chưa tải được ảnh, thử lại sau');}});
+document.addEventListener('click',async e=>{const t=e.target.closest('[data-irs]');if(!t)return;const p=IMGS[+t.dataset.irs];
+ try{await api('/api/admin/content',{method:'PUT',body:JSON.stringify({items:[{k:'img:'+p,vi:null,en:null,zh:null}]})});delete COV['img:'+p];drawImages();toast('Đã dùng lại ảnh gốc');}catch(err){toast(em(err));}});
+
 boot();
 </script>
