@@ -1675,8 +1675,8 @@ function openLbx(src,cap){lbx.querySelector('img').src=src;lbx.querySelector('im
 lbx.addEventListener('click',e=>{if(e.target===lbx||e.target.classList.contains('x'))lbx.hidden=true;});addEventListener('keydown',e=>{if(e.key==='Escape')lbx.hidden=true;});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-lbx]');if(b){e.preventDefault();openLbx(b.dataset.lbx,b.dataset.cap||'');}});
 function drawProof(){
- document.querySelectorAll('[data-proof="awards"]').forEach(el=>el.innerHTML=AWARDS.map(a=>`<article class="pf-aw"><button type="button" data-lbx="img/${a[0]}.jpg" data-cap="${a[2]}" aria-label="Phóng to: ${a[2]}"><img src="img/${a[0]}.jpg" alt="${a[2]}" loading="lazy"></button><div><span class="d">${a[1]}</span><h3>${a[2]}</h3><p>${a[3]}</p></div></article>`).join(''));
- document.querySelectorAll('[data-proof="gal"]').forEach(el=>el.innerHTML=PGAL.map(g=>`<figure class="${g[3]?'w':''}"><button type="button" data-lbx="img/${g[0]}.jpg" data-cap="${g[1]}: ${g[2]}" aria-label="Phóng to: ${g[2]}"><img src="img/${g[0]}.jpg" alt="${g[2]}" loading="lazy"></button><figcaption><b>${g[1]}</b>${g[2]}</figcaption></figure>`).join(''));
+ document.querySelectorAll('[data-proof="awards"]').forEach(el=>el.innerHTML=AWARDS.map(a=>`<article class="pf-aw"><button type="button" data-lbx="img/${a[0]}.jpg" data-cap="${a[2]}"><img src="img/${a[0]}.jpg" alt="${a[2]}" loading="lazy"></button><div><span class="d">${a[1]}</span><h3>${a[2]}</h3><p>${a[3]}</p></div></article>`).join(''));
+ document.querySelectorAll('[data-proof="gal"]').forEach(el=>el.innerHTML=PGAL.map(g=>`<figure class="${g[3]?'w':''}"><button type="button" data-lbx="img/${g[0]}.jpg" data-cap="${g[1]}: ${g[2]}"><img src="img/${g[0]}.jpg" alt="${g[2]}" loading="lazy"></button><figcaption><b>${g[1]}</b>${g[2]}</figcaption></figure>`).join(''));
  document.querySelectorAll('[data-proof="press"]').forEach(el=>el.innerHTML=PRESS.map(pressHTML).join(''));
  document.querySelectorAll('[data-proof="press3"]').forEach(el=>el.innerHTML=PRESS.slice(0,3).map(pressHTML).join(''));
 }
