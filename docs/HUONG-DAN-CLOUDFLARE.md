@@ -1,0 +1,24 @@
+# Đưa website FarmBase lên Cloudflare
+
+Làm một lần, khoảng 20 phút. Sau đó mỗi lần cập nhật code lên nhánh `main`, Cloudflare tự đăng bản mới.
+
+1. **Đăng nhập** dash.cloudflare.com (tài khoản miễn phí là đủ).
+2. **Tạo cơ sở dữ liệu**: Storage & Databases → D1 SQL Database → Create → đặt tên `farmbase` → Create. Không cần tạo bảng.
+3. **Kết nối GitHub**: Workers & Pages → Create → thẻ Pages → Connect to Git → cho phép GitHub → chọn `uyducminh/farmbase-website` → Begin setup.
+   - Production branch: `main`
+   - Framework preset: None
+   - Build command: để trống
+   - Build output directory: `site`
+   - Bấm Save and Deploy. Sau 1–2 phút có địa chỉ dạng `farmbase-xxx.pages.dev`.
+4. **Gắn cơ sở dữ liệu**: dự án vừa tạo → Settings → Bindings → Add → D1 database → Variable name `DB` → chọn `farmbase` → Save.
+5. **Tạo khóa gửi email**: đăng ký resend.com bằng email **info@salefronts.com** → API Keys → Create API Key → sao chép khóa.
+6. **Thêm biến bí mật**: Settings → Variables and Secrets → Add:
+   - `ADMIN_TOKEN` (Secret): một chuỗi dài tự đặt, khoảng 24 ký tự. Đây là khóa để trang quản lý đọc số liệu.
+   - `RESEND_API_KEY` (Secret): khóa ở bước 5.
+   - `LEAD_EMAIL_TO` (Text, tùy chọn): mặc định `info@salefronts.com`; nhiều email cách nhau dấu phẩy.
+7. **Đăng lại**: Deployments → bản mới nhất → Retry deployment để nhận biến mới.
+8. **Kiểm tra**: mở `…pages.dev`, gửi thử form ở trang chủ, kiểm tra hộp thư info@salefronts.com. Mở `…pages.dev/quan-tri/` → Kết nối và cài đặt → dán `ADMIN_TOKEN` → Lưu. Thống kê truy cập và Khách để lại liên hệ chuyển sang dữ liệu thật.
+9. **Gắn tên miền farmbase.vn** (khi nội dung đã duyệt): Custom domains → Set up a custom domain → `farmbase.vn`. Nếu tên miền chưa ở Cloudflare, làm theo hướng dẫn đổi nameserver tại nơi mua tên miền.
+10. **Khóa trang quản lý (nên làm)**: Zero Trust → Access → Applications → Self-hosted → đường dẫn `farmbase.vn/quan-tri/*` → chỉ cho phép email của đội. Miễn phí đến 50 người.
+
+Lưu ý email: khi chưa xác minh tên miền trong Resend, email chỉ gửi được tới chính email đăng ký Resend (info@salefronts.com). Muốn gửi từ `noreply@farmbase.vn` hoặc tới nhiều người, xác minh tên miền trong Resend → Domains, rồi thêm biến `LEAD_EMAIL_FROM` = `FarmBase <noreply@farmbase.vn>`.
