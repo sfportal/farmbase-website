@@ -33,6 +33,8 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS media (
      id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, mime TEXT NOT NULL, data BLOB NOT NULL,
      size INTEGER, created INTEGER, created_by TEXT)`,
+  `CREATE TABLE IF NOT EXISTS partners (
+     slug TEXT PRIMARY KEY, data TEXT NOT NULL, sort INTEGER DEFAULT 0, updated INTEGER, updated_by TEXT)`,
 ];
 
 let ready = false;
@@ -176,4 +178,32 @@ export async function cachedContent(env) {
   }
   CCACHE = { at: Date.now(), v: { t, img } };
   return CCACHE.v;
+}
+
+// Trang khách hàng, đối tác: làm sạch dữ liệu trước khi lưu
+const IMG_RE = /^(\/api\/media\/\d+|img\/[\w./-]+|https:\/\/[\w.-]+\/[\w./%-]+)$/;
+const txt = (v, n) => (v == null ? "" : String(v).replace(/[\u0000-\u001f]/g, " ").trim().slice(0, n));
+const tri = (o, n) => {
+  o = o && typeof o === "object" ? o : { vi: o };
+  return { vi: txt(o.vi, n), en: txt(o.en, n), zh: txt(o.zh, n) };
+};
+const img = (v) => { const u = txt(v, 400); return IMG_RE.test(u) ? u : ""; };
+export function cleanPartner(p, i) {
+  if (!p || typeof p !== "object") return null;
+  const slug = txt(p.slug, 60).toLowerCase();
+  if (!/^[a-z0-9][a-z0-9-]{1,59}$/.test(slug)) return null;
+  const name = tri(p.name, 200);
+  if (!name.vi) return null;
+  const c = p.contact || {};
+  const web = txt(c.web, 200);
+  return {
+    slug, sort: Number.isFinite(+p.sort) ? +p.sort : i,
+    group: ["dong-hanh", "khach-hang", "cong-nghe"].includes(p.group) ? p.group : "khach-hang",
+    logo: img(p.logo), cover: img(p.cover), name,
+    short: tri(p.short, 300), about: tri(p.about, 3000), role: tri(p.role, 1500),
+    products: (Array.isArray(p.products) ? p.products : []).slice(0, 12)
+      .map((x) => ({ img: img(x && x.img), name: tri(x && x.name, 200), desc: tri(x && x.desc, 600) }))
+      .filter((x) => x.name.vi),
+    contact: { address: txt(c.address, 300), phone: txt(c.phone, 60), email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(txt(c.email, 120)) ? txt(c.email, 120) : "", web: /^https:\/\/[\w.-]+(\/[\w./%?=&-]*)?$/.test(web) ? web : "" },
+  };
 }

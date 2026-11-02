@@ -12,6 +12,8 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
   - `GET|POST|PATCH|DELETE /api/admin/users`: chủ sở hữu cấp, đổi vai trò, khóa, đặt lại mật khẩu tài khoản khác.
   - `GET|PUT /api/admin/settings`: mã Google Analytics 4 và Facebook Pixel; `functions/_middleware.js` tự gắn vào trang công khai.
   - `GET /api/content`, `GET|PUT /api/admin/content`: chữ VI/EN/中文 và ảnh thay thế sửa trong trang quản lý (khóa là câu tiếng Việt gốc, ảnh dùng khóa `img:<đường dẫn>`). Trang quản lý xuất, nhập Excel.
+  - `GET /api/partners`, `GET|PUT /api/admin/partners`: trang Khách hàng, đối tác (`#doi-tac`, `#doi-tac/<mã>`). Khi máy chủ chưa có dữ liệu, website dùng bản mẫu `site/data/partners.json`.
+  - `/chien-dich-10000ha/`: đường link riêng để gửi khách, có ảnh xem trước `img/og-10000ha.jpg` khi chia sẻ Zalo, Facebook, rồi tự mở trang chiến dịch.
   - `POST /api/admin/media`, `GET /api/media/:id`: ảnh tải lên (lưu trong D1, tối đa 1,5 MB, trang quản lý tự thu nhỏ về 1600 px).
   - `GET /api/admin/stats`, `GET|PATCH /api/admin/leads`: thống kê và khách liên hệ, theo vai trò.
 - Vai trò: Chủ sở hữu (mọi thứ), Quản trị (trừ tài khoản), Duyệt bài (thống kê, nội dung), Biên tập (nội dung, hình ảnh), Kinh doanh (khách liên hệ).
