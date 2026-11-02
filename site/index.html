@@ -442,11 +442,16 @@ header.scrolled{box-shadow:0 8px 24px -18px rgba(6,51,47,.55);background:color-m
 .mae-tag{justify-self:start;color:var(--leaf)!important;font-weight:700}
 @media (max-width:860px){.mae-in{grid-template-columns:1fr;gap:28px}}
 /* Logo đối tác */
-.partners ul.logos{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
-.partners ul.logos li{flex-direction:column;justify-content:center;text-align:center;gap:10px;min-height:132px;padding:16px 12px;filter:none;opacity:1;background:var(--surface)}
-.partners ul.logos li img{height:66px;width:auto;max-width:150px;object-fit:contain}
-.partners ul.logos li span:last-child{font-size:13px;font-weight:600;color:var(--muted);line-height:1.35}
-.partners ul.logos .lg{width:58px;height:58px;border-radius:14px;font-size:13px}
+.partners ul.logos{display:flex;flex-wrap:nowrap;gap:12px;width:max-content;animation:lgRun var(--dur,40s) linear infinite}
+.partners .marq{overflow:hidden;margin-top:10px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.partners .marq:hover ul.logos,.partners .marq:focus-within ul.logos{animation-play-state:paused}
+.partners .marq.rev ul.logos{animation-direction:reverse}
+@keyframes lgRun{to{transform:translateX(calc(-50% - 6px))}}
+@media (prefers-reduced-motion:reduce){.partners ul.logos{animation:none}.partners .marq{overflow-x:auto}}
+.partners ul.logos li{flex:0 0 168px;flex-direction:column;justify-content:center;text-align:center;gap:6px;min-height:0;height:104px;padding:10px;filter:none;opacity:1;background:var(--surface)}
+.partners ul.logos li img{height:48px;width:auto;max-width:130px;object-fit:contain}
+.partners ul.logos li span:last-child{font-size:12px;font-weight:600;color:var(--muted);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.partners ul.logos .lg{width:44px;height:44px;border-radius:12px;font-size:12px}
 .colog{flex:1;aspect-ratio:3/1;display:grid;place-items:center;border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}
 .colog img{max-height:56px;max-width:100%;object-fit:contain}
 /* Form nhanh */
@@ -808,7 +813,7 @@ header.scrolled{box-shadow:0 8px 24px -18px rgba(6,51,47,.55);background:color-m
   <div class="partners" style="margin-top:48px;border-top:1px solid var(--line);padding-top:24px">
     <p class="eyebrow">Khách hàng tiêu biểu</p>
     <ul class="logos"><li title="Song Toàn Phát"><img src="img/logos/song-toan-phat.png" alt="Song Toàn Phát" loading="lazy"><span>Song Toàn Phát</span></li><li title="Uyên Điệp"><img src="img/logos/uyen-diep.png" alt="Uyên Điệp" loading="lazy"><span>Uyên Điệp</span></li><li title="Thiện Tâm"><img src="img/logos/thien-tam.png" alt="Thiện Tâm" loading="lazy"><span>Thiện Tâm</span></li><li title="Nông nghiệp Xanh Việt Nam"><img src="img/logos/nong-nghiep-xanh-viet-nam.png" alt="Nông nghiệp Xanh Việt Nam" loading="lazy"><span>Nông nghiệp Xanh Việt Nam</span></li><li title="HTX Nông nghiệp Xanh Krông Pắc"><img src="img/logos/htx-nn-xanh-krong-pac.png" alt="HTX Nông nghiệp Xanh Krông Pắc" loading="lazy"><span>HTX Nông nghiệp Xanh Krông Pắc</span></li></ul>
-    <p class="eyebrow" style="margin-top:28px">Đối tác đồng hành</p>
+    <p class="eyebrow" style="margin-top:20px">Đối tác đồng hành</p>
     <ul class="logos"><li title="Hiệp hội Sầu riêng tỉnh Đắk Lắk"><img src="img/logos/hiep-hoi-sau-rieng-daklak.png" alt="Hiệp hội Sầu riêng tỉnh Đắk Lắk" loading="lazy"><span>Hiệp hội Sầu riêng tỉnh Đắk Lắk</span></li><li title="Liên hiệp HTX NN CNC Cư M'gar"><img src="img/logos/lien-hiep-htx-cu-mgar.png" alt="Liên hiệp HTX NN CNC Cư M'gar" loading="lazy"><span>Liên hiệp HTX NN CNC Cư M'gar</span></li><li title="Bazan Lab"><img src="img/logos/bazan-lab.png" alt="Bazan Lab" loading="lazy"><span>Bazan Lab</span></li><li title="HTX NN Công nghệ cao DaLa"><img src="img/logos/dala.png" alt="HTX NN Công nghệ cao DaLa" loading="lazy"><span>HTX NN Công nghệ cao DaLa</span></li><li title="HTX NN Công nghệ Xanh An Nông"><img src="img/logos/an-nong.png" alt="HTX NN Công nghệ Xanh An Nông" loading="lazy"><span>HTX NN Công nghệ Xanh An Nông</span></li><li title="GIZ"><span class="lg" aria-hidden="true">GIZ</span><span>GIZ</span></li><li title="Viện Cây ăn quả miền Nam"><span class="lg" aria-hidden="true">SOFRI</span><span>Viện Cây ăn quả miền Nam</span></li></ul>
   </div>
 </div></section>
@@ -1518,6 +1523,13 @@ document.querySelectorAll('form[data-source]').forEach(f=>f.addEventListener('su
 
 
 
+
+/* ---------- Logo khách hàng, đối tác: dải chạy ngang lặp lại ---------- */
+document.querySelectorAll('.partners ul.logos').forEach((ul,i)=>{const w=document.createElement('div');w.className='marq'+(i%2?' rev':'');ul.parentNode.insertBefore(w,ul);w.appendChild(ul);
+ const items=[...ul.children];let k=items.length;while(k<10){items.forEach(li=>{const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');ul.appendChild(c);});k+=items.length;}
+ [...ul.children].forEach(li=>{const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');ul.appendChild(c);});
+ ul.style.setProperty('--dur',(ul.children.length*2.6)+'s');});
+
 /* ---------- Chiến dịch: đếm số, chia sẻ ---------- */
 (function(){const fmt=n=>{const L=window.LANG||'vi';return n.toLocaleString(L==='vi'?'de-DE':'en-US');};
  const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);run(e.target);}),{threshold:.4}):null;
@@ -1556,7 +1568,7 @@ ${prods.length?`<section style="padding-top:0"><div class="wrap"><p class="eyebr
 document.querySelectorAll('[data-pg]').forEach(b=>b.addEventListener('click',()=>{PT_GRP=b.dataset.pg;document.querySelectorAll('[data-pg]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));drawPartners();}));
 function linkPartnerLogos(){const m={};PARTNERS.forEach(p=>{if(p.logo)m[p.logo]=p.slug;});
  document.querySelectorAll('.partners ul.logos li, .cd-partners li, .cd-units .card, .cdx-orgs li').forEach(li=>{const im=li.querySelector('img');if(!im||li.dataset.pl)return;const sl=m[im.dataset.osrc||im.getAttribute('src')];if(!sl)return;li.dataset.pl=1;
-  if(li.classList.contains('card')){const a=document.createElement('a');a.href='#doi-tac/'+sl;a.className='cd-more';a.textContent='Xem giới thiệu →';li.appendChild(a);}else{li.style.cursor='pointer';li.addEventListener('click',()=>location.hash='#doi-tac/'+sl);li.setAttribute('role','link');li.tabIndex=0;li.addEventListener('keydown',e=>{if(e.key==='Enter')location.hash='#doi-tac/'+sl;});}});}
+  if(li.classList.contains('card')){const a=document.createElement('a');a.href='#doi-tac/'+sl;a.className='cd-more';a.textContent='Xem giới thiệu →';li.appendChild(a);}else{li.style.cursor='pointer';li.addEventListener('click',()=>location.hash='#doi-tac/'+sl);li.setAttribute('role','link');li.tabIndex=li.getAttribute('aria-hidden')?-1:0;li.addEventListener('keydown',e=>{if(e.key==='Enter')location.hash='#doi-tac/'+sl;});}});}
 function ptReady(list){if(!Array.isArray(list)||!list.length)return false;PARTNERS=list.slice().sort((a,b)=>(a.sort??0)-(b.sort??0));drawPartners();linkPartnerLogos();if((location.hash||'').startsWith('#doi-tac/')){PT_CUR=location.hash.slice(9);renderPartner();}return true;}
 fetch('/api/partners').then(r=>r.ok?r.json():null).then(j=>{if(!ptReady(j&&j.items))throw 0;}).catch(()=>fetch('data/partners.json').then(r=>r.json()).then(ptReady).catch(()=>{}));
 addEventListener('fblang',()=>{drawPartners();if((location.hash||'').startsWith('#doi-tac/'))renderPartner();});
