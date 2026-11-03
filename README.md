@@ -27,8 +27,7 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
 - Cơ sở dữ liệu: Cloudflare D1, tên biến `DB`. Bảng tự tạo ở lần gọi đầu.
 
 ## Cài đặt trên Cloudflare (không cần lệnh)
-Kết nối repo này trong Cloudflare Pages: nhánh `main`, không có lệnh build, thư mục xuất bản `site`.
-Gắn D1 với tên `DB`. Thêm biến bí mật `ADMIN_TOKEN`, `RESEND_API_KEY`; tùy chọn `LEAD_EMAIL_TO` (mặc định info@salefronts.com) và `LEAD_EMAIL_FROM`.
+Chạy dưới dạng Cloudflare Worker `farmbase-website` (kết nối GitHub, nhánh `main`). `wrangler.jsonc` khai báo trang tĩnh `site/`, điểm vào `worker/index.js` (định tuyến tới các hàm trong `functions/`) và D1 `farmbase` với tên `DB`. Thêm biến bí mật `ADMIN_TOKEN`, `RESEND_API_KEY`; tùy chọn `LEAD_EMAIL_TO` (mặc định info@salefronts.com) và `LEAD_EMAIL_FROM`.
 Hướng dẫn từng bước: `docs/HUONG-DAN-CLOUDFLARE.md`.
 
 ## Chạy thử trên máy
