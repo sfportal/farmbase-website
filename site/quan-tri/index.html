@@ -256,6 +256,15 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 .pvis{display:grid;gap:8px;margin-top:6px}.pvis label{display:flex;gap:8px;align-items:flex-start;margin:0;font-weight:400;cursor:pointer;padding:8px;border:1px solid var(--line);border-radius:8px}.pvis label:has(input:checked){border-color:var(--forest);box-shadow:inset 0 0 0 1px var(--forest)}.pvis input{margin-top:3px;width:auto}.pvis b{display:block;font-size:13.5px}.pvis small{display:block;color:var(--muted);font-size:12px;line-height:1.4}
 .chk{display:flex!important;gap:6px;align-items:center;font-weight:400}.chk input{width:auto}
 .st-link{background:#4f46e5}.st-lock{background:#c2410c}.st-exp{background:#6b7280}.ttl .chip{margin-top:4px}
+.qc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}.qc-l,.qc-r{display:grid;gap:16px;min-width:0}.qc-r{position:sticky;top:12px}
+.qc-tpl{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-top:8px}.qc-tpl button{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px;cursor:pointer;display:grid;gap:3px;color:inherit;font:inherit}
+.qc-tpl button[aria-checked="true"]{border-color:var(--forest);box-shadow:inset 0 0 0 1px var(--forest);background:color-mix(in srgb,var(--forest) 6%,var(--surface))}.qc-tpl b{font-size:13.5px}.qc-tpl small{font-size:12px;color:var(--muted);line-height:1.35}
+.qc-drop{display:grid!important;gap:4px;place-items:center;text-align:center;border:2px dashed var(--line);border-radius:12px;padding:22px;cursor:pointer;margin-top:8px;font-weight:400!important}.qc-drop.on{border-color:var(--forest);background:color-mix(in srgb,var(--forest) 6%,transparent)}.qc-drop b{font-size:14px}.qc-drop span{color:var(--muted);font-size:12.5px}
+.qc-imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:12px}.qc-imgs figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);min-width:0}.qc-imgs figure.cv{border-color:var(--gold,#E3A72F);box-shadow:0 0 0 1px var(--gold,#E3A72F)}
+.qc-imgs img,.qc-up{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}.qc-up{display:grid;place-items:center;font-size:12px;color:var(--muted);background:var(--bg);padding:6px;text-align:center}
+.qc-ia{display:flex;justify-content:space-between;padding:4px 8px}.qc-ia .linkbtn{font-size:15px;text-decoration:none}.qc-imgs input{border:0;border-top:1px solid var(--line);border-radius:0;font-size:12px;padding:7px 8px}
+.qc-prev .pprev{max-height:60vh;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:12px}.qc-fb{white-space:pre-wrap;font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;max-height:280px;overflow:auto}
+@media (max-width:980px){.qc{grid-template-columns:1fr}.qc-r{position:static}}
 .seochk{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:4px;font-size:13px;color:var(--muted)}.seochk li.ok{color:var(--leaf,#1E8E5A)}
 .pstat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.pstat div{background:#f3f7f5;border-radius:10px;padding:8px;text-align:center}.pstat b{display:block;font-size:16px}.pstat span{font-size:11px;color:var(--muted)}
 .pmod{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;overflow:auto;padding:24px 12px}.pmod-in{max-width:780px;margin:0 auto;background:#fff;border-radius:16px;padding:24px}
@@ -292,6 +301,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
   <a href="#tong-quan" data-v="tong-quan">Tổng quan</a>
   <span class="sep">Nội dung website</span>
   <a href="#bai-viet" data-v="bai-viet" data-cap="content">Bài viết website <span class="n" id="nwait" hidden>0</span></a>
+  <a href="#tao-nhanh" data-v="tao-nhanh" data-cap="content">Tạo bài nhanh</a>
   <a href="#thu-vien" data-v="thu-vien">Thư viện ảnh</a>
   <a href="#trang" data-v="trang" data-cap="content">Sửa nội dung từng trang</a>
   <a href="#noi-dung" data-v="noi-dung" data-cap="content">Nội dung và bản dịch <span class="n" id="ntr" hidden>0</span></a>
@@ -299,7 +309,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
   <a href="#doi-tac" data-v="doi-tac" data-cap="content">Khách hàng, đối tác</a>
   <span class="sep">Marketing tự động</span>
   <a href="#lich" data-v="lich">Lịch nội dung</a>
-  <a href="#tao-nhanh" data-v="tao-nhanh">Tạo bài nhanh</a>
+  
   <a href="#bao-cao" data-v="bao-cao">Báo cáo tuần</a>
   <span class="sep">Khách hàng</span>
   <a href="#thong-ke" data-v="thong-ke" data-cap="stats">Thống kê truy cập</a>
@@ -338,7 +348,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
   <!-- BÀI VIẾT -->
   <section data-view="bai-viet" hidden>
     <div class="top"><div><h1>Bài viết website</h1><p class="sub">Soạn bài, định dạng, chèn ảnh và video (tối đa 2 MB mỗi tệp), gắn thẻ SEO. Bài công khai hiện ở mục Blog; bài "chỉ người có link" để gửi riêng cho người tham gia, có thể đặt mật khẩu.</p></div>
-      <div class="right"><select id="pflt" aria-label="Lọc trạng thái" style="width:auto"><option value="">Tất cả</option><option value="draft">Bản nháp</option><option value="published">Đã đăng</option></select><button class="btn pri" type="button" id="pnew">+ Viết bài mới</button></div></div>
+      <div class="right"><select id="pflt" aria-label="Lọc trạng thái" style="width:auto"><option value="">Tất cả</option><option value="draft">Bản nháp</option><option value="published">Đã đăng</option></select><a class="btn" href="#tao-nhanh">Tạo bài nhanh</a><button class="btn pri" type="button" id="pnew">+ Viết bài mới</button></div></div>
     <p class="src-line" id="psrc"><i></i><span>Đang tải…</span></p>
     <div class="grid g4" id="pkpi" style="margin-bottom:14px"></div>
     <div class="card scroll"><table class="tbl"><thead><tr><th></th><th>Tiêu đề</th><th>Chuyên mục</th><th>Trạng thái</th><th>Ngày đăng</th><th class="n">Lượt xem</th><th class="n">30 ngày</th><th class="n">Thời gian đọc TB</th><th>Thao tác</th></tr></thead><tbody id="plist"></tbody></table></div>
@@ -356,7 +366,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
           <label for="pt-title" style="margin-top:12px">Tiêu đề bài viết<input id="pt-title" maxlength="200" placeholder="Ví dụ: Hướng dẫn ghi nhật ký canh tác trên Zalo"></label>
           <label for="pt-exc">Tóm tắt ngắn (hiện ở danh sách bài và đầu bài)<textarea id="pt-exc" rows="2" maxlength="600"></textarea></label>
           <div style="margin-top:12px"><span class="flab">Nội dung</span><div id="pt-tb"></div><div id="pt-ed"></div>
-          <p class="rule" style="margin-top:8px">Nút ảnh và nút video tải tệp từ máy (tối đa 2 MB, ảnh được tự nén). Nút ▶ chèn link YouTube. Nội dung dán từ Word, Google Docs giữ định dạng cơ bản.</p></div>
+          <p class="rule" style="margin-top:8px">Nút ảnh chọn được nhiều ảnh một lần; cũng có thể kéo thả hoặc dán ảnh thẳng vào bài (mỗi ảnh tối đa 2 MB, ảnh lớn được tự nén). Nút video tải video tối đa 2 MB. Nút ▶ chèn link YouTube. Nội dung dán từ Word, Google Docs giữ định dạng cơ bản.</p></div>
         </div>
       </div>
       <div class="ped-side">
@@ -462,28 +472,28 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 
   <!-- TẠO NHANH -->
   <section data-view="tao-nhanh" hidden>
-    <div class="top"><div><h1>Tạo bài nhanh</h1><p class="sub">Từ ảnh thực tế kèm mô tả ngắn, hoặc từ link bài báo</p></div></div>
-    <div class="grid g2">
-      <div class="card"><div class="form">
-        <div class="seg" role="group" aria-label="Nguồn"><button type="button" aria-pressed="true" data-src="anh">Từ ảnh</button><button type="button" aria-pressed="false" data-src="link">Từ link bài báo</button></div>
-        <div id="srcAnh" class="form">
-          <div class="media" style="grid-template-columns:repeat(3,1fr)" id="pick"></div>
-          <label for="desc">Mô tả ngắn<textarea id="desc" rows="3">Sáng nay tập huấn ghi nhật ký trên Zalo cho bà con vùng trồng 07 Ea Kly, khoảng 40 hộ tham gia.</textarea></label>
-        </div>
-        <div id="srcLink" class="form" hidden>
-          <label for="url">Link bài báo<input id="url" value="https://nongnghiephuuco.vn/ea-drong-day-manh-xay-dung-ma-so-hoa-cho-vung-trong-nang-chuan-chuoi-gia-tri-sau-rieng-16841.html"></label>
-          <p class="rule">AI tóm tắt bằng lời của FarmBase, không chép nguyên văn, luôn ghi nguồn và link gốc. Bài không nêu tên BVI sẽ dùng nhãn "Báo chí ghi nhận".</p>
-        </div>
-        <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px">
-          <label for="chan">Đăng lên<select id="chan"><option>Facebook + Website</option><option>Chỉ Facebook</option><option>Chỉ Website</option></select></label>
-          <label for="aud">Nhóm khách<select id="aud"><option>Nông dân</option><option>HTX, doanh nghiệp</option><option>Xã, phường</option></select></label>
-        </div>
-        <button class="btn pri" type="button" id="gen" style="justify-content:center">Viết bài bằng AI</button>
-        <div class="rule"><b>✓</b>Kiểm tra tự động: không viết "FarmBase cấp mã", không lộ thông tin cá nhân nông hộ, có liên hệ Ngọc 0911 423 839.</div>
-      </div></div>
-      <div class="card"><h2>Xem trước bài Facebook</h2>
-        <div class="preview"><div class="fbh"><span class="av"></span><div><b>FarmBase</b><small>Bản nháp · chưa đăng</small></div></div><div class="fbt" id="fbt">Bấm "Viết bài bằng AI" để tạo bản nháp.</div><img id="fbimg" src="../img/00.jpg" alt="Ảnh bài đăng"></div>
-        <div class="acts" style="margin-top:12px"><button class="btn" type="button" data-toast="Đã lưu nháp">Lưu nháp</button><button class="btn dark" type="button" id="sendWait">Gửi duyệt</button></div>
+    <div class="top"><div><h1>Tạo bài nhanh</h1><p class="sub">Chọn loại bài, điền vài thông tin và tải ảnh. Hệ thống viết sẵn nội dung, thẻ SEO, chú thích ảnh và bài Facebook; bấm mở trình soạn để chỉnh rồi đăng.</p></div>
+      <div class="right"><button class="btn" type="button" id="qcreset">Làm lại</button><button class="btn pri" type="button" id="qcgo">Mở trình soạn để chỉnh và đăng →</button></div></div>
+    <div class="qc">
+      <div class="qc-l">
+        <div class="card"><h2>1. Loại bài</h2><div class="qc-tpl" id="qctpl" role="radiogroup" aria-label="Loại bài"></div></div>
+        <div class="card"><h2>2. Thông tin bài</h2><div class="form" id="qcf"></div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+            <label for="qcvis">Ai được xem<select id="qcvis"><option value="public">Công khai (Trang chủ, Blog, Google)</option><option value="link">Chỉ người có link</option></select></label>
+            <label for="qccta">Lời mời cuối bài<select id="qccta"><option value="tuvan">Tư vấn triển khai FarmBase</option><option value="msvt">Hỗ trợ hồ sơ mã số vùng trồng</option><option value="app">Mở Zalo Mini App</option><option value="cd">Tham gia Chiến dịch 10.000 ha</option><option value="">Không thêm</option></select></label>
+          </div></div>
+        <div class="card"><h2>3. Hình ảnh <span class="cnote" id="qccnt" style="font-weight:400"></span></h2>
+          <label class="qc-drop" id="qcdrop" for="qcfile"><b>Kéo thả nhiều ảnh vào đây</b><span>hoặc bấm để chọn ảnh từ máy, điện thoại. Mỗi ảnh tối đa 2 MB, ảnh lớn được tự nén.</span><input type="file" id="qcfile" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden></label>
+          <div class="qc-imgs" id="qcimgs"></div>
+          <p class="rule">Ảnh có sao là ảnh bìa (hiện ở Blog và khi chia sẻ Facebook, Zalo). Ghi chú thích ngắn cho từng ảnh để người đọc và Google hiểu nội dung ảnh. Không dùng ảnh có CCCD, số điện thoại, sổ đỏ của nông hộ.</p></div>
+      </div>
+      <div class="qc-r">
+        <div class="card qc-prev"><h2>Xem trước bài website</h2>
+          <div class="gprev" aria-label="Xem trước trên Google"><small id="qgu"></small><b id="qgt"></b><span id="qgd"></span></div>
+          <ul class="seochk" id="qcchk"></ul>
+          <article class="pprev" id="qcart"></article></div>
+        <div class="card"><h2>Bài Facebook, Zalo kèm theo</h2><div class="qc-fb" id="qcfb"></div>
+          <div class="acts" style="margin-top:10px"><button class="btn sm" type="button" id="qcfbcp">Sao chép nội dung</button></div></div>
       </div>
     </div>
   </section>
@@ -694,20 +704,6 @@ function renderCal(){
   document.getElementById('cal').innerHTML=h;
 }
 document.getElementById('aiPlan').addEventListener('click',()=>{const o=document.getElementById('aiOut');o.hidden=false;o.innerHTML='<b>Đề xuất của AI (mẫu):</b> tháng 11 là giai đoạn sau thu hoạch sầu riêng và đang thu hoạch cà phê. Gợi ý 3 bài/tuần: 1 bài kiến thức (mã vùng trồng, nhật ký), 1 bài hình ảnh thực tế, 1 bài hướng dẫn Zalo Mini App. Tuần 3 dành cho khởi động Chiến dịch 10.000 ha. <button class="btn sm pri" type="button" data-toast="Đã áp dụng chủ đề vào lịch">Áp dụng</button>';});
-const PICK=['00','03','13'];let picked='00';
-document.getElementById('pick').innerHTML=PICK.map(n=>`<figure><img src="../img/${n}.jpg" alt="Ảnh ${n}" data-pick="${n}" style="cursor:pointer;outline:${n===picked?'3px solid var(--leaf)':'none'}"></figure>`).join('');
-document.getElementById('pick').addEventListener('click',e=>{const n=e.target.dataset.pick;if(!n)return;picked=n;document.querySelectorAll('[data-pick]').forEach(i=>i.style.outline=i.dataset.pick===n?'3px solid var(--leaf)':'none');document.getElementById('fbimg').src=`../img/${n}.jpg`;});
-let src='anh';
-document.querySelectorAll('[data-src]').forEach(b=>b.addEventListener('click',()=>{src=b.dataset.src;document.querySelectorAll('[data-src]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.getElementById('srcAnh').hidden=src!=='anh';document.getElementById('srcLink').hidden=src!=='link';}));
-document.getElementById('gen').addEventListener('click',()=>{
-  const t=src==='anh'
-   ?'Sáng nay, đội FarmBase cùng bà con vùng trồng 07 Ea Kly (HTX Nông nghiệp Xanh Krông Pắc) ôn lại cách ghi nhật ký canh tác ngay trên Zalo.\n\nChỉ cần mở Zalo Mini App FarmBase, chọn phân thuốc trong danh mục và chụp ảnh bao bì là xong một ghi chép. Người thân cũng có thể ghi giúp.\n\nNhật ký đúng, đủ, kịp thời là bằng chứng quan trọng để giữ mã vùng trồng khi hậu kiểm.\n\nCần hướng dẫn cho vùng trồng của mình? Nhắn Zalo Ngọc 0911 423 839.\n\n'
-   :'Báo chí ghi nhận: Tạp chí Hữu Cơ Việt Nam (28/08/2026) đưa tin khoảng 200 hộ trồng sầu riêng ở Ea Drông dự hội nghị về xây dựng và duy trì mã số vùng trồng, mã cơ sở đóng gói và phần mềm số hóa vùng trồng.\n\nChuyển từ sản xuất theo kinh nghiệm sang sản xuất có dữ liệu là hướng đi FarmBase đang cùng bà con thực hiện.\n\nĐọc bài gốc: nongnghiephuuco.vn\nTư vấn: Ngọc 0911 423 839 (Zalo).\n\n';
-  document.getElementById('fbt').innerHTML=t.replace(/\n/g,'<br>')+'<span class="tag">#FarmBase #MinhBachTuGoc #NhatKyCanhTac #SauRiengDakLak #MaVungTrong</span><br><small style="color:var(--muted)">Nội dung mẫu. Bản thật do AI viết theo bộ quy tắc FarmBase.</small>';
-  if(src==='link')document.getElementById('fbimg').src='../img/17.jpg';
-  toast('Đã tạo bản nháp');
-});
-document.getElementById('sendWait').addEventListener('click',()=>{POSTS.push({id:Date.now(),t:src==='anh'?'Ôn cách ghi nhật ký trên Zalo cùng bà con vùng 07':'Báo chí ghi nhận: Ea Drông mã số hóa vùng trồng',sub:'Tạo nhanh · AI viết nháp',ch:'FB + Web',lang:'VI',st:'wait',d:'2026-11-04',h:'19:30',img:src==='anh'?picked:'17'});renderPosts();toast('Đã gửi duyệt. Bài nằm trong mục Bài viết');});
 /* ---------- Kết nối API (Cloudflare) với dữ liệu mẫu dự phòng ---------- */
 let ME=null,MODE='?';/* MODE: live (có máy chủ) | demo (bản xem thử) */
 const CAPS={users:['owner'],settings:['owner','admin'],stats:['owner','admin','approver'],leads:['owner','admin','sales'],content:['owner','admin','approver','editor']};
@@ -1013,7 +1009,7 @@ const PSAMPLE=()=>[{id:-1,slug:'nhat-ky-dung-du-kip-thoi',cat:'kien-thuc',status
 const pdt=t=>t?new Date(t).toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'}):'—';
 const pdur=ms=>!ms?'—':ms<60000?Math.round(ms/1000)+' giây':Math.floor(ms/60000)+' phút '+Math.round(ms%60000/1000)+' giây';
 const slugv=t=>String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80);
-const pimg=u=>u?(u.startsWith('/api/')?u:(/^https:/.test(u)?u:'../'+u.replace(/^\.\.\//,''))):'';
+const pimg=u=>u?(/^(\/api\/|blob:|data:)/.test(u)?u:(/^https:/.test(u)?u:'../'+u.replace(/^\.\.\//,''))):'';
 async function loadPosts(){try{if(MODE!=='live')throw new Error('nokey');const r=await api('/api/admin/posts');PL=r.items||[];PLIVE=true;srcLine('psrc',true,`Dữ liệu thật · ${PL.length} bài viết`);}
  catch(e){PL=PSAMPLE();PLIVE=false;srcLine('psrc',false,e.message==='nokey'?'Bản xem thử: bài mẫu, chưa lưu lên website':'Chưa kết nối được máy chủ: đang hiện bài mẫu');}drawPosts();}
 function drawPosts(){const f=$('pflt').value;const L=PL.filter(p=>!f||p.status===f);const pub=PL.filter(p=>p.status==='published');
@@ -1044,30 +1040,39 @@ async function upFile(b,name){if(b.size>PMAX)throw new Error('too_large');if(!PL
  const r=await fetch('/api/admin/media?name='+encodeURIComponent(name||'tep'),{method:'POST',credentials:'same-origin',headers:{'content-type':b.type},body:b});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||r.status);return j.url;}
 async function shrinkTo(f){if(f.type==='image/gif'){if(f.size>PMAX)throw new Error('too_large');return f;}let b=await shrink(f);if(b.size>PMAX){b=await new Promise((ok,no)=>{const u=URL.createObjectURL(f);const im=new Image();im.onload=()=>{const s2=Math.min(1,1200/Math.max(im.naturalWidth,im.naturalHeight));const c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*s2);c.height=Math.round(im.naturalHeight*s2);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(x=>x?ok(x):no(new Error('img')),'image/jpeg',.72);};im.onerror=()=>no(new Error('img'));im.src=u;});}return b;}
 const upErr=e=>e.message==='too_large'?'Tệp vượt quá 2 MB. Ảnh hãy chọn ảnh nhỏ hơn; video hãy nén lại hoặc dùng link YouTube.':e.message==='bad_type'?'Định dạng chưa hỗ trợ (ảnh JPG, PNG, WebP, GIF; video MP4, WebM)':'Chưa tải được tệp, thử lại sau';
-function pickFile(accept){return new Promise(ok=>{const i=document.createElement('input');i.type='file';i.accept=accept;i.onchange=()=>ok(i.files[0]||null);i.click();});}
+function pickFile(accept,multi){return new Promise(ok=>{const i=document.createElement('input');i.type='file';i.accept=accept;if(multi)i.multiple=true;i.onchange=()=>ok(multi?[...i.files]:(i.files[0]||null));i.click();});}
+/* Chèn nhiều ảnh vào trình soạn: nén, tải lên lần lượt, chèn theo thứ tự tại vị trí con trỏ */
+async function qlImgs(files,at){files=[...files].filter(f=>/^image\//.test(f.type));if(!files.length)return;let idx=at!=null?at:(QL.getSelection(true)||{index:QL.getLength()}).index;let ok=0,bad=0;
+ for(let k=0;k<files.length;k++){toast(files.length>1?`Đang tải ảnh ${k+1}/${files.length}…`:'Đang tải ảnh…');try{const b=await shrinkTo(files[k]);const u=await upFile(b,files[k].name);QL.insertEmbed(idx,'image',u,'user');idx++;QL.insertText(idx,'\n','user');idx++;ok++;}catch(err){bad++;toast(files[k].name+': '+upErr(err));}}
+ QL.setSelection(idx);if(ok)setTimeout(()=>toast(`Đã chèn ${ok} ảnh`+(bad?`, ${bad} ảnh lỗi`:'')),bad?2500:0);}
 async function initQuill(){const Q=await loadQuill();if(QL)return QL;
  const BE=Q.import('blots/block/embed');class VF extends BE{static create(v){const n=super.create();n.setAttribute('src',v);n.setAttribute('controls','');n.setAttribute('playsinline','');return n;}static value(n){return n.getAttribute('src');}}
  VF.blotName='videofile';VF.tagName='VIDEO';Q.register(VF,true);
  const Size=Q.import('attributors/class/size');Size.whitelist=['small','large','huge'];Q.register(Size,true);
- QL=new Q('#pt-ed',{theme:'snow',placeholder:'Viết nội dung bài ở đây…',modules:{toolbar:{container:[[{header:[2,3,4,false]}],[{size:['small',false,'large','huge']}],['bold','italic','underline','strike'],[{color:[]},{background:[]}],[{align:[]}],[{list:'ordered'},{list:'bullet'},{indent:'-1'},{indent:'+1'}],['blockquote','link'],['image','videofile','video'],['clean']],
-  handlers:{image:async()=>{const f=await pickFile('image/jpeg,image/png,image/webp,image/gif');if(!f)return;try{toast('Đang tải ảnh…');const b=await shrinkTo(f);const u=await upFile(b,f.name);const r=QL.getSelection(true);QL.insertEmbed(r.index,'image',u,'user');QL.setSelection(r.index+1);toast('Đã chèn ảnh');}catch(err){toast(upErr(err));}},
+ QL=new Q('#pt-ed',{theme:'snow',placeholder:'Viết nội dung bài ở đây…',modules:{uploader:{mimetypes:['image/png','image/jpeg','image/webp','image/gif'],handler(range,files){qlImgs(files,range?range.index:null);}},toolbar:{container:[[{header:[2,3,4,false]}],[{size:['small',false,'large','huge']}],['bold','italic','underline','strike'],[{color:[]},{background:[]}],[{align:[]}],[{list:'ordered'},{list:'bullet'},{indent:'-1'},{indent:'+1'}],['blockquote','link'],['image','videofile','video'],['clean']],
+  handlers:{image:async()=>{const fs=await pickFile('image/jpeg,image/png,image/webp,image/gif',true);if(fs&&fs.length)await qlImgs(fs);},
    videofile:async()=>{const f=await pickFile('video/mp4,video/webm');if(!f)return;if(f.size>PMAX){toast(upErr(new Error('too_large')));return;}try{toast('Đang tải video…');const u=await upFile(f,f.name);const r=QL.getSelection(true);QL.insertEmbed(r.index,'videofile',u,'user');QL.setSelection(r.index+1);toast('Đã chèn video');}catch(err){toast(upErr(err));}}}}}});
  const vb=document.querySelector('.ql-videofile');if(vb){vb.innerHTML='<svg viewBox="0 0 18 18"><rect class="ql-stroke" x="2" y="4" width="10" height="10" rx="1"/><path class="ql-fill" d="M13 7l3-2v8l-3-2z"/></svg>';vb.title='Tải video từ máy (tối đa 2 MB)';}
- const yb=document.querySelector('.ql-video');if(yb)yb.title='Chèn link YouTube';const ib=document.querySelector('.ql-image');if(ib)ib.title='Tải ảnh từ máy (tối đa 2 MB)';
- QL.on('text-change',(d,o,src)=>{if(src==='user')PDIRTY=true;pSeo();});return QL;}
+ const yb=document.querySelector('.ql-video');if(yb)yb.title='Chèn link YouTube';const ib=document.querySelector('.ql-image');if(ib)ib.title='Tải một hoặc nhiều ảnh từ máy (mỗi ảnh tối đa 2 MB). Có thể kéo thả hoặc dán ảnh vào bài';
+ QL.on('text-change',(d,o,src)=>{if(src==='user')PDIRTY=true;pSeo();});
+ /* Ảnh dán dạng mã base64 (từ Word, web) quá nặng: bỏ và nhắc tải ảnh bằng nút */
+ QL.clipboard.addMatcher('IMG',(node,delta)=>{const sr=node.getAttribute('src')||'';if(/^data:/.test(sr)){setTimeout(()=>toast('Ảnh dán từ Word/web chưa được tải lên. Hãy lưu ảnh về máy rồi dùng nút ảnh hoặc kéo thả'),50);return new (Q.import('delta'))();}return delta;});
+ return QL;}
 const PF=()=>({vi:['title','excerpt','body','meta_title','meta_desc']});
-function pStore(){if(!PCUR||!QL)return;const t=$('pt-title').value,x=$('pt-exc').value,b=QL.getLength()>1?QL.root.innerHTML:'';
+/* Ảnh có sẵn của website (../img/…) nằm ngoài thư mục quản lý: đổi đường dẫn khi mở và khi lưu */
+const pIn=h=>String(h||'').replace(/(<img[^>]*\ssrc=")img\//g,'$1../img/');const pOut=h=>String(h||'').replace(/(<img[^>]*\ssrc=")\.\.\/img\//g,'$1img/');
+function pStore(){if(!PCUR||!QL)return;const t=$('pt-title').value,x=$('pt-exc').value,b=QL.getLength()>1?pOut(QL.root.innerHTML):'';
  if(PLANG==='vi'){PCUR.title=t;PCUR.excerpt=x;PCUR.body=b;PCUR.meta_title=$('pt-mt').value;PCUR.meta_desc=$('pt-md').value;}
  else{const r=PCUR.tr[PLANG]=PCUR.tr[PLANG]||{};r.title=t;r.excerpt=x;r.body=b;r.meta_title=$('pt-mt').value;r.meta_desc=$('pt-md').value;}}
 function pLoadLang(){const src=PLANG==='vi'?PCUR:(PCUR.tr[PLANG]||{});$('pt-title').value=src.title||'';$('pt-exc').value=src.excerpt||'';$('pt-mt').value=src.meta_title||'';$('pt-md').value=src.meta_desc||'';
- QL.setContents([]);if(src.body)QL.clipboard.dangerouslyPasteHTML(0,src.body,'silent');QL.history.clear();
+ QL.setContents([]);if(src.body)QL.clipboard.dangerouslyPasteHTML(0,pIn(src.body),'silent');QL.history.clear();
  $('pltnote').hidden=PLANG==='vi';$('pt-title').placeholder=PLANG==='vi'?'Ví dụ: Hướng dẫn ghi nhật ký canh tác trên Zalo':(PCUR.title||'');
  document.querySelectorAll('#plt button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.l===PLANG)));pSeo();}
 document.querySelectorAll('#plt button').forEach(b=>b.addEventListener('click',()=>{if(!QL)return;pStore();PLANG=b.dataset.l;pLoadLang();}));
-async function openPost(id){location.hash='#bai-viet-sua';try{await initQuill();}catch(e){toast('Chưa tải được trình soạn thảo, kiểm tra kết nối mạng');return;}
+async function openPost(id,preset){location.hash='#bai-viet-sua';try{await initQuill();}catch(e){toast('Chưa tải được trình soạn thảo, kiểm tra kết nối mạng');return;}
  let p=id?PL.find(x=>x.id===id):null;
  if(p&&PLIVE&&p.body===undefined){try{p=Object.assign(p,(await api('/api/admin/posts?id='+id)).item);}catch(e){toast(em(e));return;}}
- PCUR=p?JSON.parse(JSON.stringify(p)):{id:0,slug:'',cat:'tin-tuc',status:'draft',title:'',excerpt:'',body:'',cover:'',meta_title:'',meta_desc:'',meta_kw:'',og_image:'',published_at:null};
+ PCUR=p?JSON.parse(JSON.stringify(p)):Object.assign({id:0,slug:'',cat:'tin-tuc',status:'draft',title:'',excerpt:'',body:'',cover:'',meta_title:'',meta_desc:'',meta_kw:'',og_image:'',published_at:null},preset||{});
  try{PCUR.tr=typeof PCUR.tr==='string'?JSON.parse(PCUR.tr||'{}'):(PCUR.tr||{});}catch(e){PCUR.tr={};}PCUR.tr=PCUR.tr||{};
  PLANG='vi';$('ped-h').textContent=id?'Sửa bài viết':'Viết bài mới';$('pt-cat').value=PCUR.cat||'tin-tuc';$('pt-slug').value=PCUR.slug||'';$('pt-kw').value=PCUR.meta_kw||'';$('pt-slug').dataset.auto=PCUR.slug?'0':'1';
  const d=PCUR.published_at?new Date(PCUR.published_at):new Date();$('pt-date').value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
@@ -1078,7 +1083,7 @@ async function openPost(id){location.hash='#bai-viet-sua';try{await initQuill();
  $('pviews').hidden=!id;if(id)$('pviews').innerHTML=`<div><b>${nf(PCUR.views||0)}</b><span>lượt xem</span></div><div><b>${nf(PCUR.views30||0)}</b><span>30 ngày qua</span></div><div><b>${pdur(PCUR.avg_ms)}</b><span>đọc trung bình</span></div>`;
  const vis=PCUR.visibility==='link'?'link':'public';document.querySelectorAll('[name=pvis]').forEach(r=>r.checked=r.value===vis);$('pt-pass').value='';$('pt-passx').checked=false;
  $('pt-exp').value=PCUR.expires_at?new Date(PCUR.expires_at-new Date(PCUR.expires_at).getTimezoneOffset()*60000).toISOString().slice(0,16):'';pVis();
- pCover();pLoadLang();PDIRTY=false;$('pt-title').focus();}
+ pCover();pLoadLang();PDIRTY=!!preset;if(preset)$('pt-slug').dataset.auto='1';$('pt-title').focus();}
 function pVis(){const link=document.querySelector('[name=pvis]:checked').value==='link';$('plinkbox').hidden=!link;const hp=PCUR&&+PCUR.has_pass;
  $('ppassnote').textContent=hp?'Đã đặt mật khẩu. Nhập mật khẩu mới nếu muốn đổi.':'Người xem phải nhập đúng mật khẩu mới đọc được bài. Tối thiểu 4 ký tự.';$('ppassclr').hidden=!hp;
  const pub=PCUR&&PCUR.status==='published';$('pcopy').hidden=!(PCUR&&PCUR.id&&link);
@@ -1116,6 +1121,114 @@ $('pprev').addEventListener('click',()=>{if(!PCUR)return;pStore();const src=PLAN
 $('pmodx').addEventListener('click',()=>$('pmod').hidden=true);
 addEventListener('beforeunload',e=>{if(PDIRTY&&location.hash==='#bai-viet-sua'){e.preventDefault();e.returnValue='';}});
 
+/* ================= Tạo bài nhanh: mẫu bài, tự điền nội dung và SEO ================= */
+const QF={
+ title:['Tiêu đề (để trống để hệ thống gợi ý)','input','Ví dụ: Tập huấn ghi nhật ký trên Zalo cho bà con Ea Kly'],
+ kind:['Loại hoạt động','select',['Tập huấn','Hội nghị','Khảo sát, số hóa vùng trồng','Bàn giao, hướng dẫn','Kiểm tra, lấy mẫu tại vườn','Hoạt động khác']],
+ date:['Ngày diễn ra','date',''],time:['Giờ','input','Ví dụ: 7:30 – 11:30'],
+ place:['Địa điểm','input','Ví dụ: xã Ea Kly, tỉnh Đắk Lắk'],partner:['Đơn vị phối hợp (nếu có)','input','Ví dụ: HTX Nông nghiệp Xanh Krông Pắc'],
+ crop:['Cây trồng','select',['sầu riêng','cà phê','sầu riêng và cà phê','cây ăn trái']],
+ people:['Số người tham gia (ước tính)','input','Ví dụ: 40 nông hộ'],
+ points:['Nội dung chính (mỗi dòng một ý)','textarea','Hướng dẫn ghi nhật ký trên Zalo Mini App\nChọn phân thuốc trong danh mục, chụp ảnh bao bì\nYêu cầu nhật ký khi hậu kiểm mã số vùng trồng'],
+ results:['Kết quả, điểm nổi bật (mỗi dòng một ý)','textarea','Bà con tự đăng nhập và ghi được nhật ký đầu tiên'],
+ who:['Dành cho ai','input','Ví dụ: nông hộ trong vùng trồng có mã'],
+ steps:['Các bước (mỗi dòng một bước)','textarea','Mở Zalo, quét mã QR FarmBase\nChọn vườn, bấm Thêm ghi chép\nChọn phân thuốc, chụp ảnh bao bì, bấm Thêm'],
+ tips:['Lưu ý (mỗi dòng một ý)','textarea','Ghi ngay trong ngày làm việc\nĐúng tên thuốc, liều lượng, thời gian cách ly'],
+ problem:['Vấn đề người đọc đang gặp','textarea','Ví dụ: nhiều hộ ghi nhật ký thiếu, đến khi kiểm tra mới bổ sung'],
+ paper:['Tên báo','input','Ví dụ: Tạp chí Hữu Cơ Việt Nam'],pdate:['Ngày đăng báo','date',''],url:['Link bài gốc','input','https://'],
+ summary:['Tóm tắt bằng lời của mình (2–3 câu, không chép nguyên văn)','textarea',''],
+ agenda:['Chương trình (mỗi dòng một mục)','textarea','Khai mạc, giới thiệu chương trình\nHướng dẫn kỹ thuật theo giai đoạn\nThực hành tại vườn'],
+ register:['Cách đăng ký','input','Nhắn Zalo 0911 423 839 (Mrs Ngọc)']};
+const QT={
+ hd:{n:'Tin hoạt động, tập huấn',d:'Kể lại một buổi tập huấn, hội nghị, khảo sát đã diễn ra',cat:'tin-tuc',f:['kind','title','date','place','partner','crop','people','points','results'],kw:['tập huấn nông dân','nhật ký canh tác điện tử','mã số vùng trồng']},
+ sk:{n:'Thông báo sự kiện',d:'Mời tham dự buổi tập huấn, hội nghị sắp tới',cat:'su-kien',f:['kind','title','date','time','place','partner','crop','who','agenda','register'],kw:['tập huấn','hội nghị nông nghiệp','Đắk Lắk']},
+ gd:{n:'Hướng dẫn sử dụng',d:'Từng bước dùng Zalo Mini App hoặc trang quản lý',cat:'huong-dan',f:['title','who','steps','tips'],kw:['hướng dẫn FarmBase','Zalo Mini App','nhật ký canh tác điện tử']},
+ kt:{n:'Kiến thức',d:'Giải thích một yêu cầu, quy trình cho bà con, HTX',cat:'kien-thuc',f:['title','crop','problem','points','tips'],kw:['mã số vùng trồng','truy xuất nguồn gốc','nhật ký canh tác']},
+ bc:{n:'Báo chí ghi nhận',d:'Tóm tắt một bài báo, ghi nguồn và link gốc',cat:'bao-chi',f:['title','paper','pdate','url','summary','points'],kw:['báo chí','sầu riêng Đắk Lắk','truy xuất nguồn gốc']}};
+const QCTA={tuvan:'Cần tư vấn triển khai FarmBase cho vùng trồng của Quý đối tác? Liên hệ Mrs Ngọc · 0911 423 839 (Zalo) · info@bvi.vn.',
+ msvt:'Cần hỗ trợ kỹ thuật, hồ sơ mã số vùng trồng? Liên hệ Mrs Ngọc · 0911 423 839 (Zalo) · info@bvi.vn. Việc cấp mã thuộc thẩm quyền cơ quan quản lý nhà nước; BVI hỗ trợ kỹ thuật, hồ sơ và vận hành hệ thống truy xuất.',
+ app:'Bà con mở Zalo, tìm "FarmBase" hoặc quét mã QR để bắt đầu ghi nhật ký. Cần hướng dẫn, nhắn Zalo 0911 423 839 (Mrs Ngọc).',
+ cd:'Chiến dịch 10.000 ha cây trồng chủ lực niên vụ 2026–2027 đang mời HTX, doanh nghiệp và đối tác cùng đồng hành. Liên hệ Mrs Ngọc · 0911 423 839 (Zalo) · info@bvi.vn.'};
+let QC={t:'hd',v:{},imgs:[]};
+const qL=s=>String(s||'').split('\n').map(x=>x.trim().replace(/^([-•*+]|\d+[.)])\s*/,'')).filter(Boolean);
+const qD=d=>{if(!d)return '';const p=d.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d;};
+const qlc=s=>s?s.charAt(0).toLowerCase()+s.slice(1):'';const quc=s=>s?s.charAt(0).toUpperCase()+s.slice(1):'';
+const qE=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const qdot=s=>/[.!?…]$/.test(s)?s:s+'.';
+function qCut(s,n){s=String(s||'').trim();if(s.length<=n)return s;const c=s.slice(0,n+1);const i=c.lastIndexOf(' ');return c.slice(0,i>n*.6?i:n).replace(/[,;:\-–·]+$/,'');}
+function qDesc(s,pad){s=String(s||'').replace(/\s+/g,' ').trim();const se=s.match(/[^.!?]+[.!?]*/g)||[];let o='';
+ for(const x of se){const n=(o+' '+x.trim()).trim();if(n.length>160)break;o=n;}
+ if(!o)o=qCut(s,157)+'…';if(o.length<140&&pad){const n=(qdot(o)+' '+pad).trim();if(n.length<=160)o=n;}return o;}
+function qGen(){const t=QT[QC.t],v=QC.v,crop=v.crop||'sầu riêng',place=v.place||'Đắk Lắk',pts=qL(v.points),res=qL(v.results),steps=qL(v.steps),tips=qL(v.tips),ag=qL(v.agenda);
+ const kind=v.kind||'Tập huấn',date=qD(v.date);let title=v.title,exc='',body='',pad='',fbl=[];
+ const ul=a=>a.length?'<ul>'+a.map(x=>`<li>${qE(qdot(quc(x)))}</li>`).join('')+'</ul>':'';
+ const ol=a=>a.length?'<ol>'+a.map(x=>`<li>${qE(qdot(quc(x)))}</li>`).join('')+'</ol>':'';
+ const imgs=QC.imgs.filter(i=>i.url);const gal=imgs.length?'<h2>Hình ảnh</h2>'+imgs.map(i=>`<p><img src="${qE(i.url)}" alt="${qE(i.cap||title||'')}"></p>${i.cap?`<p class="ql-align-center"><em>${qE(i.cap)}</em></p>`:''}`).join(''):'';
+ if(QC.t==='hd'){title=title||`${kind}${pts[0]?' '+qlc(pts[0]):' cùng bà con trồng '+crop} tại ${place}`;
+  exc=`${date?'Ngày '+date+', ':''}${date?qlc(kind):kind} tại ${place}${v.partner?' cùng '+v.partner:''}${v.people?', với khoảng '+v.people+' tham gia':''}${pts[0]?'. Nội dung chính: '+qlc(pts[0]):''}.`;
+  body=`<p>${qE(exc)}</p>${pts.length?'<h2>Nội dung chính</h2>'+ul(pts):''}${gal}${res.length?'<h2>Kết quả</h2>'+ul(res):''}<h2>Vì sao việc này quan trọng</h2><p>Nhật ký canh tác đúng, đủ, kịp thời là bằng chứng để vùng trồng ${qE(crop)} duy trì mã số vùng trồng khi cơ quan chức năng hậu kiểm. Dữ liệu ghi trên FarmBase được HTX theo dõi hằng ngày và đồng bộ với Hệ thống truy xuất nguồn gốc của Bộ NN&amp;MT đối với vùng đã có mã.</p>`;
+  pad=`Hình ảnh và kết quả ${qlc(kind)} cùng FarmBase.`;fbl=pts;}
+ else if(QC.t==='sk'){title=title||`Mời tham dự ${qlc(kind)}${pts[0]?' '+qlc(pts[0]):''} tại ${place}${date?' ngày '+date:''}`;
+  exc=`${kind} dành cho ${v.who||'nông hộ, HTX trồng '+crop}${date?', ngày '+date:''}${v.time?' ('+v.time+')':''} tại ${place}${v.partner?', phối hợp cùng '+v.partner:''}.`;
+  body=`<p>${qE(exc)}</p><h2>Thông tin chung</h2><ul>${date?`<li><strong>Thời gian:</strong> ${qE(date)}${v.time?' · '+qE(v.time):''}</li>`:''}<li><strong>Địa điểm:</strong> ${qE(place)}</li><li><strong>Đối tượng:</strong> ${qE(v.who||'nông hộ, HTX trồng '+crop)}</li>${v.partner?`<li><strong>Đơn vị phối hợp:</strong> ${qE(v.partner)}</li>`:''}</ul>${ag.length?'<h2>Chương trình</h2>'+ol(ag):''}${gal}<h2>Đăng ký tham dự</h2><p>${qE(qdot(v.register||'Nhắn Zalo 0911 423 839 (Mrs Ngọc)'))} Số chỗ có hạn, vui lòng đăng ký trước để ban tổ chức chuẩn bị tài liệu.</p>`;
+  pad='Đăng ký tham dự qua Zalo 0911 423 839.';fbl=ag;}
+ else if(QC.t==='gd'){title=title||(steps.length?`Hướng dẫn ${qlc(steps[steps.length-1]).replace(/^bấm\s+/,'')} trong ${steps.length} bước`:'Hướng dẫn sử dụng FarmBase trên Zalo Mini App');
+  exc=`Hướng dẫn từng bước dành cho ${v.who||'nông hộ dùng FarmBase trên Zalo'}${steps.length?', chỉ '+steps.length+' bước':''}, có ảnh minh họa.`;
+  const sh=steps.map((x,i)=>`<h3>Bước ${i+1}: ${qE(quc(x))}</h3>${imgs[i]?`<p><img src="${qE(imgs[i].url)}" alt="${qE(imgs[i].cap||x)}"></p>${imgs[i].cap?`<p class="ql-align-center"><em>${qE(imgs[i].cap)}</em></p>`:''}`:''}`).join('');
+  const rest=imgs.slice(steps.length);
+  body=`<p>${qE(exc)}</p><h2>Các bước thực hiện</h2>${sh}${rest.length?'<h2>Hình ảnh thêm</h2>'+rest.map(i=>`<p><img src="${qE(i.url)}" alt="${qE(i.cap||'')}"></p>`).join(''):''}${tips.length?'<h2>Lưu ý</h2>'+ul(tips):''}`;
+  pad='Làm theo từng bước có ảnh minh họa, cần hỗ trợ nhắn Zalo 0911 423 839.';fbl=steps;}
+ else if(QC.t==='kt'){title=title||(pts[0]?quc(pts[0]):`Điều bà con trồng ${crop} cần biết về mã số vùng trồng`);
+  exc=v.problem?qdot(quc(v.problem.trim()))+' Bài viết giải thích ngắn gọn và gợi ý cách làm đúng.':`Những điểm bà con, HTX trồng ${crop} cần nắm để chuẩn bị và duy trì mã số vùng trồng.`;
+  body=`<p>${qE(exc)}</p>${pts.length?'<h2>Những điểm cần nắm</h2>'+ul(pts):''}${gal}${tips.length?'<h2>Gợi ý cách làm</h2>'+ul(tips):''}<p><em>Lưu ý: nội dung mang tính hướng dẫn chung. Quy định cụ thể vui lòng đối chiếu văn bản của cơ quan quản lý.</em></p>`;
+  pad='Hướng dẫn ngắn gọn từ FarmBase.';fbl=pts;}
+ else{const paper=v.paper||'báo chí';title=title||(v.summary?qCut(v.summary.split('.')[0],70):`${paper} đưa tin về vùng trồng ${crop}`);
+  exc=`Báo chí ghi nhận: ${paper}${v.pdate?' ('+qD(v.pdate)+')':''} đưa tin. ${v.summary?qdot(v.summary.trim()):''}`.trim();
+  body=`<p><strong>Báo chí ghi nhận</strong> · ${qE(paper)}${v.pdate?' · '+qE(qD(v.pdate)):''}</p><p>${qE(v.summary||'')}</p>${pts.length?'<h2>Điểm đáng chú ý</h2>'+ul(pts):''}${gal}${/^https:\/\//.test(v.url||'')?`<p>Đọc bài gốc: <a href="${qE(v.url)}" target="_blank" rel="noopener">${qE(paper)}</a></p>`:''}`;
+  pad=`Tóm tắt bài viết trên ${paper}, kèm link bài gốc.`;fbl=pts;}
+ body+='<h2>Về FarmBase</h2><p>FarmBase là nền tảng quản lý vùng trồng, nhật ký canh tác và truy xuất nguồn gốc cho sầu riêng, cà phê và cây ăn trái. Nông hộ ghi nhật ký trên Zalo Mini App, HTX và doanh nghiệp theo dõi trên trang quản lý web, người mua quét mã QR để xem hồ sơ vùng trồng. Giải pháp FarmBase do BVI và Salefronts đồng phát triển.</p>';
+ const cta=QCTA[$('qccta').value];if(cta)body+=`<blockquote>${qE(cta)}</blockquote>`;
+ const kw=[...new Set([...t.kw,crop!=='cây ăn trái'?crop.split(' và ')[0]:'',v.place?v.place.split(',')[0].replace(/^(xã|phường|thôn|huyện)\s+/i,''):''].filter(Boolean))].join(', ');
+ const cover=(imgs.find(i=>i.cover)||imgs[0]||{}).url||'';
+ const fb=`${title}\n\n${exc}${fbl.length?'\n\n'+fbl.slice(0,5).map(x=>'✅ '+qdot(quc(x))).join('\n'):''}${cta?'\n\n'+cta:''}\n\n#FarmBase #MinhBachTuGoc ${crop.includes('cà phê')?'#CaPheDakLak':'#SauRiengDakLak'} #NhatKyCanhTac #MaVungTrong`;
+ return {title,excerpt:exc,body,cat:t.cat,meta_title:qCut(title,60),meta_desc:qDesc(exc,pad),meta_kw:kw,slug:slugv(qCut(title,60)),cover,og_image:'',visibility:$('qcvis').value,fb};}
+function qcForm(){const t=QT[QC.t];$('qctpl').innerHTML=Object.entries(QT).map(([k,x])=>`<button type="button" role="radio" aria-checked="${k===QC.t}" data-qt="${k}"><b>${x.n}</b><small>${x.d}</small></button>`).join('');
+ $('qcf').innerHTML=t.f.map(k=>{const [lb,ty,ph]=QF[k],val=QC.v[k]??(ty==='select'?ph[0]:'');const id='qf-'+k;
+  if(ty==='select')return `<label for="${id}">${lb}<select id="${id}" data-qf="${k}">${ph.map(o=>`<option${o===val?' selected':''}>${o}</option>`).join('')}</select></label>`;
+  if(ty==='textarea')return `<label for="${id}">${lb}<textarea id="${id}" data-qf="${k}" rows="3" placeholder="${qE(ph)}">${qE(val)}</textarea></label>`;
+  return `<label for="${id}">${lb}<input id="${id}" data-qf="${k}" type="${ty==='date'?'date':'text'}" placeholder="${qE(ph)}" value="${qE(val)}"></label>`;}).join('');
+ t.f.forEach(k=>{if(QF[k][1]==='select'&&QC.v[k]==null)QC.v[k]=QF[k][2][0];});qcPrev();}
+function qcImgs(){$('qccnt').textContent=QC.imgs.length?`· ${QC.imgs.length} ảnh`:'';
+ $('qcimgs').innerHTML=QC.imgs.map((i,n)=>`<figure class="${i.cover?'cv':''}">${i.url?`<img src="${qE(pimg(i.url))}" alt="">`:`<div class="qc-up">${i.err?qE(i.err):'Đang tải…'}</div>`}
+  <div class="qc-ia"><button type="button" class="linkbtn" data-qcv="${n}" title="Đặt làm ảnh bìa" aria-label="Đặt làm ảnh bìa">${i.cover?'★':'☆'}</button><button type="button" class="linkbtn" data-qmv="${n}" title="Đưa lên trước" aria-label="Đưa lên trước"${n?'':' disabled'}>←</button><button type="button" class="linkbtn" data-qx="${n}" title="Bỏ ảnh" aria-label="Bỏ ảnh">✕</button></div>
+  <input data-qcap="${n}" placeholder="Chú thích ảnh" value="${qE(i.cap||'')}" aria-label="Chú thích ảnh ${n+1}"></figure>`).join('');}
+async function qcAdd(files){files=[...files].filter(f=>/^image\//.test(f.type));if(!files.length)return;
+ const start=QC.imgs.length;files.forEach(()=>QC.imgs.push({url:'',cap:'',cover:false}));if(!QC.imgs.some(i=>i.cover))QC.imgs[0].cover=true;qcImgs();
+ let ok=0;for(let k=0;k<files.length;k++){const it=QC.imgs[start+k];try{const b=await shrinkTo(files[k]);it.url=await upFile(b,files[k].name);ok++;}catch(e){it.err=upErr(e);}qcImgs();qcPrev();}
+ QC.imgs=QC.imgs.filter(i=>i.url||!i.err||(toast(i.err),false));if(QC.imgs.length&&!QC.imgs.some(i=>i.cover))QC.imgs[0].cover=true;qcImgs();qcPrev();if(ok)toast(`Đã tải ${ok} ảnh`);}
+let QPT=0;function qcPrev(){clearTimeout(QPT);QPT=setTimeout(()=>{const g=qGen();QC.last=g;
+ $('qgu').textContent='farmbase.vn › bai-viet › '+(g.slug||'…')+(g.visibility==='link'?'-k…':'');$('qgt').textContent=g.meta_title+' | FarmBase';$('qgd').textContent=g.meta_desc;
+ const words=g.body.replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length;
+ $('qcchk').innerHTML=[[g.meta_title.length>=20&&g.meta_title.length<=60,`Tiêu đề SEO ${g.meta_title.length} ký tự (nên 20–60)`],[g.meta_desc.length>=120&&g.meta_desc.length<=160,`Mô tả SEO ${g.meta_desc.length} ký tự (nên 120–160)`],[!!g.cover,'Có ảnh bìa'],[QC.imgs.filter(i=>i.url).every(i=>i.cap),'Ảnh đều có chú thích'],[words>=300,`Nội dung ${words} chữ (nên từ 300, thêm ý ở ô nội dung chính)`]].map(c=>`<li class="${c[0]?'ok':''}">${c[0]?'✓':'○'} ${c[1]}</li>`).join('');
+ const fix=h=>h.replace(/src="(img\/[^"]+)"/g,(m,u)=>`src="${pimg(u)}"`);
+ $('qcart').innerHTML=`${g.cover?`<img class="pcv" src="${qE(pimg(g.cover))}" alt="">`:''}<p class="cnote">${PCATS[g.cat]}${g.visibility==='link'?' · Chỉ người có link':''}</p><h1>${qE(g.title||'Tiêu đề bài viết')}</h1><p><b>${qE(g.excerpt)}</b></p><div class="prich">${fix(g.body)}</div>`;
+ $('qcfb').textContent=g.fb;},150);}
+function qcInit(){if(QC.init)return;QC.init=true;qcForm();qcImgs();
+ $('qctpl').addEventListener('click',e=>{const b=e.target.closest('[data-qt]');if(!b)return;QC.t=b.dataset.qt;qcForm();});
+ $('qcf').addEventListener('input',e=>{const k=e.target.dataset.qf;if(k){QC.v[k]=e.target.value;qcPrev();}});
+ $('qcf').addEventListener('change',e=>{const k=e.target.dataset.qf;if(k){QC.v[k]=e.target.value;qcPrev();}});
+ ['qcvis','qccta'].forEach(id=>$(id).addEventListener('change',qcPrev));
+ $('qcfile').addEventListener('change',e=>{qcAdd(e.target.files);e.target.value='';});
+ const dz=$('qcdrop');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('on');}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('on');}));
+ dz.addEventListener('drop',e=>qcAdd(e.dataTransfer.files));
+ $('qcimgs').addEventListener('input',e=>{const n=e.target.dataset.qcap;if(n!=null){QC.imgs[+n].cap=e.target.value;qcPrev();}});
+ $('qcimgs').addEventListener('click',e=>{const c=e.target.closest('[data-qcv]'),m=e.target.closest('[data-qmv]'),x=e.target.closest('[data-qx]');
+  if(c){QC.imgs.forEach((i,n)=>i.cover=n===+c.dataset.qcv);}else if(m){const n=+m.dataset.qmv;if(n>0)[QC.imgs[n-1],QC.imgs[n]]=[QC.imgs[n],QC.imgs[n-1]];}else if(x){QC.imgs.splice(+x.dataset.qx,1);if(QC.imgs.length&&!QC.imgs.some(i=>i.cover))QC.imgs[0].cover=true;}else return;qcImgs();qcPrev();});
+ $('qcfbcp').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(QC.last?QC.last.fb:'');toast('Đã sao chép bài Facebook');}catch(e){toast('Chưa sao chép được, hãy bôi đen và sao chép thủ công');}});
+ $('qcreset').addEventListener('click',()=>{if(!confirm('Xóa các thông tin và ảnh đã nhập?'))return;QC.v={};QC.imgs=[];qcForm();qcImgs();});
+ $('qcgo').addEventListener('click',async()=>{const g=qGen();if(!g.title.trim()){toast('Vui lòng nhập thông tin bài');return;}if(QC.imgs.some(i=>!i.url&&!i.err)){toast('Ảnh đang tải, đợi một chút');return;}
+  const {fb,...post}=g;await openPost(0,post);toast('Đã tạo bản nháp. Chỉnh nội dung rồi bấm Lưu nháp hoặc Đăng bài');});}
+addEventListener('hashchange',()=>{if(location.hash==='#tao-nhanh')qcInit();});if(location.hash==='#tao-nhanh')setTimeout(qcInit,300);
 /* ================= Sửa nội dung từng trang ================= */
 const PGS=[['trang-chu','Trang chủ'],['giai-phap','Giải pháp (tổng quan)'],['chien-dich-10000ha','Chiến dịch 10.000 ha'],['ve-chung-toi','Về chúng tôi'],['nguon-hang','Nguồn hàng'],['doi-tac','Khách hàng, đối tác'],['su-kien','Sự kiện'],['lien-he','Liên hệ']];
 let PG={id:'',ready:false,fields:[],win:null,lang:'vi',init:false};
