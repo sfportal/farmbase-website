@@ -83,6 +83,9 @@ th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;le
 td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 tr.pick{cursor:pointer} tr.pick:hover td{background:var(--sel)}
 .chip{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--amber-soft);color:var(--amber)}
+td.c-ok{background:var(--green-soft);color:var(--green);font-weight:700;text-align:center}
+td.c-no{background:var(--red-soft);color:var(--red);font-weight:700;text-align:center}
+table.mx th,table.mx td{padding:8px 10px}
 .chip.ok{background:var(--green-soft);color:var(--green)}
 .key{border-left:3px solid var(--green);padding:8px 12px;background:var(--green-soft);border-radius:0 8px 8px 0;font-size:14px}
 .key ul{margin:4px 0 0;padding-left:18px}
@@ -372,6 +375,13 @@ function renderAdmin(){
       <td>${typeof b.tong==="number"?`<span class="chip ok">${b.tong}</span>`:"–"}</td></tr>`).join("")}
     </tbody></table></div>`:`<div class="notice">Chưa có bài nộp. Gửi link trang này cho nhân sự, bài nộp sẽ hiện ở đây.</div>`}
   </section>
+  ${done.length?`<section class="block">
+    <div class="sec-h"><h2>Bảng đáp án từng người</h2><span class="meta">xanh: đúng · đỏ: sai · –: bỏ trống</span></div>
+    <div class="tbl-wrap"><table class="mx"><thead><tr><th>Họ tên</th>${MCQ.map((q,i)=>`<th title="${esc(q.t)}">C${i+1}</th>`).join("")}<th>Điểm TN</th></tr></thead><tbody>
+    ${done.map(b=>`<tr class="pick" data-id="${esc(b._id??b.id)}" tabindex="0"><td>${esc(b.hoTen)}</td>${MCQ.map(q=>{const a=b.tn?.[q.id]; return `<td class="num ${a?(a===QL.dapAn[q.id]?"c-ok":"c-no"):""}">${a?a.toUpperCase():"–"}</td>`}).join("")}<td class="num">${scoreTN(b)}/60</td></tr>`).join("")}
+    <tr><td><b>Đáp án đúng</b></td>${MCQ.map(q=>`<td class="num"><b>${QL.dapAn[q.id].toUpperCase()}</b></td>`).join("")}<td></td></tr>
+    <tr><td class="hint">Số người đúng</td>${MCQ.map(q=>`<td class="num hint">${done.filter(b=>b.tn?.[q.id]===QL.dapAn[q.id]).length}/${done.length}</td>`).join("")}<td></td></tr>
+    </tbody></table></div></section>`:""}
   <section class="block" id="detail"></section>
   <section class="block">
     <div class="sec-h"><h2>Đáp án trắc nghiệm</h2><span class="meta">chỉ hiện sau khi nhập PIN</span></div>
@@ -388,9 +398,12 @@ function renderDetail(){
   const box=$("#detail"); if(!box) return;
   const b=QL.bai.find(s=>s.id===openId); if(!b){ box.innerHTML=""; return }
   box.innerHTML=`<div class="sec-h"><h2>Chấm bài: ${esc(b.hoTen)}</h2><span class="meta">trắc nghiệm tự chấm ${scoreTN(b)}/60</span></div>
-  <div class="q"><div class="n">TRẮC NGHIỆM</div>
-    ${MCQ.map((q,i)=>{ const a=b.tn?.[q.id], ok=a===QL.dapAn[q.id];
-      return `<div class="opt ${ok?"right":"wrong"}" style="cursor:default"><span class="k">${i+1}</span><span>${a?`Chọn ${a.toUpperCase()}`:"Bỏ trống"}${ok?"":` · đúng là ${QL.dapAn[q.id].toUpperCase()}`}</span></div>`}).join("")}
+  <div class="q"><div class="n">TRẮC NGHIỆM · ĐÁP ÁN TỪNG CÂU</div>
+    ${MCQ.map((q,i)=>{ const a=b.tn?.[q.id], k=QL.dapAn[q.id], ok=a===k;
+      return `<div class="opt ${ok?"right":"wrong"}" style="cursor:default;display:grid;gap:4px">
+        <span><b>Câu ${i+1}.</b> ${esc(q.t)}</span>
+        <span>${ok?"✓":"✗"} <b>Chọn:</b> ${a?`${a.toUpperCase()}. ${esc(q.o[a])}`:"Bỏ trống"}</span>
+        ${ok?"":`<span class="hint"><b>Đáp án đúng:</b> ${k.toUpperCase()}. ${esc(q.o[k])}</span>`}</div>`}).join("")}
   </div>
   ${ESSAY.map((e,i)=>`<div class="q">
     <div class="n">TÌNH HUỐNG ${i+1} · TỐI ĐA ${e.max} ĐIỂM</div><div class="t">${esc(e.t)}</div>
