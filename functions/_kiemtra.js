@@ -49,6 +49,56 @@ export function chamTN(tn) {
   return d;
 }
 
+
+// Tự chấm sơ bộ câu tình huống: mỗi ý có danh sách cụm từ (viết không dấu), câu trả lời có một cụm là được điểm ý đó.
+// Chỉ là điểm gợi ý để quản lý xem nhanh; quản lý chấm lại thì điểm quản lý thay thế.
+export const TU_CHAM = {
+  e1: [
+    { y: "Không hoãn cả vùng", d: 3, k: ["khong hoan", "khong nen hoan", "khong dong y hoan", "van to chuc", "van tap huan", "dung lich", "giu lich", "khong doi"] },
+    { y: "Đại diện mã ký cam kết", d: 4, k: ["cam ket"] },
+    { y: "Giải thích cho hộ lo về sổ đỏ", d: 3, k: ["giai thich", "khong anh huong", "quyen su dung", "khong cong khai", "bao mat", "yen tam", "khong mat dat"] },
+    { y: "Hộ không đáp ứng thì loại, chuyển đợt sau", d: 3, k: ["loai", "dot sau", "dot bo sung", "tach", "chuyen dot", "dot 2"] },
+    { y: "Ngoại lệ, nộp bổ sung tại buổi", d: 2, k: ["ngoai le", "ban 3", "mang theo", "tai buoi", "trong buoi", "nop bo sung", "bo sung tai"] },
+  ],
+  e2: [
+    { y: "Không hứa, không cam kết ngày", d: 4, k: ["khong hua", "chua hua", "khong cam ket", "chua cam ket", "khong the cam ket", "khong hen", "khong dam bao", "chua the noi chinh xac", "khong biet chinh xac"] },
+    { y: "Do nhà nước và phía Trung Quốc quyết định", d: 3, k: ["nha nuoc", "trung quoc", "gacc", "co quan", "phia tq", "hai quan"] },
+    { y: "Nêu tiến độ, mốc tham khảo", d: 1, k: ["10", "15 ngay", "tien do", "buoc", "ma noi dia", "nop ho so", "dang lam"] },
+    { y: "Hướng bà con ghi nhật ký, làm đúng quy định", d: 2, k: ["nhat ky", "farmbase", "ghi chep", "dung thuoc", "quy dinh"] },
+  ],
+  e3: [
+    { y: "Gom một biên bản, sửa một lần", d: 3, k: ["mot lan", "1 lan", "gom", "mot bien ban", "1 bien ban", "cung luc"] },
+    { y: "Sửa trên hệ thống, xuất lại trong ngày", d: 3, k: ["he thong", "farmbase", "xuat lai", "trong ngay", "24 gio", "24h", "app"] },
+    { y: "Hộ bị loại: chỉ in lại phần tổng, hộ khác không ký lại", d: 4, k: ["phan tong", "khong ky lai", "khong phai ky lai", "go ", "go khoi", "bo ho", "loai ho", "2 phan", "hai phan"] },
+    { y: "Hộ mới vào danh sách chờ, đợt bổ sung", d: 3, k: ["danh sach cho", "dot bo sung", "dot sau", "dot 2", "bo sung sau", "lan sau"] },
+    { y: "Tổ trưởng, đại diện mã đưa ký; đơn vị đứng mã ký phần tổng cuối", d: 2, k: ["to truong", "dai dien ma", "sau cung", "don vi dung ma", "doanh nghiep ky", "ky mot lan"] },
+  ],
+};
+const khongDau = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/\s+/g, " ");
+export function chamTL(tl) {
+  const per = {}, khop = {};
+  for (const [cau, ys] of Object.entries(TU_CHAM)) {
+    const t = " " + khongDau(tl && tl[cau]) + " ";
+    per[cau] = 0; khop[cau] = [];
+    if (t.trim().length < 15) continue; // trả lời quá ngắn
+    ys.forEach((y, i) => { if (y.k.some((k) => t.includes(k))) { per[cau] += y.d; khop[cau].push(i); } });
+  }
+  return { per, khop, tong: Object.values(per).reduce((a, b) => a + b, 0) };
+}
+
+// Phiên làm bài: quản lý tạo phiên mới để mọi người làm lại từ đầu; bài mở mới luôn vào phiên đang mở.
+export async function phienHienTai(D) {
+  let p = await D.prepare("SELECT * FROM kiemtra_phien WHERE dang_mo=1 ORDER BY id DESC LIMIT 1").first();
+  if (!p) {
+    const any = await D.prepare("SELECT COUNT(*) n FROM kiemtra_phien").first();
+    if (!any || !any.n) {
+      const r = await D.prepare("INSERT INTO kiemtra_phien (ten,tao_luc,dang_mo) VALUES (?,?,1)").bind("Phiên 1", Date.now()).run();
+      p = { id: r.meta?.last_row_id, ten: "Phiên 1", dang_mo: 1 };
+    }
+  }
+  return p || null;
+}
+
 let ready = false;
 export async function bang(D) {
   if (ready) return;
@@ -59,6 +109,10 @@ export async function bang(D) {
       tn TEXT, tl TEXT, diem_tn INTEGER, diem_tung_cau TEXT, diem_tl INTEGER, tong INTEGER,
       nhan_xet TEXT, cham_luc INTEGER, ip TEXT)`),
     D.prepare(`CREATE INDEX IF NOT EXISTS idx_kiemtra_bd ON kiemtra_bai(bat_dau)`),
+    D.prepare(`CREATE TABLE IF NOT EXISTS kiemtra_phien (id INTEGER PRIMARY KEY AUTOINCREMENT, ten TEXT, tao_luc INTEGER, dang_mo INTEGER DEFAULT 1)`),
   ]);
+  for (const m of ["ALTER TABLE kiemtra_bai ADD COLUMN phien_id INTEGER", "ALTER TABLE kiemtra_bai ADD COLUMN tu_cham TEXT"]) {
+    try { await D.prepare(m).run(); } catch (e) { /* đã có cột */ }
+  }
   ready = true;
 }

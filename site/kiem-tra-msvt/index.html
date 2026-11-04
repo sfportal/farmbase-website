@@ -122,8 +122,9 @@ table.mx th,table.mx td{padding:8px 10px}
         <li>Tự luận: không cần viết dài. Ghi ý chính, làm gì trước, làm gì sau, ai làm.</li>
         <li>Mỗi người làm một lần. Quản lý chấm phần tình huống; mở lại trang này trên cùng điện thoại để xem điểm.</li>
       </ul>
-      <label for="ho-ten"><b>Họ tên</b></label>
-      <input type="text" id="ho-ten" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="name">
+      <div class="notice" id="phien-info" hidden></div>
+      <label for="ho-ten"><b>Họ và tên của bạn</b> <span class="hint">(gõ đầy đủ, quản lý phân biệt bài theo tên)</span></label>
+      <input type="text" id="ho-ten" placeholder="Ví dụ: Nguyễn Thị Mẫn" autocomplete="off">
       <div class="row">
         <button class="btn" type="button" id="start">Bắt đầu làm bài</button>
         <span class="hint" id="start-hint"></span>
@@ -281,7 +282,7 @@ function showForm(){
 }
 async function begin(){
   const hoTen = $("#ho-ten").value.trim();
-  if (hoTen.length < 2) { $("#start-hint").textContent = "Nhập họ tên trước khi bắt đầu."; $("#ho-ten").focus(); return }
+  if (hoTen.length < 4 || !/\s/.test(hoTen)) { $("#start-hint").textContent = "Gõ đầy đủ họ và tên (ví dụ: Nguyễn Thị Mẫn) trước khi bắt đầu."; $("#ho-ten").focus(); return }
   $("#start").disabled = true; $("#start-hint").textContent = "Đang mở bài…";
   try {
     const d = await call(API, { method:"POST", body: JSON.stringify({ action:"bat-dau", hoTen }) });
@@ -290,7 +291,7 @@ async function begin(){
     showForm(); window.scrollTo({top:0});
   } catch(e) {
     $("#start").disabled = false;
-    $("#start-hint").textContent = e.status===429 ? "Mở bài quá nhiều lần từ mạng này. Thử lại sau ít phút." : "Chưa mở được bài, kiểm tra mạng rồi bấm lại.";
+    $("#start-hint").textContent = e.status===423 ? "Bài kiểm tra đang đóng. Chờ quản lý mở phiên mới." : e.status===429 ? "Mở bài quá nhiều lần từ mạng này. Thử lại sau ít phút." : "Chưa mở được bài, kiểm tra mạng rồi bấm lại.";
   }
 }
 async function submit(ev, force){
@@ -355,23 +356,52 @@ function renderPin(msgText){
   $("#pin").addEventListener("keydown", e=>{ if(e.key==="Enter") go() });
   $("#pin").focus();
 }
+let xemPhien = null;
 async function loadQL(){
-  QL = await call(API_QL, { method:"POST", headers:{ "x-pin": pin }, body:"{}" });
+  QL = await call(API_QL, { method:"POST", headers:{ "x-pin": pin }, body: JSON.stringify({ phien: xemPhien }) });
+  xemPhien = QL.phienId;
   renderAdmin();
+}
+const tenKey = t => String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/\s+/g," ").trim();
+function phienBar(){
+  const cur = QL.phiens.find(p=>p.id===QL.phienId);
+  return `<section class="block"><div class="q">
+    <div class="sec-h"><h2>Phiên làm bài</h2><span class="meta">${QL.phienMo?`đang mở: ${esc((QL.phiens.find(p=>p.id===QL.phienMo)||{}).ten||"")}`:"đang đóng, không ai bắt đầu được"}</span></div>
+    <div class="row"><label for="ql-phien">Xem kết quả</label>
+      <select id="ql-phien" style="font:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg)">${QL.phiens.map(p=>`<option value="${p.id}" ${p.id===QL.phienId?"selected":""}>${esc(p.ten)} · ${new Date(p.taoLuc).toLocaleDateString("vi-VN")} · ${p.soBai} bài${p.dangMo?" · đang mở":""}</option>`).join("")}</select></div>
+    <div class="row">
+      <button class="btn" type="button" id="ql-new">Tạo phiên mới cho mọi người làm lại</button>
+      ${QL.phienMo?`<button class="btn ghost" type="button" id="ql-close">Đóng phiên đang mở</button>`:(cur?`<button class="btn ghost" type="button" id="ql-open">Mở lại phiên này</button>`:"")}
+    </div>
+    <span class="hint" id="ql-phien-msg">Phiên mới: ai mở link sẽ làm lại từ đầu, kể cả người đã nộp. Kết quả phiên cũ vẫn giữ, chọn ở ô "Xem kết quả".</span>
+  </div></section>`;
+}
+function bindPhien(){
+  $("#ql-phien").addEventListener("change", e=>{ xemPhien=Number(e.target.value); openId=null; loadQL().catch(()=>{}) });
+  const put = async (body, ok) => { try { await call(API_QL, { method:"PUT", headers:{ "x-pin":pin }, body: JSON.stringify(body) }); xemPhien=null; openId=null; await loadQL(); $("#ql-phien-msg").textContent=ok } catch(_) { $("#ql-phien-msg").textContent="Chưa làm được, thử lại." } };
+  const nb = $("#ql-new");
+  nb.addEventListener("click", ()=>{
+    if (!nb.dataset.confirm) { nb.dataset.confirm="1"; nb.textContent="Bấm lần nữa để mở phiên mới"; return }
+    const n = QL.phiens.length + 1;
+    put({ action:"phien-moi", ten:`Phiên ${n} · ${new Date().toLocaleDateString("vi-VN")}` }, "Đã mở phiên mới. Gửi lại link cho mọi người làm bài.");
+  });
+  $("#ql-close")?.addEventListener("click", ()=>put({ action:"dong" }, "Đã đóng phiên. Không ai bắt đầu bài mới được."));
+  $("#ql-open")?.addEventListener("click", ()=>put({ action:"mo", id: QL.phienId }, "Đã mở lại phiên này."));
 }
 function renderAdmin(){
   const v=$("#view-admin");
   const rows = QL.bai, done = rows.filter(b=>b.nopLuc);
   const avg = done.length ? Math.round(done.reduce((s,b)=>s+scoreTN(b),0)/done.length) : 0;
-  v.innerHTML = `<section class="block">
+  const dem = {}; done.forEach(b=>{ const k=tenKey(b.hoTen); dem[k]=(dem[k]||0)+1 });
+  v.innerHTML = phienBar() + `<section class="block">
     <div class="sec-h"><h2>Bài đã nộp</h2><span class="meta">${done.length} đã nộp · ${rows.length-done.length} đang làm · TB trắc nghiệm ${avg}/60</span></div>
     <div class="row"><button class="btn ghost" type="button" id="ql-reload">Tải lại danh sách</button></div>
     ${rows.length?`<div class="tbl-wrap"><table><thead><tr><th>Họ tên</th><th>Nộp lúc</th><th>Thời gian</th><th>Trắc nghiệm</th><th>Tình huống</th><th>Tổng</th></tr></thead><tbody>
     ${rows.map(b=>!b.nopLuc
       ? `<tr><td>${esc(b.hoTen)}</td><td colspan="5"><span class="chip">${Date.now()-b.batDau > 10*60000 ? "Bỏ dở" : "Đang làm"} · bắt đầu ${new Date(b.batDau).toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"})}</span></td></tr>`
-      : `<tr class="pick" data-id="${b.id}" tabindex="0"><td>${esc(b.hoTen)}${b.hetGio?' <span class="chip">nộp trễ</span>':''}</td><td class="num">${new Date(b.nopLuc).toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"})}</td>
+      : `<tr class="pick" data-id="${b.id}" tabindex="0"><td>${esc(b.hoTen)}${dem[tenKey(b.hoTen)]>1?' <span class="chip">trùng tên</span>':''}${b.hetGio?' <span class="chip">nộp trễ</span>':''}</td><td class="num">${new Date(b.nopLuc).toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"})}</td>
       <td class="num">${Math.floor(b.giay/60)}:${String(b.giay%60).padStart(2,"0")}</td><td class="num">${scoreTN(b)}/60</td>
-      <td>${typeof b.diemTL==="number"?`<span class="num">${b.diemTL}/40</span>`:`<span class="chip">Chưa chấm</span>`}</td>
+      <td>${typeof b.diemTL==="number"?`<span class="num">${b.diemTL}/40</span> <span class="chip ${b.chamLuc?"ok":""}">${b.chamLuc?"đã duyệt":"tự chấm"}</span>`:`<span class="chip">Chưa chấm</span>`}</td>
       <td>${typeof b.tong==="number"?`<span class="chip ok">${b.tong}</span>`:"–"}</td></tr>`).join("")}
     </tbody></table></div>`:`<div class="notice">Chưa có bài nộp. Gửi link trang này cho nhân sự, bài nộp sẽ hiện ở đây.</div>`}
   </section>
@@ -388,6 +418,7 @@ function renderAdmin(){
     ${MCQ.map((q,i)=>`<div class="key"><b>Câu ${i+1}: ${QL.dapAn[q.id].toUpperCase()}</b> · ${esc(q.o[QL.dapAn[q.id]])}<div class="hint">${esc(QL.giaiThich[q.id]||"")}</div></div>`).join("")}
   </section>`;
   $("#ql-reload").addEventListener("click", ()=>loadQL().catch(()=>{}));
+  bindPhien();
   v.querySelectorAll("tr.pick").forEach(tr=>{
     const go=()=>{ openId=Number(tr.dataset.id); renderDetail(); $("#detail").scrollIntoView({behavior:"smooth"}) };
     tr.addEventListener("click",go); tr.addEventListener("keydown",e=>{ if(e.key==="Enter") go() });
@@ -408,11 +439,12 @@ function renderDetail(){
   ${ESSAY.map((e,i)=>`<div class="q">
     <div class="n">TÌNH HUỐNG ${i+1} · TỐI ĐA ${e.max} ĐIỂM</div><div class="t">${esc(e.t)}</div>
     <div class="ans">${esc(b.tl?.[e.id]||"(bỏ trống)")}</div>
-    <div class="key"><b>Ý cần có để được điểm</b><ul>${(QL.yCham[e.id]||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+    <div class="key"><b>Tự chấm sơ bộ: ${b.tuCham?.per?.[e.id]??0}/${e.max}</b> <span class="hint">(dò theo ý chính, quản lý xem lại và sửa)</span><ul style="list-style:none;padding-left:0">${(QL.tuCham[e.id]||[]).map((y,j)=>{const ok=(b.tuCham?.khop?.[e.id]||[]).includes(j);return `<li>${ok?"✓":"○"} ${esc(y.y)} <span class="hint">(${y.d} điểm)</span></li>`}).join("")}</ul></div>
+    <details class="key"><summary><b>Ý cần có (đáp án mẫu)</b></summary><ul>${(QL.yCham[e.id]||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>
     <div class="grade"><label for="g-${e.id}">Điểm</label><input type="number" id="g-${e.id}" min="0" max="${e.max}" step="0.5" value="${b.diemTungCau?.[e.id]??""}"><span class="hint">/ ${e.max}</span></div>
   </div>`).join("")}
   <div class="q"><label for="g-note"><b>Nhận xét gửi nhân sự</b> (tùy chọn)</label><textarea id="g-note" placeholder="Ví dụ: nắm chắc 3 cổng, cần ôn lại định mức buổi.">${esc(b.nhanXet||"")}</textarea>
-    <div class="row"><button class="btn" type="button" id="g-save">Lưu điểm</button><button class="btn ghost" type="button" id="g-del">Xóa bài này</button><span class="hint" id="g-msg"></span></div></div>`;
+    <div class="row"><button class="btn" type="button" id="g-save">${b.chamLuc?"Lưu điểm":"Duyệt và lưu điểm"}</button><button class="btn ghost" type="button" id="g-del">Xóa bài này</button><span class="hint" id="g-msg"></span></div></div>`;
   $("#g-save").addEventListener("click", async()=>{
     const per={}; let bad=false;
     ESSAY.forEach(e=>{ const v=$("#g-"+e.id).value; const n=v===""?NaN:Number(v); if(isNaN(n)||n<0||n>e.max) bad=true; else per[e.id]=n });
@@ -443,12 +475,18 @@ $("#tab-test").addEventListener("click", ()=>setTab(false));
 $("#tab-admin").addEventListener("click", ()=>setTab(true));
 if (location.hash === "#quan-ly") setTab(true);
 (async()=>{
+  try {
+    const p = await call(API);
+    const pi = $("#phien-info");
+    if (!p.phien) { pi.hidden=false; pi.className="notice amber"; pi.textContent="Bài kiểm tra đang đóng. Chờ quản lý mở phiên mới rồi tải lại trang."; $("#start").disabled=true }
+  } catch(_) {}
   const s = load();
   if (!s || !s.id) return;
   S = s; $("#ho-ten").value = s.hoTen || "";
   try {
     const d = await call(`${API}?id=${encodeURIComponent(s.id)}&token=${encodeURIComponent(s.token)}`);
     LIMIT = d.thoiGian || 300; skew = d.now - Date.now(); S.batDau = d.batDau;
+    if (d.phienMo && d.phienId !== d.phienMo) { S = null; try{ localStorage.removeItem(LS) }catch(_){} $("#ho-ten").value=""; return } // phiên mới: làm lại từ đầu
     if (d.nopLuc) { S.nopLuc = d.nopLuc; save(); showDone(d) } else showForm();
   } catch(e) {
     if (e.status === 404) { S = null; try{ localStorage.removeItem(LS) }catch(_){} return }
