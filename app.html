@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Bài kiểm tra · BVI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one narrow column like a field form; sticky timer bar; manager view swaps in below the same header */
+:root{
+  --bg:#f3f6f1; --card:#ffffff; --fg:#17251c; --muted:#5b6b60; --line:#d9e2d6;
+  --green:#1f7a45; --green-ink:#ffffff; --green-soft:#e3f1e7; --amber:#b86b00; --amber-soft:#fbefd9;
+  --red:#b3261e; --red-soft:#f9e1df; --sel:#e9f4ec;
+  --f-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1712; --card:#16211a; --fg:#e4ede6; --muted:#9aaba0; --line:#2a3a30;
+  --green:#4fbf7d; --green-ink:#08130c; --green-soft:#1b3324; --amber:#f0a83c; --amber-soft:#3a2b12;
+  --red:#ef7a70; --red-soft:#3b1d1a; --sel:#1d3125; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1712; --card:#16211a; --fg:#e4ede6; --muted:#9aaba0; --line:#2a3a30;
+  --green:#4fbf7d; --green-ink:#08130c; --green-soft:#1b3324; --amber:#f0a83c; --amber-soft:#3a2b12;
+  --red:#ef7a70; --red-soft:#3b1d1a; --sel:#1d3125; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+#mcq,#essay{display:grid;gap:14px}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:720px;margin:0 auto}
+header.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:700}
+h1{font-size:clamp(24px,5vw,32px);line-height:1.2;margin:0;font-weight:800;text-wrap:balance}
+h2{font-size:18px;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:0}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.pill{font-family:var(--f-mono);font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--green-soft);color:var(--green);font-variant-numeric:tabular-nums}
+.pill.warn{background:var(--amber-soft);color:var(--amber)}
+.progress{flex:1;min-width:120px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress>i{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.tabs{display:flex;gap:6px;margin-left:auto}
+.tabs button{font:600 13px var(--f-body);border:1px solid var(--line);background:var(--card);color:var(--fg);padding:6px 12px;border-radius:8px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+section.block{display:grid;gap:14px;margin-top:22px}
+.sec-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec-h .meta{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px}
+.q .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:700}
+.q .t{font-weight:600}
+.q .tag{font-size:12px;color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--card)}
+.opt:hover{border-color:var(--green)}
+.opt input{margin-top:4px;accent-color:var(--green);flex:none}
+.opt:has(input:checked){background:var(--sel);border-color:var(--green)}
+.opt .k{font-family:var(--f-mono);font-weight:700;color:var(--muted);flex:none}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.case{background:var(--amber-soft);border-radius:8px;padding:10px 12px;font-size:14.5px}
+textarea,input[type=text],input[type=number]{width:100%;font:15px/1.5 var(--f-body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:92px;resize:vertical}
+textarea:focus,input:focus,button:focus-visible,.opt:focus-within{outline:2px solid var(--green);outline-offset:1px}
+.hint{font-size:12.5px;color:var(--muted)}
+.btn{font:700 15px var(--f-body);border:0;border-radius:10px;padding:12px 18px;cursor:pointer;background:var(--green);color:var(--green-ink)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.notice{border-radius:10px;padding:12px 14px;background:var(--green-soft);color:var(--fg)}
+.notice.err{background:var(--red-soft)}
+.notice.amber{background:var(--amber-soft)}
+.intro{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:12px;margin-top:18px}
+.intro ul{margin:0;padding-left:20px}
+.score{font-family:var(--f-mono);font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+/* manager */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+tr.pick{cursor:pointer} tr.pick:hover td{background:var(--sel)}
+.chip{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--amber-soft);color:var(--amber)}
+td.c-ok{background:var(--green-soft);color:var(--green);font-weight:700;text-align:center}
+td.c-no{background:var(--red-soft);color:var(--red);font-weight:700;text-align:center}
+table.mx th,table.mx td{padding:8px 10px}
+.chip.ok{background:var(--green-soft);color:var(--green)}
+.key{border-left:3px solid var(--green);padding:8px 12px;background:var(--green-soft);border-radius:0 8px 8px 0;font-size:14px}
+.key ul{margin:4px 0 0;padding-left:18px}
+.ans{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
+.grade{display:flex;gap:8px;align-items:center}
+.grade input{width:90px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<style>
+/* Bổ sung cho bản nhiều bài */
+.wrap.wide{max-width:980px}
+.cards{display:grid;gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:8px}
+.card .ttl{font-weight:700;font-size:16px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip.gray{background:var(--line);color:var(--muted)}
+.chip.red{background:var(--red-soft);color:var(--red)}
+.btn.sm{font-size:13px;padding:7px 12px;border-radius:8px}
+.btn.danger{background:var(--red);color:#fff}
+.link{font-family:var(--f-mono);font-size:12.5px;word-break:break-all;color:var(--muted)}
+.grid2{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+label.f{display:grid;gap:6px;font-weight:600;font-size:14px}
+label.f .hint{font-weight:400}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{font:600 14px var(--f-body);border:1px solid var(--line);background:var(--card);color:var(--fg);padding:8px 14px;border-radius:8px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--green);color:var(--green-ink);border-color:var(--green)}
+.typecard{border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;background:var(--card);display:grid;gap:4px}
+.typecard[aria-pressed="true"]{border-color:var(--green);background:var(--sel);box-shadow:inset 0 0 0 1px var(--green)}
+.typecard b{font-size:15px}
+.switch{display:flex;gap:10px;align-items:center;font-weight:600;font-size:14px;cursor:pointer}
+.switch input{width:20px;height:20px;accent-color:var(--green)}
+.qe{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:8px}
+.qe .head{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.qe .head .n{font-family:var(--f-mono);font-size:12px;font-weight:700;color:var(--muted)}
+.qe .head .sp{flex:1}
+.qe ol{margin:0;padding-left:0;list-style:none;display:grid;gap:4px}
+.qe ol li{padding:6px 10px;border-radius:8px;border:1px solid var(--line);font-size:14px}
+.qe ol li.da{border-color:var(--green);background:var(--green-soft);font-weight:600}
+.edit{display:grid;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.edit .oprow{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}
+.ideas .idea{display:grid;grid-template-columns:1fr 70px;gap:6px;border:1px solid var(--line);border-radius:8px;padding:8px}
+.ideas .idea input.kw{grid-column:1/-1}
+.kq-big{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end}
+.kq-big .score{font-size:40px}
+.rv{display:grid;gap:4px}
+.mark{font-weight:700}
+.mark.ok{color:var(--green)} .mark.no{color:var(--red)}
+details.sum{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+details.sum summary{cursor:pointer;font-weight:700}
+.topnav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.topnav .sp{flex:1}
+select{font:15px var(--f-body);color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;max-width:100%}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;z-index:20;max-width:90vw}
+</style>
+<div class="wrap" id="app"><p class="sub" style="padding-top:40px">Đang tải…</p></div>
+<script>
+const SB = "https://ypiohdtubdwycpsgyqdg.supabase.co/functions/v1/bai-kiem-tra";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const app = $("#app");
+const MUC = {1:"Dễ", 2:"Vừa", 3:"Khó"};
+const fmtT = ms => ms ? new Date(ms).toLocaleString("vi-VN", {hour:"2-digit", minute:"2-digit", day:"2-digit", month:"2-digit"}) : "";
+const fmtG = s => s == null ? "" : `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+const nf = v => v == null ? "–" : (Math.round(v*10)/10).toLocaleString("vi-VN");
+const ss = { get(k){ try { return sessionStorage.getItem(k) } catch(_) { return null } }, set(k,v){ try { sessionStorage.setItem(k,v) } catch(_){} }, del(k){ try { sessionStorage.removeItem(k) } catch(_){} } };
+const ls = { get(k){ try { return JSON.parse(localStorage.getItem(k) || "null") } catch(_) { return null } }, set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)) } catch(_){} }, del(k){ try { localStorage.removeItem(k) } catch(_){} } };
+const baseUrl = () => location.href.split(/[?#]/)[0];
+const linkBai = ma => baseUrl() + "?t=" + ma;
+
+async function api(action, body = {}) {
+  const r = await fetch(SB, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, ...body }) });
+  let d = null; try { d = await r.json() } catch(_) {}
+  if (!r.ok) { const e = new Error((d && d.error) || ("http_" + r.status)); e.status = r.status; e.data = d; throw e }
+  return d;
+}
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200) }
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); toast("Đã chép link") }
+  catch(_) { const i = document.createElement("input"); i.value = text; document.body.appendChild(i); i.select(); try { document.execCommand("copy"); toast("Đã chép link") } catch(_) { toast("Chép không được, hãy chép tay") } i.remove() }
+}
+function twoStep(btn, label, fn) {
+  btn.addEventListener("click", () => {
+    if (!btn.dataset.ok) { btn.dataset.ok = "1"; const old = btn.textContent; btn.textContent = label; setTimeout(() => { delete btn.dataset.ok; btn.textContent = old }, 4000); return }
+    delete btn.dataset.ok; fn();
+  });
+}
+
+/* ======================= NGƯỜI LÀM BÀI ======================= */
+let T = null; // {de, S, tick, skew, submitting}
+async function moBai(ma) {
+  app.className = "wrap";
+  app.innerHTML = `<p class="sub" style="padding-top:40px">Đang tải bài…</p>`;
+  let d;
+  try { d = await api("de", { ma }) } catch(e) {
+    app.innerHTML = `<header class="top"><div class="eyebrow">BVI · FarmBase</div><h1>Không tìm thấy bài kiểm tra</h1><p class="sub">Link có thể sai hoặc bài đã bị xóa. Hỏi lại người gửi link.</p></header>`; return }
+  const de = d.de;
+  T = { de, skew: d.now - Date.now(), S: null, tick: null, submitting: false };
+  document.title = de.ten + " · BVI";
+  const key = "bvi-kt-" + ma;
+  let S = ls.get(key);
+  if (S && S.dot !== de.dot) { ls.del(key); S = null }
+  T.key = key; T.S = S;
+  if (S && S.nopLuc) return ketThuc();
+  if (S && S.id) {
+    try {
+      const st = await api("trang-thai", { id: S.id, token: S.token });
+      if (st.nopLuc) { Object.assign(S, { nopLuc: st.nopLuc }); ls.set(key, S); return ketThuc(st) }
+      return lamBai();
+    } catch(_) { ls.del(key); T.S = null }
+  }
+  gioiThieu();
+}
+function gioiThieu(msg) {
+  const de = T.de, soTn = de.cau.filter(q => q.k === "tn").length, soTl = de.cau.filter(q => q.k === "tl").length;
+  app.innerHTML = `
+  <header class="top"><div class="eyebrow">BVI · ${esc(de.tenLoai)}</div><h1>${esc(de.ten)}</h1></header>
+  ${de.dangMo ? `
+  <div class="intro">
+    <ul>
+      <li><b>${soTn}</b> câu trắc nghiệm${soTl ? `, <b>${soTl}</b> câu tình huống trả lời ngắn` : ""}. Thang điểm 100.</li>
+      <li>Thời gian <b>${Math.round(de.thoiGian/60)} phút</b>, tính từ lúc bấm Bắt đầu. Hết giờ bài tự nộp.</li>
+      <li>${de.xemKq ? "Nộp xong sẽ xem được điểm và đáp án." : "Nộp xong, quản lý sẽ chấm và báo kết quả."}</li>
+    </ul>
+    <label class="f">Họ và tên của bạn<input type="text" id="ho-ten" autocomplete="off" placeholder="Ví dụ: Nguyễn Thị Mẫn"><span class="hint">Gõ đúng họ tên đầy đủ, quản lý xem kết quả theo tên này.</span></label>
+    <div class="row"><button class="btn" id="start">Bắt đầu làm bài</button><span class="hint" id="msg">${esc(msg || "")}</span></div>
+  </div>` : `<div class="notice amber" style="margin-top:18px">Bài kiểm tra này đang đóng. Khi quản lý mở lại, bạn tải lại trang để làm.</div>`}`;
+  if (!de.dangMo) return;
+  const go = async () => {
+    const hoTen = $("#ho-ten").value.replace(/\s+/g, " ").trim();
+    if (hoTen.length < 4 || !hoTen.includes(" ")) { $("#msg").textContent = "Nhập đầy đủ họ và tên (cả họ và tên)."; $("#ho-ten").focus(); return }
+    $("#start").disabled = true; $("#msg").textContent = "Đang mở bài…";
+    try {
+      const r = await api("bat-dau", { ma: de.ma, hoTen });
+      T.S = { id: r.id, token: r.token, batDau: r.batDau, hoTen, dot: r.dot, tn: {}, tl: {} };
+      T.skew = r.now - Date.now(); T.de.thoiGian = r.thoiGian;
+      ls.set(T.key, T.S); lamBai();
+    } catch(e) {
+      $("#start").disabled = false;
+      $("#msg").textContent = e.message === "closed" ? "Bài đang đóng." : e.message === "too_many" ? "Mở bài quá nhiều lần, thử lại sau." : "Chưa mở được bài, kiểm tra mạng rồi thử lại.";
+    }
+  };
+  $("#start").addEventListener("click", go);
+  $("#ho-ten").addEventListener("keydown", e => { if (e.key === "Enter") go() });
+}
+function lamBai() {
+  const de = T.de, S = T.S;
+  const tn = de.cau.filter(q => q.k === "tn"), tl = de.cau.filter(q => q.k === "tl");
+  app.innerHTML = `
+  <header class="top"><div class="eyebrow">BVI · ${esc(de.tenLoai)}</div><h1>${esc(de.ten)}</h1><p class="sub">Người làm: <b>${esc(S.hoTen)}</b></p></header>
+  <div class="bar"><span class="pill" id="clock">--:--</span><div class="progress"><i id="prog"></i></div><span class="hint" id="cnt"></span></div>
+  ${tn.length ? `<section class="block"><div class="sec-h"><h2>Trắc nghiệm</h2><span class="meta">chọn 1 đáp án</span></div><div id="mcq" style="display:grid;gap:14px">${tn.map((q,i) => `
+    <div class="q" role="group" aria-labelledby="t-${q.id}"><div class="n">CÂU ${i+1} · ${nf(q.diem)} điểm</div><div class="t" id="t-${q.id}">${esc(q.t)}</div>
+    <div class="opts">${["a","b","c","d"].filter(k => q.o[k]).map(k => `<label class="opt"><input type="radio" name="${q.id}" value="${k}" ${S.tn[q.id]===k?"checked":""}><span class="k">${k.toUpperCase()}</span><span>${esc(q.o[k])}</span></label>`).join("")}</div></div>`).join("")}</div></section>` : ""}
+  ${tl.length ? `<section class="block"><div class="sec-h"><h2>Tình huống</h2><span class="meta">trả lời ngắn gọn, đủ ý</span></div><div style="display:grid;gap:14px">${tl.map((q,i) => `
+    <div class="q"><div class="n">TÌNH HUỐNG ${i+1} · ${nf(q.diem)} điểm</div>${q.c ? `<div class="case">${esc(q.c)}</div>` : ""}<div class="t">${esc(q.q)}</div>
+    <textarea data-id="${q.id}" placeholder="Trả lời ngắn, gạch đầu dòng cũng được">${esc(S.tl[q.id] || "")}</textarea></div>`).join("")}</div></section>` : ""}
+  <section class="block"><div class="row"><button class="btn" id="submit">Nộp bài</button><span class="hint" id="smsg"></span></div></section>`;
+  const upd = () => {
+    const done = tn.filter(q => S.tn[q.id]).length + tl.filter(q => (S.tl[q.id] || "").trim().length >= 10).length;
+    $("#prog").style.width = (100 * done / (tn.length + tl.length)) + "%";
+    $("#cnt").textContent = `${done}/${tn.length + tl.length} câu`;
+  };
+  app.addEventListener("change", e => { if (e.target.type === "radio") { S.tn[e.target.name] = e.target.value; ls.set(T.key, S); upd() } });
+  app.addEventListener("input", e => { if (e.target.dataset.id) { S.tl[e.target.dataset.id] = e.target.value; ls.set(T.key, S); upd() } });
+  $("#submit").addEventListener("click", () => {
+    const thieu = tn.filter(q => !S.tn[q.id]).length + tl.filter(q => !(S.tl[q.id] || "").trim()).length;
+    const b = $("#submit");
+    if (thieu && !b.dataset.ok) { b.dataset.ok = "1"; b.textContent = `Còn ${thieu} câu chưa làm. Bấm lần nữa để nộp`; return }
+    nop(false);
+  });
+  upd(); clearInterval(T.tick); T.tick = setInterval(dongHo, 500); dongHo();
+}
+function dongHo() {
+  const con = Math.max(0, Math.round((T.S.batDau + T.de.thoiGian * 1000 - (Date.now() + T.skew)) / 1000));
+  const c = $("#clock"); if (!c) return;
+  c.textContent = fmtG(con); c.classList.toggle("warn", con <= 60);
+  if (con <= 0 && !T.submitting) nop(true);
+}
+async function nop(tuDong) {
+  if (T.submitting) return; T.submitting = true;
+  clearInterval(T.tick);
+  $$("#app input, #app textarea").forEach(x => x.disabled = true);
+  const b = $("#submit"); if (b) b.disabled = true;
+  const m = $("#smsg");
+  for (let lan = 0; lan < 12; lan++) {
+    if (m) m.textContent = (tuDong ? "Hết giờ, đang tự nộp bài" : "Đang nộp bài") + (lan ? ` (thử lại lần ${lan})…` : "…");
+    try {
+      const st = await api("nop", { id: T.S.id, token: T.S.token, tn: T.S.tn, tl: T.S.tl });
+      T.S.nopLuc = st.nopLuc || Date.now(); ls.set(T.key, T.S); return ketThuc(st);
+    } catch(e) { if (e.status === 404) break; await new Promise(r => setTimeout(r, 5000)) }
+  }
+  T.submitting = false;
+  if (m) m.textContent = "Chưa nộp được. Kiểm tra mạng rồi bấm Nộp bài lại, bài làm vẫn được giữ.";
+  if (b) { b.disabled = false; delete b.dataset.ok; b.textContent = "Nộp bài" }
+}
+async function ketThuc(st) {
+  clearInterval(T.tick);
+  const de = T.de, S = T.S;
+  if (!st) { try { st = await api("trang-thai", { id: S.id, token: S.token }) } catch(_) { st = {} } }
+  const kq = st.ketQua;
+  app.innerHTML = `
+  <header class="top"><div class="eyebrow">BVI · ${esc(de.tenLoai)}</div><h1>${esc(de.ten)}</h1><p class="sub">${esc(S.hoTen)} · đã nộp${st.giay != null ? ` sau ${fmtG(st.giay)}` : ""}${st.hetGio ? " · quá giờ" : ""}</p></header>
+  ${kq ? `
+  <div class="intro"><div class="kq-big"><div><div class="hint">Tổng điểm${kq.daDuyet ? "" : " (tự luận đang là điểm sơ bộ)"}</div><div class="score">${nf(kq.tong)}<span class="hint">/100</span></div></div>
+    <div><div class="hint">Trắc nghiệm</div><div class="score" style="font-size:22px">${nf(kq.diemTn)}</div></div>
+    ${kq.cau.some(q => q.k === "tl") ? `<div><div class="hint">Tình huống</div><div class="score" style="font-size:22px">${nf(kq.diemTl)}</div></div>` : ""}</div>
+    ${kq.nhanXet ? `<div class="notice">Nhận xét của quản lý: ${esc(kq.nhanXet)}</div>` : ""}</div>
+  <section class="block"><h2>Xem lại bài</h2>${kq.cau.map((q,i) => q.k === "tn" ? `
+    <div class="q"><div class="n">CÂU ${i+1} · <span class="mark ${q.chon===q.da?"ok":"no"}">${q.chon===q.da ? "Đúng" : q.chon ? "Sai" : "Bỏ trống"}</span></div><div class="t">${esc(q.t)}</div>
+    <div class="opts">${["a","b","c","d"].filter(k => q.o[k]).map(k => `<div class="opt ${k===q.da?"right":k===q.chon?"wrong":""}"><span class="k">${k.toUpperCase()}</span><span>${esc(q.o[k])}${k===q.chon?" · bạn chọn":""}</span></div>`).join("")}</div>
+    ${q.gt ? `<div class="key">${esc(q.gt)}</div>` : ""}</div>` : `
+    <div class="q"><div class="n">TÌNH HUỐNG · ${nf(q.dat)}/${nf(q.diem)} điểm${kq.daDuyet ? "" : " (sơ bộ)"}</div>${q.c ? `<div class="case">${esc(q.c)}</div>` : ""}<div class="t">${esc(q.q)}</div>
+    <div class="ans">${esc(q.traLoi || "(bỏ trống)")}</div>
+    <div class="key">Các ý cần có:<ul>${q.y.map((y,j) => `<li>${q.khop.includes(j) ? "✓" : "○"} ${esc(y.y)}</li>`).join("")}</ul></div></div>`).join("")}</section>`
+  : `<div class="notice" style="margin-top:18px">Bạn đã nộp bài. Quản lý sẽ xem và báo kết quả. Cảm ơn bạn!</div>`}
+  <section class="block"><div class="row"><button class="btn ghost sm" id="nguoi-khac">Người khác làm bài trên máy này</button></div></section>`;
+  $("#nguoi-khac").addEventListener("click", () => { ls.del(T.key); T.S = null; T.submitting = false; gioiThieu() });
+}
+
+/* ======================= TRANG CHỦ ======================= */
+function trangChu() {
+  app.className = "wrap";
+  document.title = "Bài kiểm tra · BVI";
+  app.innerHTML = `
+  <header class="top"><div class="eyebrow">BVI · FarmBase</div><h1>Bài kiểm tra</h1><p class="sub">Mở link bài kiểm tra quản lý gửi, hoặc nhập mã bài.</p></header>
+  <div class="intro"><label class="f">Mã bài<input type="text" id="ma" placeholder="Ví dụ: thd558" autocomplete="off"></label>
+  <div class="row"><button class="btn" id="go">Vào bài</button><span class="sp" style="flex:1"></span><button class="btn ghost sm" id="ql">Quản lý</button></div></div>`;
+  const go = () => { const m = $("#ma").value.trim().toLowerCase().replace(/.*[?&]t=/, ""); if (m) location.search = "?t=" + encodeURIComponent(m) };
+  $("#go").addEventListener("click", go);
+  $("#ma").addEventListener("keydown", e => { if (e.key === "Enter") go() });
+  $("#ql").addEventListener("click", () => { location.hash = "quan-ly" });
+}
+
+/* ======================= QUẢN LÝ ======================= */
+let PIN = ss.get("bvi-kt-pin");
+const Q = { tab: "bai", list: null, de: null, editQ: null };
+async function qapi(action, body = {}) {
+  try { return await api(action, { pin: PIN, ...body }) }
+  catch(e) { if (e.status === 401) { PIN = null; ss.del("bvi-kt-pin"); quanLy("Mã PIN không đúng hoặc đã đổi."); } throw e }
+}
+function quanLy(msg) {
+  app.className = "wrap wide";
+  document.title = "Quản lý bài kiểm tra · BVI";
+  if (!PIN) {
+    app.innerHTML = `<header class="top"><div class="eyebrow">BVI · Quản lý</div><h1>Quản lý bài kiểm tra</h1></header>
+    <div class="intro" style="max-width:420px"><label class="f">Mã PIN<input type="password" id="pin" autocomplete="off"></label>
+    <div class="row"><button class="btn" id="pin-go">Vào quản lý</button><span class="hint" id="pmsg">${esc(msg || "")}</span></div></div>`;
+    const go = async () => {
+      PIN = $("#pin").value.trim(); $("#pmsg").textContent = "Đang kiểm tra…";
+      try { Q.list = await api("ql-ds", { pin: PIN }); ss.set("bvi-kt-pin", PIN); veQL() }
+      catch(e) { PIN = null; $("#pmsg").textContent = e.status === 401 ? "Sai mã PIN." : e.status === 429 ? "Sai quá nhiều lần, đợi 15 phút." : "Lỗi kết nối, thử lại." }
+    };
+    $("#pin-go").addEventListener("click", go); $("#pin").addEventListener("keydown", e => { if (e.key === "Enter") go() }); $("#pin").focus();
+    return;
+  }
+  veQL();
+}
+function khungQL(inner) {
+  app.innerHTML = `<header class="top"><div class="eyebrow">BVI · Quản lý</div><h1>Quản lý bài kiểm tra</h1></header>
+  <div class="bar"><div class="tabs" style="margin-left:0">
+    <button data-tab="bai" aria-pressed="${Q.tab==="bai"}">Bài kiểm tra</button>
+    <button data-tab="kq" aria-pressed="${Q.tab==="kq"}">Kết quả theo bài</button>
+    <button data-tab="nguoi" aria-pressed="${Q.tab==="nguoi"}">Kết quả theo người</button></div>
+    <span style="flex:1"></span><button class="btn ghost sm" id="thoat">Thoát</button></div>
+  <div id="ql-body">${inner}</div>`;
+  $$(".tabs button").forEach(b => b.addEventListener("click", () => { Q.tab = b.dataset.tab; Q.de = null; veQL() }));
+  $("#thoat").addEventListener("click", () => { PIN = null; ss.del("bvi-kt-pin"); location.hash = ""; trangChu() });
+}
+async function veQL() {
+  if (Q.tab === "bai") return Q.de ? veSua() : veDanhSach();
+  if (Q.tab === "kq") return veKetQua();
+  return veNguoi();
+}
+
+// ----- Danh sách bài -----
+async function veDanhSach(form) {
+  khungQL(`<p class="sub">Đang tải…</p>`);
+  try { Q.list = await qapi("ql-ds") } catch(_) { $("#ql-body").innerHTML = `<div class="notice err">Không tải được danh sách.</div>`; return }
+  const L = Q.list;
+  $("#ql-body").innerHTML = `
+  <section class="block"><div class="sec-h"><h2>Các bài kiểm tra</h2><span class="meta">${L.des.length} bài</span><span style="flex:1"></span><button class="btn sm" id="tao">+ Tạo bài mới</button></div>
+  <div id="form-tao"></div>
+  <div class="cards">${L.des.map(d => `
+    <div class="card">
+      <div class="ttl">${esc(d.ten)}</div>
+      <div class="chips"><span class="chip ${d.loai==="kt"?"":"ok"}">${esc(d.tenLoai)}</span><span class="chip gray">${MUC[d.doKho]}</span><span class="chip gray">${d.soTn} trắc nghiệm · ${d.soTl} tự luận · ${Math.round(d.thoiGian/60)} phút</span>
+        <span class="chip ${d.dangMo?"ok":"red"}">${d.dangMo?"Đang mở":"Đã đóng"}</span>${d.xemKq?`<span class="chip gray">Cho xem kết quả</span>`:""}<span class="chip gray">Đợt ${d.dot}: ${d.soBaiDot} bài nộp${d.soBai>d.soBaiDot?` · tổng ${d.soBai}`:""}</span></div>
+      <div class="link">${esc(linkBai(d.ma))}</div>
+      <div class="row"><button class="btn sm" data-copy="${d.ma}">Chép link</button><button class="btn ghost sm" data-sua="${d.id}">Xem, sửa câu hỏi</button><button class="btn ghost sm" data-kq="${d.id}">Xem kết quả</button></div>
+    </div>`).join("") || `<div class="notice">Chưa có bài nào. Bấm “Tạo bài mới”.</div>`}</div></section>`;
+  $$("[data-copy]").forEach(b => b.addEventListener("click", () => copy(linkBai(b.dataset.copy))));
+  $$("[data-sua]").forEach(b => b.addEventListener("click", async () => { Q.de = (await qapi("ql-de", { id: b.dataset.sua })).de; veSua() }));
+  $$("[data-kq]").forEach(b => b.addEventListener("click", () => { Q.tab = "kq"; Q.kqDe = Number(b.dataset.kq); Q.kqDot = null; veQL() }));
+  $("#tao").addEventListener("click", veFormTao);
+  if (form) veFormTao();
+}
+function veFormTao() {
+  const L = Q.list, nh = L.nganHang || {};
+  const st = { loai: "qt", doKho: 2 };
+  const box = $("#form-tao");
+  box.innerHTML = `<div class="intro" style="margin-top:0">
+    <h2>Tạo bài kiểm tra mới</h2>
+    <div class="grid2">
+      <div class="typecard" data-loai="qt" aria-pressed="true" tabindex="0"><b>1. Quy trình triển khai mã vùng trồng</b><span class="hint">Cho nhân sự triển khai: các bước, hồ sơ, sự kiện ký, xã kiểm tra, FarmBase. Ngân hàng: ${nh.qt_tn||0} trắc nghiệm, ${nh.qt_tl||0} tự luận.</span></div>
+      <div class="typecard" data-loai="kt" aria-pressed="false" tabindex="0"><b>2. Kiến thức mã vùng trồng sầu riêng</b><span class="hint">Để trao đổi với bà con, HTX, cán bộ nhà nước: giấy tờ, ảnh bắt buộc, hậu kiểm, chi phí. Ngân hàng: ${nh.kt_tn||0} trắc nghiệm, ${nh.kt_tl||0} tự luận.</span></div>
+    </div>
+    <label class="f">Tên bài<input type="text" id="f-ten" placeholder="Ví dụ: Kiểm tra nhân sự mới tháng 11"></label>
+    <label class="f">Mục tiêu bài kiểm tra<textarea id="f-mt" placeholder="Ví dụ: nhân sự nói chuyện với cán bộ xã về hồ sơ, bảo mật dữ liệu và việc giám sát sau khi có mã"></textarea><span class="hint">Câu hỏi được chọn từ ngân hàng theo những gì bạn mô tả ở đây và độ khó. Tạo xong vẫn đổi, sửa từng câu được.</span></label>
+    <div class="grid2">
+      <label class="f">Độ khó<div class="seg" id="f-dk">${[1,2,3].map(m => `<button type="button" data-m="${m}" aria-pressed="${m===2}">${MUC[m]}</button>`).join("")}</div></label>
+      <label class="f">Số câu trắc nghiệm<input type="number" id="f-tn" min="0" max="40" value="8"></label>
+      <label class="f">Số câu tự luận<input type="number" id="f-tl" min="0" max="8" value="2"></label>
+      <label class="f">Thời gian (phút)<input type="number" id="f-tg" min="1" max="120" value="8"></label>
+    </div>
+    <label class="switch"><input type="checkbox" id="f-xem" checked> Cho người làm xem điểm và đáp án ngay sau khi nộp</label>
+    <div class="row"><button class="btn" id="f-go">Tạo bài</button><button class="btn ghost" id="f-huy">Hủy</button><span class="hint" id="f-msg"></span></div></div>`;
+  $$(".typecard", box).forEach(c => { const pick = () => { st.loai = c.dataset.loai; $$(".typecard", box).forEach(x => x.setAttribute("aria-pressed", x === c)) }; c.addEventListener("click", pick); c.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick() } }) });
+  $$("#f-dk button").forEach(b => b.addEventListener("click", () => { st.doKho = Number(b.dataset.m); $$("#f-dk button").forEach(x => x.setAttribute("aria-pressed", x === b)) }));
+  $("#f-huy").addEventListener("click", () => box.innerHTML = "");
+  $("#f-go").addEventListener("click", async () => {
+    const soTn = Number($("#f-tn").value) || 0, soTl = Number($("#f-tl").value) || 0;
+    if (soTn + soTl === 0) { $("#f-msg").textContent = "Cần ít nhất 1 câu."; return }
+    $("#f-go").disabled = true; $("#f-msg").textContent = "Đang tạo…";
+    try {
+      const r = await qapi("ql-tao", { loai: st.loai, ten: $("#f-ten").value, mucTieu: $("#f-mt").value, doKho: st.doKho, soTn, soTl, thoiGianPhut: Number($("#f-tg").value) || 8, xemKq: $("#f-xem").checked });
+      Q.de = r.de; veSua("Đã tạo bài. Xem lại câu hỏi, đổi hoặc sửa câu nếu cần, rồi chép link gửi mọi người.");
+    } catch(_) { $("#f-go").disabled = false; $("#f-msg").textContent = "Chưa tạo được, thử lại." }
+  });
+  $("#f-ten").focus();
+}
+
+// ----- Sửa bài -----
+function veSua(msg) {
+  const d = Q.de;
+  const tn = d.cauHoi.filter(q => q.k === "tn"), tl = d.cauHoi.filter(q => q.k === "tl");
+  khungQL(`
+  <section class="block">
+    <div class="topnav"><button class="btn ghost sm" id="ve">← Danh sách bài</button><span class="sp"></span><button class="btn sm" id="chep">Chép link bài</button><button class="btn ghost sm" id="xkq">Xem kết quả</button></div>
+    ${msg ? `<div class="notice">${esc(msg)}</div>` : ""}
+    <div class="card"><div class="ttl">${esc(d.ten)}</div><div class="chips"><span class="chip ok">${esc(d.tenLoai)}</span><span class="chip ${d.dangMo?"ok":"red"}">${d.dangMo?"Đang mở":"Đã đóng"}</span><span class="chip gray">Đợt ${d.dot}</span></div><div class="link">${esc(linkBai(d.ma))}</div></div>
+    <details class="sum"><summary>Cài đặt bài</summary><div style="display:grid;gap:12px;margin-top:12px">
+      <label class="f">Tên bài<input type="text" id="s-ten" value="${esc(d.ten)}"></label>
+      <label class="f">Mục tiêu<textarea id="s-mt">${esc(d.mucTieu)}</textarea></label>
+      <div class="grid2">
+        <label class="f">Độ khó<div class="seg" id="s-dk">${[1,2,3].map(m => `<button type="button" data-m="${m}" aria-pressed="${m===d.doKho}">${MUC[m]}</button>`).join("")}</div></label>
+        <label class="f">Thời gian (phút)<input type="number" id="s-tg" min="1" max="120" value="${Math.round(d.thoiGian/60)}"></label>
+      </div>
+      <label class="switch"><input type="checkbox" id="s-xem" ${d.xemKq?"checked":""}> Cho người làm xem điểm và đáp án sau khi nộp</label>
+      <label class="switch"><input type="checkbox" id="s-mo" ${d.dangMo?"checked":""}> Đang mở cho mọi người làm</label>
+      <div class="row"><button class="btn sm" id="s-luu">Lưu cài đặt</button><span class="hint" id="s-msg"></span></div>
+      <hr style="border:0;border-top:1px solid var(--line);width:100%">
+      <div class="grid2"><label class="f">Số câu trắc nghiệm<input type="number" id="r-tn" min="0" max="40" value="${tn.length}"></label><label class="f">Số câu tự luận<input type="number" id="r-tl" min="0" max="8" value="${tl.length}"></label></div>
+      <div class="row"><button class="btn ghost sm" id="r-go">Tạo lại toàn bộ câu hỏi theo mục tiêu và độ khó</button><span class="hint">Thay hết câu hiện tại.</span></div>
+      <hr style="border:0;border-top:1px solid var(--line);width:100%">
+      <div class="row"><button class="btn ghost sm" id="lamlai">Cho mọi người làm lại từ đầu (mở đợt ${d.dot + 1})</button><button class="btn danger sm" id="xoa">Xóa bài này</button></div>
+      <span class="hint">Mở đợt mới: ai mở link sẽ làm lại từ đầu, kết quả đợt cũ vẫn giữ để xem.</span>
+    </div></details>
+    <div class="sec-h"><h2>Câu hỏi</h2><span class="meta">${tn.length} trắc nghiệm · ${tl.length} tự luận · thang 100</span></div>
+    <div id="dsq" style="display:grid;gap:12px">${d.cauHoi.map((q,i) => theCau(q, i, d)).join("")}</div>
+    <div class="row"><button class="btn ghost sm" data-them="tn" ${d.conLaiTn?"":"disabled"}>+ Trắc nghiệm từ ngân hàng (còn ${d.conLaiTn})</button><button class="btn ghost sm" data-them="tl" ${d.conLaiTl?"":"disabled"}>+ Tự luận từ ngân hàng (còn ${d.conLaiTl})</button>
+      <button class="btn ghost sm" data-tusoan="tn">+ Tự soạn trắc nghiệm</button><button class="btn ghost sm" data-tusoan="tl">+ Tự soạn tự luận</button></div>
+  </section>`);
+  $("#ve").addEventListener("click", () => { Q.de = null; veDanhSach() });
+  $("#chep").addEventListener("click", () => copy(linkBai(d.ma)));
+  $("#xkq").addEventListener("click", () => { Q.tab = "kq"; Q.kqDe = d.id; Q.kqDot = null; Q.de = null; veQL() });
+  let dk = d.doKho;
+  $$("#s-dk button").forEach(b => b.addEventListener("click", () => { dk = Number(b.dataset.m); $$("#s-dk button").forEach(x => x.setAttribute("aria-pressed", x === b)) }));
+  $("#s-luu").addEventListener("click", async () => {
+    $("#s-msg").textContent = "Đang lưu…";
+    try { Q.de = (await qapi("ql-luu", { id: d.id, ten: $("#s-ten").value, mucTieu: $("#s-mt").value, doKho: dk, thoiGianPhut: Number($("#s-tg").value) || 8, xemKq: $("#s-xem").checked, dangMo: $("#s-mo").checked })).de; veSua("Đã lưu cài đặt.") }
+    catch(_) { $("#s-msg").textContent = "Chưa lưu được." }
+  });
+  twoStep($("#r-go"), "Bấm lần nữa để thay toàn bộ câu hỏi", async () => {
+    try { Q.de = (await qapi("ql-tao-lai", { id: d.id, loai: d.loai, ten: $("#s-ten").value, mucTieu: $("#s-mt").value, doKho: dk, thoiGianPhut: Number($("#s-tg").value) || 8, xemKq: $("#s-xem").checked, soTn: Number($("#r-tn").value) || 0, soTl: Number($("#r-tl").value) || 0 })).de; veSua("Đã tạo lại câu hỏi.") }
+    catch(_) { toast("Chưa tạo lại được") }
+  });
+  twoStep($("#lamlai"), "Bấm lần nữa: mọi người sẽ làm lại từ đầu", async () => { try { Q.de = (await qapi("ql-lam-lai", { id: d.id })).de; veSua(`Đã mở đợt ${Q.de.dot}. Gửi lại link cho mọi người làm bài.`) } catch(_) { toast("Chưa làm được") } });
+  twoStep($("#xoa"), "Bấm lần nữa để xóa bài và toàn bộ kết quả", async () => { try { await qapi("ql-xoa-de", { id: d.id }); Q.de = null; veDanhSach() } catch(_) { toast("Chưa xóa được") } });
+  $$("[data-doi]").forEach(b => b.addEventListener("click", async () => {
+    b.disabled = true; b.textContent = "Đang đổi…";
+    try { Q.de = (await qapi("ql-doi", { id: d.id, qid: b.dataset.doi })).de; veSua() }
+    catch(e) { b.disabled = false; b.textContent = "Đổi câu khác"; toast(e.message === "het_cau" ? "Ngân hàng hết câu cùng loại để đổi, hãy tự soạn" : "Chưa đổi được") }
+  }));
+  $$("[data-them]").forEach(b => b.addEventListener("click", async () => { try { Q.de = (await qapi("ql-them", { id: d.id, k: b.dataset.them })).de; veSua() } catch(_) { toast("Chưa thêm được") } }));
+  $$("[data-bo]").forEach(b => twoStep(b, "Bấm lần nữa để bỏ", () => luuCau(d.cauHoi.filter(q => q.id !== b.dataset.bo))));
+  $$("[data-sua]").forEach(b => b.addEventListener("click", () => moSua(b.dataset.sua)));
+  $$("[data-tusoan]").forEach(b => b.addEventListener("click", () => {
+    const k = b.dataset.tusoan, id = "tu" + Date.now().toString(36);
+    const q = k === "tn" ? { id, k, m: d.doKho, t: "", o: { a: "", b: "", c: "", d: "" }, da: "a", gt: "", moi: true } : { id, k, m: d.doKho, c: "", q: "", y: [{ y: "", d: 1, k: [] }], moi: true };
+    const ds = $("#dsq"); const div = document.createElement("div"); div.innerHTML = theCau(q, d.cauHoi.length, d); ds.appendChild(div.firstElementChild);
+    Q.nhap = q; moSua(id, q);
+  }));
+}
+function theCau(q, i, d) {
+  const diem = d.thang?.[q.id];
+  return q.k === "tn" ? `
+  <div class="qe" id="qe-${q.id}"><div class="head"><span class="n">CÂU ${i+1} · TRẮC NGHIỆM · ${MUC[q.m]||""}${diem!=null?` · ${nf(diem)} điểm`:""}</span><span class="sp"></span>
+    <button class="btn ghost sm" data-doi="${q.id}" ${String(q.id).startsWith("tu")?"hidden":""}>Đổi câu khác</button><button class="btn ghost sm" data-sua="${q.id}">Sửa</button><button class="btn ghost sm" data-bo="${q.id}">Bỏ</button></div>
+    <div class="t" style="font-weight:600">${esc(q.t) || "<i>(câu mới)</i>"}</div>
+    <ol>${["a","b","c","d"].filter(k => q.o[k]).map(k => `<li class="${k===q.da?"da":""}">${k.toUpperCase()}. ${esc(q.o[k])}${k===q.da?" ✓":""}</li>`).join("")}</ol>
+    ${q.gt ? `<div class="hint">Giải thích: ${esc(q.gt)}</div>` : ""}<div class="edit-slot"></div></div>` : `
+  <div class="qe" id="qe-${q.id}"><div class="head"><span class="n">CÂU ${i+1} · TỰ LUẬN · ${MUC[q.m]||""}${diem!=null?` · ${nf(diem)} điểm`:""}</span><span class="sp"></span>
+    <button class="btn ghost sm" data-doi="${q.id}" ${String(q.id).startsWith("tu")?"hidden":""}>Đổi câu khác</button><button class="btn ghost sm" data-sua="${q.id}">Sửa</button><button class="btn ghost sm" data-bo="${q.id}">Bỏ</button></div>
+    ${q.c ? `<div class="case">${esc(q.c)}</div>` : ""}<div style="font-weight:600">${esc(q.q) || "<i>(câu mới)</i>"}</div>
+    <div class="key">Ý chấm (tự chấm sơ bộ theo cụm từ):<ul>${q.y.map(y => `<li>${esc(y.y)} <span class="hint">· trọng số ${y.d}${(y.k||[]).length ? ` · cụm từ: ${esc(y.k.join(", "))}` : ""}</span></li>`).join("")}</ul></div><div class="edit-slot"></div></div>`;
+}
+function moSua(id, nhap) {
+  const d = Q.de, q = nhap || d.cauHoi.find(x => x.id === id);
+  const slot = $(`#qe-${CSS.escape(id)} .edit-slot`); if (!slot || slot.innerHTML) return;
+  const mSeg = `<label class="f">Độ khó<div class="seg" data-mseg>${[1,2,3].map(m => `<button type="button" data-m="${m}" aria-pressed="${m===q.m}">${MUC[m]}</button>`).join("")}</div></label>`;
+  slot.innerHTML = q.k === "tn" ? `<div class="edit">
+    <label class="f">Câu hỏi<textarea data-f="t">${esc(q.t)}</textarea></label>
+    ${["a","b","c","d"].map(k => `<div class="oprow"><label class="switch" title="Đáp án đúng"><input type="radio" name="da-${id}" value="${k}" ${q.da===k?"checked":""}> ${k.toUpperCase()}</label><input type="text" data-o="${k}" value="${esc(q.o[k] || "")}" placeholder="Phương án ${k.toUpperCase()}${k>"b"?" (có thể bỏ trống)":""}"></div>`).join("")}
+    <span class="hint">Chấm vào ô tròn trước phương án đúng.</span>
+    <label class="f">Giải thích (hiện cho người làm nếu bật xem kết quả)<textarea data-f="gt">${esc(q.gt || "")}</textarea></label>
+    ${mSeg}<div class="row"><button class="btn sm" data-luu>Lưu câu</button><button class="btn ghost sm" data-huy>Hủy</button></div></div>` : `<div class="edit">
+    <label class="f">Tình huống (bối cảnh)<textarea data-f="c">${esc(q.c || "")}</textarea></label>
+    <label class="f">Câu hỏi<textarea data-f="q">${esc(q.q)}</textarea></label>
+    <div class="f" style="font-weight:600;font-size:14px">Ý chấm<span class="hint" style="font-weight:400"> · mỗi ý: nội dung, trọng số, và các cụm từ cách nhau dấu phẩy. Câu trả lời có một cụm từ là được điểm ý đó (không phân biệt dấu).</span></div>
+    <div class="ideas" style="display:grid;gap:8px">${q.y.map(y => yRow(y)).join("")}</div>
+    <div class="row"><button class="btn ghost sm" data-themy>+ Thêm ý</button></div>
+    ${mSeg}<div class="row"><button class="btn sm" data-luu>Lưu câu</button><button class="btn ghost sm" data-huy>Hủy</button></div></div>`;
+  let m = q.m;
+  $$("[data-mseg] button", slot).forEach(b => b.addEventListener("click", () => { m = Number(b.dataset.m); $$("[data-mseg] button", slot).forEach(x => x.setAttribute("aria-pressed", x === b)) }));
+  $("[data-themy]", slot)?.addEventListener("click", () => { const w = document.createElement("div"); w.innerHTML = yRow({ y: "", d: 1, k: [] }); $(".ideas", slot).appendChild(w.firstElementChild) });
+  $("[data-huy]", slot).addEventListener("click", () => { if (nhap) $(`#qe-${CSS.escape(id)}`).remove(); else slot.innerHTML = "" });
+  $("[data-luu]", slot).addEventListener("click", () => {
+    let moi;
+    if (q.k === "tn") {
+      const o = {}; $$("[data-o]", slot).forEach(x => o[x.dataset.o] = x.value.trim());
+      const da = ($(`input[name="da-${CSS.escape(id)}"]:checked`, slot) || {}).value || "a";
+      moi = { id, k: "tn", m, t: $('[data-f="t"]', slot).value.trim(), o, da, gt: $('[data-f="gt"]', slot).value.trim() };
+      if (!moi.t || !o.a || !o.b) { toast("Cần câu hỏi và ít nhất phương án A, B"); return }
+      if (!o[da]) { toast("Đáp án đúng đang trỏ vào phương án trống"); return }
+    } else {
+      const y = $$(".idea", slot).map(r => ({ y: $(".iy", r).value.trim(), d: Number($(".id", r).value) || 1, k: $(".kw", r).value.split(",").map(s => s.trim()).filter(Boolean) })).filter(x => x.y);
+      moi = { id, k: "tl", m, c: $('[data-f="c"]', slot).value.trim(), q: $('[data-f="q"]', slot).value.trim(), y };
+      if (!moi.q) { toast("Cần nội dung câu hỏi"); return }
+    }
+    const ds = nhap ? [...d.cauHoi, moi] : d.cauHoi.map(x => x.id === id ? moi : x);
+    const tnL = ds.filter(x => x.k === "tn"), tlL = ds.filter(x => x.k === "tl");
+    luuCau([...tnL, ...tlL]);
+  });
+}
+const yRow = y => `<div class="idea"><input type="text" class="iy" value="${esc(y.y)}" placeholder="Nội dung ý"><input type="number" class="id" min="1" max="10" value="${y.d}" title="Trọng số"><input type="text" class="kw" value="${esc((y.k||[]).join(", "))}" placeholder="Cụm từ, cách nhau dấu phẩy (vd: khong hua, khong cam ket)"></div>`;
+async function luuCau(ds) {
+  try { Q.de = (await qapi("ql-luu", { id: Q.de.id, cauHoi: ds })).de; veSua("Đã lưu câu hỏi.") } catch(_) { toast("Chưa lưu được") }
+}
+
+// ----- Kết quả theo bài -----
+async function veKetQua() {
+  khungQL(`<p class="sub">Đang tải…</p>`);
+  try { Q.list = await qapi("ql-ds") } catch(_) {}
+  const des = Q.list?.des || [];
+  if (!des.length) { $("#ql-body").innerHTML = `<div class="notice" style="margin-top:16px">Chưa có bài kiểm tra nào.</div>`; return }
+  if (!Q.kqDe || !des.some(d => d.id === Q.kqDe)) Q.kqDe = des[0].id;
+  let r;
+  try { r = await qapi("ql-kq", { id: Q.kqDe, dot: Q.kqDot ?? undefined }) } catch(_) { $("#ql-body").innerHTML = `<div class="notice err">Không tải được kết quả.</div>`; return }
+  Q.kqDot = r.dot;
+  const de = r.de, bai = r.bai, nop = bai.filter(b => b.nopLuc);
+  const tnQ = de.cauHoi.filter(q => q.k === "tn");
+  const dem = {}; bai.forEach(b => { const k = (b.hoTen||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\s+/g," ").trim(); dem[k] = (dem[k]||0)+1 });
+  const trung = b => dem[(b.hoTen||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\s+/g," ").trim()] > 1;
+  const tb = nop.length ? nop.reduce((a,b) => a + (b.tong||0), 0) / nop.length : null;
+  $("#ql-body").innerHTML = `
+  <section class="block">
+    <div class="row"><select id="k-de">${des.map(d => `<option value="${d.id}" ${d.id===de.id?"selected":""}>${esc(d.ten)}</option>`).join("")}</select>
+      <select id="k-dot"><option value="0" ${r.dot===0?"selected":""}>Tất cả các đợt</option>${Array.from({length: de.dot}, (_,i) => de.dot - i).map(n => `<option value="${n}" ${r.dot===n?"selected":""}>Đợt ${n}${n===de.dot?" (hiện tại)":""}</option>`).join("")}</select>
+      <button class="btn ghost sm" id="k-tai">Tải lại</button></div>
+    <div class="chips"><span class="chip ok">${nop.length} bài đã nộp</span>${bai.length>nop.length?`<span class="chip">${bai.length-nop.length} đang làm hoặc bỏ dở</span>`:""}${tb!=null?`<span class="chip gray">Điểm trung bình ${nf(tb)}</span>`:""}</div>
+    ${bai.length ? `<div class="tbl-wrap"><table><thead><tr><th>Họ tên</th><th>Đợt</th><th>Nộp lúc</th><th>Thời gian</th><th>Trắc nghiệm</th><th>Tự luận</th><th>Tổng</th><th></th></tr></thead><tbody>
+      ${bai.map(b => `<tr class="pick" data-id="${b.id}"><td>${esc(b.hoTen)}</td><td class="num">${b.dot}</td><td>${b.nopLuc ? fmtT(b.nopLuc) : `<span class="chip gray">đang làm</span>`}</td><td class="num">${fmtG(b.giay)}</td><td class="num">${nf(b.diemTN)}</td><td class="num">${nf(b.diemTL)}</td><td class="num"><b>${nf(b.tong)}</b></td>
+        <td>${trung(b)?`<span class="chip">trùng tên</span> `:""}${b.hetGio?`<span class="chip red">nộp trễ</span> `:""}${b.nopLuc && de.cauHoi.some(q=>q.k==="tl") ? (b.chamLuc?`<span class="chip ok">đã duyệt</span>`:`<span class="chip gray">tự chấm</span>`) : ""}</td></tr>`).join("")}</tbody></table></div>
+    ${tnQ.length && nop.length ? `<details class="sum"><summary>Bảng đáp án từng người chọn</summary><div class="tbl-wrap" style="margin-top:10px"><table class="mx"><thead><tr><th>Họ tên</th>${tnQ.map((q,i) => `<th title="${esc(q.t)}">C${i+1}</th>`).join("")}</tr></thead><tbody>
+      <tr><td><b>Đáp án</b></td>${tnQ.map(q => `<td style="text-align:center"><b>${q.da.toUpperCase()}</b></td>`).join("")}</tr>
+      ${nop.map(b => `<tr><td>${esc(b.hoTen)}</td>${tnQ.map(q => { const c = b.tn?.[q.id]; return `<td class="${c===q.da?"c-ok":"c-no"}">${c ? c.toUpperCase() : "–"}</td>` }).join("")}</tr>`).join("")}
+      <tr><td class="hint">Tỉ lệ đúng</td>${tnQ.map(q => `<td class="num" style="text-align:center">${Math.round(100*nop.filter(b => b.tn?.[q.id]===q.da).length/nop.length)}%</td>`).join("")}</tr></tbody></table></div></details>` : ""}`
+    : `<div class="notice">Chưa có ai làm bài ở ${r.dot ? "đợt này" : "bài này"}. Link bài: <span class="link">${esc(linkBai(de.ma))}</span></div>`}
+    <div id="chi-tiet"></div>
+  </section>`;
+  $("#k-de").addEventListener("change", e => { Q.kqDe = Number(e.target.value); Q.kqDot = null; veKetQua() });
+  $("#k-dot").addEventListener("change", e => { Q.kqDot = Number(e.target.value); veKetQua() });
+  $("#k-tai").addEventListener("click", () => veKetQua());
+  $$("tr.pick").forEach(tr => tr.addEventListener("click", () => { const b = bai.find(x => x.id === Number(tr.dataset.id)); chiTiet(b, de, $("#chi-tiet"), veKetQua) }));
+}
+
+// Chi tiết một bài: đáp án từng câu, chấm tự luận
+function chiTiet(b, de, box, xong) {
+  const per = b.diemTungCau || {}, khop = b.tuCham?.khop || {}, th = de.thang || {};
+  box.innerHTML = `<div class="intro" style="margin-top:4px">
+    <div class="row"><h2 style="flex:1">${esc(b.hoTen)}</h2><button class="btn ghost sm" id="d-dong">Đóng</button></div>
+    <div class="hint">${esc(de.ten)} · đợt ${b.dot} · ${b.nopLuc ? `nộp ${fmtT(b.nopLuc)}, làm trong ${fmtG(b.giay)}${b.hetGio ? " (quá giờ)" : ""}` : "chưa nộp"}</div>
+    ${b.nopLuc ? `<div class="kq-big"><div><div class="hint">Tổng</div><div class="score">${nf(b.tong)}</div></div><div><div class="hint">Trắc nghiệm</div><div class="score" style="font-size:22px">${nf(b.diemTN)}</div></div><div><div class="hint">Tự luận</div><div class="score" style="font-size:22px">${nf(b.diemTL)}</div></div></div>` : ""}
+    ${de.cauHoi.map((q,i) => q.k === "tn" ? `<div class="rv"><div><span class="mark ${b.tn?.[q.id]===q.da?"ok":"no"}">${b.tn?.[q.id]===q.da?"✓":"✗"}</span> <b>Câu ${i+1}.</b> ${esc(q.t)}</div>
+      <div class="hint">Chọn: <b>${b.tn?.[q.id] ? b.tn[q.id].toUpperCase() + ". " + esc(q.o[b.tn[q.id]]) : "bỏ trống"}</b>${b.tn?.[q.id]!==q.da ? ` · Đúng: ${q.da.toUpperCase()}. ${esc(q.o[q.da])}` : ""}</div></div>` : `
+      <div class="q"><div class="n">TỰ LUẬN · tối đa ${nf(th[q.id])} điểm</div>${q.c ? `<div class="case">${esc(q.c)}</div>` : ""}<div class="t">${esc(q.q)}</div>
+      <div class="ans">${esc(b.tl?.[q.id] || "(bỏ trống)")}</div>
+      <div class="key">Ý chấm · tự chấm ${nf(b.tuCham?.per?.[q.id])} điểm:<ul>${q.y.map((y,j) => `<li>${(khop[q.id]||[]).includes(j) ? "✓" : "○"} ${esc(y.y)}</li>`).join("")}</ul></div>
+      ${b.nopLuc ? `<div class="grade"><label for="g-${q.id}">Điểm duyệt</label><input type="number" id="g-${q.id}" data-g="${q.id}" min="0" max="${th[q.id]}" step="0.5" value="${per[q.id] ?? ""}"><span class="hint">/ ${nf(th[q.id])}</span></div>` : ""}</div>`).join("")}
+    ${b.nopLuc && de.cauHoi.some(q => q.k === "tl") ? `<label class="f">Nhận xét (người làm thấy nếu bật xem kết quả)<textarea id="g-note">${esc(b.nhanXet || "")}</textarea></label>` : ""}
+    <div class="row">${b.nopLuc && de.cauHoi.some(q => q.k === "tl") ? `<button class="btn sm" id="g-luu">Duyệt và lưu điểm</button>` : ""}<button class="btn danger sm" id="g-xoa">Xóa bài này</button><span class="hint" id="g-msg"></span></div></div>`;
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
+  $("#d-dong").addEventListener("click", () => box.innerHTML = "");
+  $("#g-luu")?.addEventListener("click", async () => {
+    const d = {}; $$("[data-g]", box).forEach(x => d[x.dataset.g] = Number(x.value));
+    $("#g-msg").textContent = "Đang lưu…";
+    try { await qapi("ql-cham", { id: b.id, diemTungCau: d, nhanXet: $("#g-note").value }); toast("Đã lưu điểm"); xong() }
+    catch(e) { $("#g-msg").textContent = e.message === "bad_score" ? "Điểm vượt mức tối đa hoặc để trống." : "Chưa lưu được." }
+  });
+  twoStep($("#g-xoa"), "Bấm lần nữa để xóa", async () => { try { await qapi("ql-xoa", { id: b.id }); toast("Đã xóa"); xong() } catch(_) { toast("Chưa xóa được") } });
+}
+
+// ----- Kết quả theo người -----
+async function veNguoi() {
+  khungQL(`<p class="sub">Đang tải…</p>`);
+  if (Q.nguoi) return veMotNguoi(Q.nguoi);
+  let r;
+  try { r = await qapi("ql-nguoi") } catch(_) { $("#ql-body").innerHTML = `<div class="notice err">Không tải được.</div>`; return }
+  const ds = r.nguoi.sort((a,b) => b.gan - a.gan);
+  $("#ql-body").innerHTML = `<section class="block">
+    <input type="text" id="n-tim" placeholder="Tìm theo tên…" autocomplete="off">
+    ${ds.length ? `<div class="tbl-wrap"><table><thead><tr><th>Họ tên</th><th>Số bài đã làm</th><th>Đã nộp</th><th>Số bài kiểm tra khác nhau</th><th>Điểm TB</th><th>Gần nhất</th></tr></thead><tbody>
+    ${ds.map(n => `<tr class="pick" data-key="${esc(n.key)}" data-ten="${esc(n.ten)}"><td>${esc(n.ten)}</td><td class="num">${n.so}</td><td class="num">${n.daNop}</td><td class="num">${n.soDe}</td><td class="num"><b>${nf(n.tb)}</b></td><td>${fmtT(n.gan)}</td></tr>`).join("")}</tbody></table></div>` : `<div class="notice">Chưa có ai làm bài.</div>`}</section>`;
+  $("#n-tim").addEventListener("input", e => { const s = e.target.value.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/g,"d"); $$("tr.pick").forEach(tr => tr.hidden = !tr.dataset.key.includes(s)) });
+  $$("tr.pick").forEach(tr => tr.addEventListener("click", () => { Q.nguoi = tr.dataset.ten; veMotNguoi(Q.nguoi) }));
+}
+async function veMotNguoi(ten) {
+  let r;
+  try { r = await qapi("ql-nguoi", { ten }) } catch(_) { $("#ql-body").innerHTML = `<div class="notice err">Không tải được.</div>`; return }
+  $("#ql-body").innerHTML = `<section class="block">
+    <div class="topnav"><button class="btn ghost sm" id="n-ve">← Tất cả mọi người</button></div>
+    <h2>${esc(ten)}</h2>
+    <div class="tbl-wrap"><table><thead><tr><th>Bài kiểm tra</th><th>Loại</th><th>Đợt</th><th>Nộp lúc</th><th>Thời gian</th><th>Trắc nghiệm</th><th>Tự luận</th><th>Tổng</th></tr></thead><tbody>
+    ${r.bai.map(b => { const d = r.des[b.deId]; return `<tr class="pick" data-id="${b.id}"><td>${esc(d?.ten || "(bài đã xóa)")}</td><td>${esc(d?.tenLoai || "")}</td><td class="num">${b.dot}</td><td>${b.nopLuc ? fmtT(b.nopLuc) : `<span class="chip gray">chưa nộp</span>`}</td><td class="num">${fmtG(b.giay)}</td><td class="num">${nf(b.diemTN)}</td><td class="num">${nf(b.diemTL)}</td><td class="num"><b>${nf(b.tong)}</b>${b.hetGio?` <span class="chip red">trễ</span>`:""}</td></tr>` }).join("")}</tbody></table></div>
+    <div id="chi-tiet"></div></section>`;
+  $("#n-ve").addEventListener("click", () => { Q.nguoi = null; veNguoi() });
+  $$("tr.pick").forEach(tr => tr.addEventListener("click", () => { const b = r.bai.find(x => x.id === Number(tr.dataset.id)); const d = r.des[b.deId]; if (d) chiTiet(b, d, $("#chi-tiet"), () => veMotNguoi(ten)) }));
+}
+
+/* ======================= ĐIỀU HƯỚNG ======================= */
+function route() {
+  const ma = new URLSearchParams(location.search).get("t");
+  if (location.hash === "#quan-ly") return quanLy();
+  if (ma) return moBai(ma.trim().toLowerCase());
+  trangChu();
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
