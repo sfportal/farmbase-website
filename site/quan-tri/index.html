@@ -274,6 +274,17 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 .qc-ia{display:flex;justify-content:space-between;padding:4px 8px}.qc-ia .linkbtn{font-size:15px;text-decoration:none}.qc-imgs input{border:0;border-top:1px solid var(--line);border-radius:0;font-size:12px;padding:7px 8px}
 .qc-prev .pprev{max-height:60vh;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:12px}.qc-fb{white-space:pre-wrap;font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;max-height:280px;overflow:auto}
 @media (max-width:980px){.qc{grid-template-columns:1fr}.qc-r{position:static}}
+.fbta{width:100%;font:inherit;font-size:14px;line-height:1.5;margin-top:8px;resize:vertical}
+.fbimgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:10px}.fbimgs figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.fbimgs img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.fbimgs .acts{padding:6px;gap:4px;flex-wrap:wrap}.fbimgs .btn.sm{padding:3px 8px;font-size:12px}
+.fbpl{max-height:340px;overflow:auto;margin-top:10px}.fbpl button.item{width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;cursor:pointer;color:inherit;font:inherit;margin-bottom:6px}
+.fbpl button.item[aria-pressed="true"]{border-color:var(--forest);box-shadow:inset 0 0 0 1px var(--forest)}
+.fbp{border:1px solid var(--line);border-radius:12px;background:#fff;color:#050505;margin-top:10px;overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.fbh{display:flex;gap:8px;align-items:center;padding:12px 12px 6px}.fbh b{display:block;font-size:14px}.fbh small{color:#65676b;font-size:12px}.fbav{width:36px;height:36px;border-radius:50%;background:#0E5A4F;color:#fff;display:grid;place-items:center;font-weight:800}
+.fbt{white-space:pre-wrap;font-size:14.5px;line-height:1.38;padding:4px 12px 10px}.fbt .more{color:#65676b;font-weight:600}
+.fbg{display:grid;gap:2px}.fbg.n1{grid-template-columns:1fr}.fbg.n2{grid-template-columns:1fr 1fr}.fbg.n3,.fbg.n4{grid-template-columns:1fr 1fr}.fbg img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:1/1}.fbg.n1 img{aspect-ratio:auto;max-height:420px}.fbg.n3 img:first-child{grid-column:1/3;aspect-ratio:2/1}
+.fbg .plus{position:relative}.fbg .plus span{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;font-size:26px;font-weight:700}
+.fbl{border-top:1px solid #dadde1;background:#f0f2f5;padding:8px 12px;font-size:12px;color:#65676b}.fbl b{display:block;color:#050505;font-size:14px}
 .seochk{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:4px;font-size:13px;color:var(--muted)}.seochk li.ok{color:var(--leaf,#1E8E5A)}
 .pstat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.pstat div{background:#f3f7f5;border-radius:10px;padding:8px;text-align:center}.pstat b{display:block;font-size:16px}.pstat span{font-size:11px;color:var(--muted)}
 .pmod{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;overflow:auto;padding:24px 12px}.pmod-in{max-width:780px;margin:0 auto;background:#fff;border-radius:16px;padding:24px}
@@ -311,6 +322,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
   <span class="sep">Nội dung website</span>
   <a href="#bai-viet" data-v="bai-viet" data-cap="content">Bài viết website <span class="n" id="nwait" hidden>0</span></a>
   <a href="#tao-nhanh" data-v="tao-nhanh" data-cap="content">Tạo bài nhanh</a>
+  <a href="#bai-facebook" data-v="bai-facebook" data-cap="content">Bài Facebook</a>
   <a href="#thu-vien" data-v="thu-vien">Thư viện ảnh</a>
   <a href="#trang" data-v="trang" data-cap="content">Sửa nội dung từng trang</a>
   <a href="#noi-dung" data-v="noi-dung" data-cap="content">Nội dung và bản dịch <span class="n" id="ntr" hidden>0</span></a>
@@ -359,7 +371,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 
   <section data-view="bai-viet-sua" hidden>
     <div class="top"><div><a href="#bai-viet" class="more" style="font-size:13px">← Danh sách bài viết</a><h1 id="ped-h">Viết bài mới</h1></div>
-      <div class="right"><button class="btn" type="button" id="pprev">Xem trước</button><a class="btn" id="popen" target="_blank" rel="noopener" hidden>Mở trên website ↗</a><button class="btn" type="button" id="psave-d">Lưu nháp</button><button class="btn pri" type="button" id="psave-p">Đăng bài</button></div></div>
+      <div class="right"><button class="btn" type="button" id="pprev">Xem trước</button><button class="btn" type="button" id="pfbgo">Tạo bài Facebook</button><a class="btn" id="popen" target="_blank" rel="noopener" hidden>Mở trên website ↗</a><button class="btn" type="button" id="psave-d">Lưu nháp</button><button class="btn pri" type="button" id="psave-p">Đăng bài</button></div></div>
     <div class="ped">
       <div class="ped-main">
         <div class="card">
@@ -471,6 +483,50 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
     <div class="aibox" id="aiOut" hidden></div>
     <div class="scroll" style="margin-top:14px"><div class="cal" id="cal"></div></div>
     <div class="flow" style="margin-top:12px">Chú thích: <span class="chip st-draft">Nháp</span><span class="chip st-wait">Chờ duyệt</span><span class="chip st-ok">Đã duyệt</span><span class="chip st-sched">Đã lên lịch</span><span class="chip st-pub">Đã đăng</span></div>
+  </section>
+
+  <!-- BÀI FACEBOOK -->
+  <section data-view="bai-facebook" hidden>
+    <div class="top"><div><h1>Bài Facebook</h1><p class="sub">Viết bài chỉ để đăng Facebook, hoặc chuyển bài website có sẵn thành bài Facebook. Sửa trực tiếp, sao chép rồi dán lên Fanpage.</p></div>
+      <div class="right"><a class="btn" href="https://www.facebook.com/farmbasevn" target="_blank" rel="noopener">Mở Fanpage FarmBase ↗</a></div></div>
+    <div class="lt" role="group" aria-label="Cách tạo bài" id="fbmode"><button type="button" aria-pressed="true" data-m="new">Viết mới chỉ cho Facebook</button><button type="button" aria-pressed="false" data-m="post">Từ bài viết website có sẵn</button></div>
+    <div class="qc" style="margin-top:14px">
+      <div class="qc-l">
+        <div id="fbnew">
+          <div class="card"><h2>1. Loại bài</h2><div class="qc-tpl" id="fbtpl" role="radiogroup" aria-label="Loại bài"></div></div>
+          <div class="card" style="margin-top:16px"><h2>2. Thông tin bài</h2><div class="form" id="fbf"></div></div>
+          <div class="card" style="margin-top:16px"><h2>3. Hình ảnh <span class="cnote" id="fbcnt" style="font-weight:400"></span></h2>
+            <label class="qc-drop" id="fbdrop" for="fbfile"><b>Kéo thả ảnh vào đây để xem trước</b><span>Ảnh chỉ dùng để xem trước bài, không tải lên website. Khi đăng, Quý khách chọn lại các ảnh này trên Facebook.</span><input type="file" id="fbfile" accept="image/*" multiple hidden></label>
+            <div class="fbimgs" id="fbimgsn"></div></div>
+        </div>
+        <div id="fbpost" hidden>
+          <div class="card"><h2>1. Chọn bài viết website</h2>
+            <label for="fbsearch">Tìm bài<input id="fbsearch" placeholder="Gõ vài chữ trong tiêu đề"></label>
+            <div class="list fbpl" id="fbpl"></div></div>
+          <div class="card" style="margin-top:16px"><h2>2. Ảnh trong bài</h2><p class="rule" style="margin-top:4px">Sao chép từng ảnh rồi dán vào Facebook, hoặc tải ảnh về máy rồi chọn khi đăng.</p><div class="fbimgs" id="fbimgsp"></div></div>
+        </div>
+        <div class="card" style="margin-top:16px"><h2>Tùy chọn</h2>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+            <label for="fblen">Độ dài<select id="fblen"><option value="full">Đầy đủ</option><option value="short">Ngắn gọn</option></select></label>
+            <label for="fbtone">Viết cho<select id="fbtone"><option value="bacon">Bà con nông dân</option><option value="dn">HTX, doanh nghiệp</option></select></label>
+            <label for="fbcta">Lời mời cuối bài<select id="fbcta"><option value="auto">Theo bài viết</option><option value="tuvan">Tư vấn triển khai FarmBase</option><option value="msvt">Hỗ trợ hồ sơ mã số vùng trồng</option><option value="app">Mở Zalo Mini App</option><option value="cd">Chiến dịch 10.000 ha</option><option value="">Không thêm</option></select></label>
+            <label for="fblang">Ngôn ngữ<select id="fblang"><option value="vi">Tiếng Việt</option><option value="en">English (nếu bài đã dịch)</option><option value="zh">中文 (nếu bài đã dịch)</option></select></label>
+          </div>
+          <label class="chk" style="margin-top:8px"><input type="checkbox" id="fblink" checked> Kèm link bài viết trên website</label>
+          <label class="chk"><input type="checkbox" id="fbemo" checked> Dùng biểu tượng cảm xúc (emoji)</label>
+          <label for="fbtags" style="margin-top:8px">Hashtag<input id="fbtags" placeholder="#FarmBase #MinhBachTuGoc"></label>
+        </div>
+      </div>
+      <div class="qc-r">
+        <div class="card"><h2>Nội dung đăng Facebook <span class="cnote" id="fbcount" style="font-weight:400"></span></h2>
+          <textarea id="fbtext" rows="16" class="fbta" aria-label="Nội dung bài Facebook"></textarea>
+          <p class="rule" id="fbnote" style="margin-top:6px">Sửa trực tiếp ở đây. Khi đổi thông tin hoặc tùy chọn bên trái, nội dung được viết lại.</p>
+          <div class="acts" style="margin-top:10px"><button class="btn dark" type="button" id="fbcopy">Sao chép nội dung</button><button class="btn" type="button" id="fbcopyl">Sao chép link bài</button><button class="btn" type="button" id="fbregen">Viết lại từ đầu</button><a class="btn" href="https://www.facebook.com/farmbasevn" target="_blank" rel="noopener">Mở Fanpage ↗</a></div></div>
+        <div class="card"><h2>Xem trước trên Facebook</h2>
+          <div class="fbp"><div class="fbh"><span class="fbav">f</span><div><b>FarmBase</b><small>Vừa xong · 🌐</small></div></div><div class="fbt" id="fbpt"></div><div class="fbg" id="fbpg"></div><div class="fbl" id="fbpl2" hidden></div></div>
+          <p class="rule" style="margin-top:8px">Facebook chỉ hiện khoảng 3 dòng đầu trước nút "Xem thêm": câu mở đầu nên nói rõ lợi ích hoặc tin chính.</p></div>
+      </div>
+    </div>
   </section>
 
   <!-- TẠO NHANH -->
@@ -1076,7 +1132,7 @@ function drawPosts(){const f=$('pflt').value;const L=PL.filter(p=>!f||p.status==
  $('plist').innerHTML=L.map(p=>`<tr><td>${p.cover?`<img class="thumb" src="${esc(pimg(p.cover))}" alt="">`:''}</td><td class="ttl"><a href="#bai-viet-sua" data-pedit="${p.id}" style="color:inherit">${esc(p.title)}</a><small>/bai-viet/${esc(p.slug)}</small>${p.visibility==='link'?`<span class="chip st-link">Chỉ người có link</span>`:''}${+p.has_pass?` <span class="chip st-lock">Có mật khẩu</span>`:''}${p.expires_at?` <span class="chip ${p.expires_at<=Date.now()?'st-exp':'st-link'}">${p.expires_at<=Date.now()?'Đã hết hạn':'Hạn '+pdt(p.expires_at)}</span>`:''}</td><td>${PCATS[p.cat]||''}</td>
   <td>${p.status==='published'?(p.published_at>Date.now()?'<span class="chip st-sched">Hẹn giờ đăng</span>':p.visibility==='link'?(p.expires_at&&p.expires_at<=Date.now()?'<span class="chip st-exp">Hết hiệu lực</span>':'<span class="chip st-pub">Đang hiệu lực</span>'):'<span class="chip st-pub">Đã đăng</span>'):p.visibility==='link'&&p.published_at?'<span class="chip st-exp">Đã tắt hiệu lực</span>':'<span class="chip st-draft">Nháp</span>'}</td><td style="white-space:nowrap">${pdt(p.published_at)}</td>
   <td class="n">${nf(p.views||0)}</td><td class="n">${nf(p.views30||0)}</td><td class="n">${pdur(p.avg_ms)}</td>
-  <td style="white-space:nowrap"><button class="btn sm" type="button" data-pedit="${p.id}">Sửa</button>${p.status==='published'?` <a class="btn sm" href="${PLIVE?'/bai-viet/'+esc(p.slug):'#'}" target="_blank" rel="noopener">Xem</a>`:''}${p.visibility==='link'?` <button class="btn sm" type="button" data-pcopy="${esc(p.slug)}">Sao chép link</button>`:''}${p.visibility==='link'&&can2del()&&p.published_at?` <button class="btn sm" type="button" data-ptog="${p.id}">${p.status==='published'?'Tắt hiệu lực':'Bật hiệu lực'}</button>`:''}${can2del()?` <button class="btn sm" type="button" data-pdel="${p.id}">Xóa</button>`:''}</td></tr>`).join('')||'<tr><td colspan="9" style="color:var(--muted)">Chưa có bài viết. Bấm "+ Viết bài mới" để bắt đầu.</td></tr>';}
+  <td style="white-space:nowrap"><button class="btn sm" type="button" data-pedit="${p.id}">Sửa</button> <button class="btn sm" type="button" data-pfb="${p.id}" title="Tạo bài Facebook từ bài này">Bài FB</button>${p.status==='published'?` <a class="btn sm" href="${PLIVE?'/bai-viet/'+esc(p.slug):'#'}" target="_blank" rel="noopener">Xem</a>`:''}${p.visibility==='link'?` <button class="btn sm" type="button" data-pcopy="${esc(p.slug)}">Sao chép link</button>`:''}${p.visibility==='link'&&can2del()&&p.published_at?` <button class="btn sm" type="button" data-ptog="${p.id}">${p.status==='published'?'Tắt hiệu lực':'Bật hiệu lực'}</button>`:''}${can2del()?` <button class="btn sm" type="button" data-pdel="${p.id}">Xóa</button>`:''}</td></tr>`).join('')||'<tr><td colspan="9" style="color:var(--muted)">Chưa có bài viết. Bấm "+ Viết bài mới" để bắt đầu.</td></tr>';}
 const can2del=()=>MODE==='demo'||(ME&&['owner','admin','approver'].includes(ME.role));
 $('pflt').addEventListener('change',drawPosts);
 const plink=sl=>(PLIVE?location.origin:'https://farmbase.vn')+'/bai-viet/'+sl;
@@ -1186,6 +1242,7 @@ async function savePost(publish){if(!PCUR)return;pStore();if(!PCUR.title.trim())
  try{const r=await api('/api/admin/posts',{method:PCUR.id?'PUT':'POST',body:JSON.stringify(body)});PDIRTY=false;await loadPosts();await openPost(r.id);toast(publish?(body.published_at>Date.now()?'Đã hẹn giờ đăng bài':'Đã đăng bài lên website'):'Đã lưu nháp');}
  catch(e){toast(e.message==='slug_taken'?'Đường dẫn đã có bài khác dùng, hãy đổi đường dẫn':e.message==='need_approver'?'Tài khoản Biên tập chỉ lưu nháp':e.message==='too_large'?'Bài quá dài để lưu':e.message==='short_pass'?'Mật khẩu tối thiểu 4 ký tự':em(e));}}
 $('psave-d').addEventListener('click',()=>savePost(false));$('psave-p').addEventListener('click',()=>savePost(true));
+$('pfbgo').addEventListener('click',()=>{if(!PCUR||!PCUR.id){toast('Lưu bài trước, rồi tạo bài Facebook');return;}if(PDIRTY){toast('Bài có thay đổi chưa lưu. Lưu trước để bài Facebook lấy nội dung mới');return;}fbOpen(PCUR.id);});
 $('pprev').addEventListener('click',()=>{if(!PCUR)return;pStore();const src=PLANG==='vi'?PCUR:Object.assign({},PCUR,PCUR.tr[PLANG]||{});
  $('pmodb').innerHTML=`<article class="pprev">${PCUR.cover?`<img class="pcv" src="${esc(pimg(PCUR.cover))}" alt="">`:''}<p class="cnote">${PCATS[$('pt-cat').value]} · ${pdt(new Date($('pt-date').value).getTime())}</p><h1>${esc(src.title||PCUR.title)}</h1>${src.excerpt?`<p><b>${esc(src.excerpt)}</b></p>`:''}<div class="prich">${(src.body||'').replace(/<script[\s\S]*?<\/script>/gi,'')}</div></article>`;$('pmod').hidden=false;});
 $('pmodx').addEventListener('click',()=>$('pmod').hidden=true);
@@ -1299,6 +1356,99 @@ function qcInit(){if(QC.init)return;QC.init=true;qcForm();qcImgs();
  $('qcgo').addEventListener('click',async()=>{const g=qGen();if(!g.title.trim()){toast('Vui lòng nhập thông tin bài');return;}if(QC.imgs.some(i=>!i.url&&!i.err)){toast('Ảnh đang tải, đợi một chút');return;}
   const {fb,...post}=g;await openPost(0,post);toast('Đã tạo bản nháp. Chỉnh nội dung rồi bấm Lưu nháp hoặc Đăng bài');});}
 addEventListener('hashchange',()=>{if(location.hash==='#tao-nhanh')qcInit();});if(location.hash==='#tao-nhanh')setTimeout(qcInit,300);
+/* ================= Bài Facebook ================= */
+const SITE='https://farmbase.vn';
+const FBE={hd:'📍',sk:'📣',gd:'📱',kt:'💡',bc:'📰'};
+const FBL={vi:{read:'Đọc đầy đủ',time:'Thời gian',place:'Địa điểm',who:'Dành cho',reg:'Đăng ký',res:'Kết quả',steps:'Các bước',notes:'Lưu ý',main:'Nội dung chính',src:'Nguồn'},
+ en:{read:'Read the full article',time:'Time',place:'Venue',who:'For',reg:'Register',res:'Results',steps:'Steps',notes:'Notes',main:'Highlights',src:'Source'},
+ zh:{read:'阅读全文',time:'时间',place:'地点',who:'对象',reg:'报名',res:'成果',steps:'步骤',notes:'注意',main:'要点',src:'来源'}};
+let FB={m:'new',t:'hd',v:{},imgs:[],pid:0,edited:false,last:''};
+const fbTagsDef=crop=>`#FarmBase #MinhBachTuGoc ${String(crop||'').includes('cà phê')?'#CaPheDakLak':'#SauRiengDakLak'} #NhatKyCanhTac #MaVungTrong`;
+function fbBuild(d){const E=$('fbemo').checked,short=$('fblen').value==='short',L=FBL[d.lang||'vi'];const e=x=>E?x+' ':'';const out=[];
+ out.push(e(d.emoji||'🌱')+d.title.trim());
+ if(d.summary)out.push(d.summary.trim());
+ if(d.info&&d.info.length)out.push(d.info.map(([ic,k,v])=>e(ic)+k+': '+v).join('\n'));
+ const pts=(d.points||[]).slice(0,short?3:6);
+ if(pts.length)out.push((d.plabel&&!short?d.plabel+':\n':'')+pts.map((x,i)=>(d.numbered?(E?['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'][i]:(i+1)+'.'):(E?'✅':'•'))+' '+qdot(quc(x))).join('\n'));
+ if(!short&&d.results&&d.results.length)out.push(e('🌱')+L.res+':\n'+d.results.slice(0,4).map(x=>(E?'▪️':'•')+' '+qdot(quc(x))).join('\n'));
+ if(d.link)out.push(e('👉')+L.read+': '+d.link);
+ if(d.cta)out.push(e('📞')+d.cta);
+ const tags=$('fbtags').value.trim();if(tags)out.push(tags);
+ return out.join('\n\n');}
+function fbCta(auto){const k=$('fbcta').value;if(k==='auto')return auto||'';return k?QCTA[k]:'';}
+function fbFromNew(){const v=FB.v,t=FB.t,crop=v.crop||'sầu riêng',place=v.place||'Đắk Lắk',kind=v.kind||'Tập huấn',date=qD(v.date),pts=qL(v.points),res=qL(v.results),steps=qL(v.steps),tips=qL(v.tips),ag=qL(v.agenda);
+ const dn=$('fbtone').value==='dn',ban=dn?'Quý đối tác':'Bà con';let d={emoji:FBE[t],lang:'vi'};
+ if(t==='hd')d=Object.assign(d,{title:v.title||`${kind}${pts[0]?' '+qlc(pts[0]):' cùng bà con trồng '+crop} tại ${place}`,summary:`${date?'Ngày '+date+', ':''}FarmBase ${qlc(kind)} tại ${place}${v.partner?' cùng '+v.partner:''}${v.people?', với khoảng '+v.people+' tham gia':''}.`,points:pts,plabel:FBL.vi.main,results:res});
+ else if(t==='sk')d=Object.assign(d,{title:v.title||`Mời ${dn?'Quý đối tác':'bà con'} tham dự ${qlc(kind)} tại ${place}`,summary:`${ban} trồng ${crop} quan tâm vui lòng đăng ký sớm, số chỗ có hạn.`,info:[['🗓','Thời gian',(date||'Sắp công bố')+(v.time?' · '+v.time:'')],['📍','Địa điểm',place],['👥','Dành cho',v.who||'nông hộ, HTX trồng '+crop],...(v.partner?[['🤝','Phối hợp',v.partner]]:[]),['☎️','Đăng ký',v.register||'Nhắn Zalo 0911 423 839 (Mrs Ngọc)']],points:ag,plabel:'Chương trình',numbered:true});
+ else if(t==='gd')d=Object.assign(d,{title:v.title||'Hướng dẫn dùng FarmBase trên Zalo Mini App',summary:`${steps.length?'Chỉ '+steps.length+' bước':'Vài bước đơn giản'}, ${dn?'nhân viên HTX':'bà con'} làm được ngay trên điện thoại.`,points:steps,numbered:true,results:tips.map(x=>x)});
+ else if(t==='kt')d=Object.assign(d,{title:v.title||(pts[0]?quc(pts[0]):`Điều ${ban.toLowerCase()} trồng ${crop} cần biết về mã số vùng trồng`),summary:v.problem?qdot(quc(v.problem.trim())):'',points:pts,plabel:'Những điểm cần nắm',results:tips});
+ else d=Object.assign(d,{title:v.title||`Báo chí ghi nhận: ${v.paper||'báo chí'} đưa tin`,summary:`${v.summary||''}${v.paper?`\n\n${$('fbemo').checked?'📰 ':''}Nguồn: ${v.paper}${v.pdate?' ('+qD(v.pdate)+')':''}`:''}`,points:pts,plabel:'Điểm đáng chú ý',link:/^https:\/\//.test(v.url||'')?v.url:''});
+ if(t==='gd'&&d.results.length){d.results=null;d.points=d.points.concat([]);d.tipsTxt=tips;}
+ let txt=fbBuild(Object.assign(d,{cta:fbCta(QCTA[t==='sk'?'':t==='gd'?'app':t==='kt'?'msvt':'tuvan'])}));
+ if(t==='gd'&&tips.length&&$('fblen').value!=='short'){const parts=txt.split('\n\n');parts.splice(3,0,($('fbemo').checked?'⚠️ ':'')+'Lưu ý:\n'+tips.map(x=>'• '+qdot(quc(x))).join('\n'));txt=parts.join('\n\n');}
+ return txt;}
+function fbPostLang(p){const L=$('fblang').value;const tr=typeof p.tr==='string'?(()=>{try{return JSON.parse(p.tr)}catch(e){return {}}})():(p.tr||{});const r=L!=='vi'&&tr[L]&&tr[L].title?tr[L]:null;return {L:r?L:'vi',src:r?Object.assign({},p,r):p,fallback:L!=='vi'&&!r};}
+function fbFromPost(p){const {L,src}=fbPostLang(p);const doc=new DOMParser().parseFromString(src.body||'','text/html');
+ const bq=[...doc.querySelectorAll('blockquote')].map(x=>x.textContent.trim()).filter(Boolean);
+ const lis=[...doc.querySelectorAll('li')].map(x=>x.textContent.trim()).filter(Boolean);
+ const h2=[...doc.querySelectorAll('h2,h3')].map(x=>x.textContent.trim()).filter(x=>x&&!/^(Về FarmBase|About FarmBase|关于 ?FarmBase|Hình ảnh)$/i.test(x));
+ const firstP=[...doc.querySelectorAll('p')].map(x=>x.textContent.trim()).find(x=>x.length>40)||'';
+ const sum=(src.excerpt||'').trim()||qCut(firstP,280);
+ const seq=h2.filter(x=>/^(\d+[.):]|Bước|Step|第)/i.test(x));const pts=seq.length>=3?seq.map(x=>x.replace(/^\d+[.):]\s*/,'')):lis.length>=2?lis:h2;
+ const link=$('fblink').checked&&p.slug?SITE+'/bai-viet/'+p.slug:'';
+ const tags=$('fbtags').value;
+ return fbBuild({emoji:{'tin-tuc':'📍','su-kien':'📣','huong-dan':'📱','kien-thuc':'💡','bao-chi':'📰'}[p.cat]||'🌱',lang:L,title:src.title||'',summary:sum,points:pts,numbered:p.cat==='huong-dan'&&lis.length<2,link,cta:fbCta(bq[bq.length-1]||'')});}
+function fbImgsOf(p){const {src}=fbPostLang(p);const out=[];if(p.cover)out.push(p.cover);const doc=new DOMParser().parseFromString(src.body||'','text/html');doc.querySelectorAll('img').forEach(i=>{const u=i.getAttribute('src');if(u&&!out.includes(u))out.push(u);});return out;}
+function fbGen(force){if(FB.edited&&!force)return;let txt='';
+ if(FB.m==='new')txt=fbFromNew();else{const p=PL.find(x=>x.id===FB.pid);txt=p?fbFromPost(p):'';}
+ $('fbtext').value=txt;FB.edited=false;fbPrev();}
+function fbPrev(){const t=$('fbtext').value;$('fbcount').textContent=t?`· ${t.length.toLocaleString('vi-VN')} ký tự`:'';
+ const lines=t.split('\n');const cut=lines.slice(0,3).join('\n');const more=lines.length>3||cut.length>260;
+ $('fbpt').innerHTML=t?esc(more?qCut(cut,260).replace(/[.…,;:\s]+$/,''):cut)+(more?'… <span class="more">Xem thêm</span>':''):'<span style="color:#65676b">Nội dung bài sẽ hiện ở đây.</span>';
+ const imgs=FB.m==='new'?FB.imgs.map(i=>i.url):(()=>{const p=PL.find(x=>x.id===FB.pid);return p?fbImgsOf(p).map(pimg):[];})();
+ const n=Math.min(imgs.length,4),g=$('fbpg');g.className='fbg n'+n;g.innerHTML=imgs.slice(0,4).map((u,i)=>i===3&&imgs.length>4?`<div class="plus"><img src="${esc(u)}" alt=""><span>+${imgs.length-4}</span></div>`:`<img src="${esc(u)}" alt="">`).join('');
+ const p=FB.m==='post'&&PL.find(x=>x.id===FB.pid);const lk=$('fbpl2');lk.hidden=!(p&&!imgs.length&&$('fblink').checked);if(p)lk.innerHTML=`FARMBASE.VN<b>${esc(p.title)}</b>`;}
+function fbForm(){$('fbtpl').innerHTML=Object.entries(QT).map(([k,x])=>`<button type="button" role="radio" aria-checked="${k===FB.t}" data-ft="${k}"><b>${x.n}</b><small>${x.d}</small></button>`).join('');
+ const t=QT[FB.t];$('fbf').innerHTML=t.f.map(k=>{const [lb,ty,ph]=QF[k],val=FB.v[k]??(ty==='select'?ph[0]:'');const id='ff-'+k;
+  if(ty==='select')return `<label for="${id}">${lb}<select id="${id}" data-ff="${k}">${ph.map(o=>`<option${o===val?' selected':''}>${o}</option>`).join('')}</select></label>`;
+  if(ty==='textarea')return `<label for="${id}">${lb}<textarea id="${id}" data-ff="${k}" rows="3" placeholder="${qE(ph)}">${qE(val)}</textarea></label>`;
+  return `<label for="${id}">${lb}<input id="${id}" data-ff="${k}" type="${ty==='date'?'date':'text'}" placeholder="${qE(ph)}" value="${qE(val)}"></label>`;}).join('');
+ t.f.forEach(k=>{if(QF[k][1]==='select'&&FB.v[k]==null)FB.v[k]=QF[k][2][0];});}
+function fbImgCard(u,n,local){return `<figure><img src="${esc(local?u:pimg(u))}" alt="Ảnh ${n+1}"><div class="acts"><button class="btn sm" type="button" data-fbcpi="${esc(local?u:pimg(u))}">Sao chép ảnh</button>${local?`<button class="btn sm" type="button" data-fbx="${n}">Bỏ</button>`:`<a class="btn sm" href="${esc(pimg(u))}" download>Tải về</a>`}</div></figure>`;}
+function fbImgsNew(){$('fbcnt').textContent=FB.imgs.length?'· '+FB.imgs.length+' ảnh':'';$('fbimgsn').innerHTML=FB.imgs.map((i,n)=>fbImgCard(i.url,n,true)).join('');fbPrev();}
+function fbList(){const q=$('fbsearch').value.trim().toLowerCase();const L=PL.filter(p=>!q||String(p.title).toLowerCase().includes(q)).slice(0,60);
+ $('fbpl').innerHTML=L.map(p=>`<button type="button" class="item" data-fbp="${p.id}" aria-pressed="${p.id===FB.pid}"><span class="chip ${p.status==='published'?'st-pub':'st-draft'}">${p.status==='published'?'Đã đăng':'Nháp'}</span><span style="flex:1;min-width:0">${esc(p.title)}</span></button>`).join('')||'<p style="color:var(--muted)">Chưa có bài viết nào'+(q?' khớp':'')+'.</p>';}
+async function fbPick(id){FB.pid=id;let p=PL.find(x=>x.id===id);if(!p)return;
+ if(PLIVE&&p.body===undefined){try{Object.assign(p,(await api('/api/admin/posts?id='+id)).item);}catch(e){toast(em(e));return;}}
+ fbList();$('fbimgsp').innerHTML=fbImgsOf(p).map((u,n)=>fbImgCard(u,n,false)).join('')||'<p style="color:var(--muted)">Bài chưa có ảnh.</p>';
+ const {fallback}=fbPostLang(p);$('fbnote').textContent=(p.status!=='published'?'Bài này chưa đăng trên website nên link sẽ chưa mở được. ':p.visibility==='link'?'Bài chỉ dành cho người có link: ai thấy bài Facebook đều mở được. ':'')+(fallback?'Bài chưa có bản dịch ngôn ngữ đã chọn, đang dùng tiếng Việt. ':'')+'Sửa trực tiếp ở đây trước khi sao chép.';
+ fbGen(true);}
+function fbMode(m){FB.m=m;document.querySelectorAll('#fbmode button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.m===m)));$('fbnew').hidden=m!=='new';$('fbpost').hidden=m!=='post';
+ $('fblink').closest('label').hidden=m==='new';$('fblang').closest('label').hidden=m==='new';$('fbcopyl').hidden=m==='new';$('fbcta').options[0].text=m==='new'?'Theo loại bài':'Theo bài viết';
+ if(m==='post'){fbList();if(!FB.pid&&PL[0])fbPick(PL[0].id);else fbGen(true);}else fbGen(true);}
+async function fbCopyImg(u){try{const b=await (await fetch(u)).blob();let png=b;if(b.type!=='image/png'){const im=await createImageBitmap(b);const c=document.createElement('canvas');c.width=im.width;c.height=im.height;c.getContext('2d').drawImage(im,0,0);png=await new Promise(r=>c.toBlob(r,'image/png'));}
+ await navigator.clipboard.write([new ClipboardItem({'image/png':png})]);toast('Đã sao chép ảnh, dán vào Facebook bằng Ctrl+V');}catch(e){toast('Trình duyệt chưa cho sao chép ảnh, hãy dùng nút Tải về');}}
+function fbInit(){if(FB.init)return;FB.init=true;$('fbtags').value=fbTagsDef('sầu riêng');fbForm();fbImgsNew();
+ $('fbmode').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(b)fbMode(b.dataset.m);});
+ $('fbtpl').addEventListener('click',e=>{const b=e.target.closest('[data-ft]');if(!b)return;FB.t=b.dataset.ft;fbForm();fbGen(true);});
+ const onf=e=>{const k=e.target.dataset.ff;if(!k)return;FB.v[k]=e.target.value;if(k==='crop'&&!FB.tagsEdited)$('fbtags').value=fbTagsDef(e.target.value);fbGen(true);};
+ $('fbf').addEventListener('input',onf);$('fbf').addEventListener('change',onf);
+ ['fblen','fbtone','fbcta','fblang','fblink','fbemo'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='fblang'&&FB.pid)fbPick(FB.pid);else fbGen(true);}));
+ $('fbtags').addEventListener('input',()=>{FB.tagsEdited=true;fbGen(true);});
+ $('fbtext').addEventListener('input',()=>{FB.edited=true;fbPrev();});
+ $('fbregen').addEventListener('click',()=>{fbGen(true);toast('Đã viết lại theo thông tin hiện tại');});
+ $('fbcopy').addEventListener('click',async()=>{const t=$('fbtext').value;if(!t.trim()){toast('Chưa có nội dung');return;}try{await navigator.clipboard.writeText(t);toast('Đã sao chép. Mở Fanpage, bấm "Tạo bài viết" rồi dán (Ctrl+V)');}catch(e){$('fbtext').select();toast('Hãy bấm Ctrl+C để sao chép phần đã bôi đen');}});
+ $('fbcopyl').addEventListener('click',async()=>{const p=PL.find(x=>x.id===FB.pid);if(!p){toast('Chưa chọn bài');return;}try{await navigator.clipboard.writeText(SITE+'/bai-viet/'+p.slug);toast('Đã sao chép link bài');}catch(e){toast(SITE+'/bai-viet/'+p.slug);}});
+ $('fbsearch').addEventListener('input',fbList);
+ $('fbpl').addEventListener('click',e=>{const b=e.target.closest('[data-fbp]');if(b)fbPick(+b.dataset.fbp);});
+ document.addEventListener('click',e=>{const c=e.target.closest('[data-fbcpi]');if(c)fbCopyImg(c.dataset.fbcpi);const x=e.target.closest('[data-fbx]');if(x){FB.imgs.splice(+x.dataset.fbx,1);fbImgsNew();}});
+ $('fbfile').addEventListener('change',e=>{[...e.target.files].filter(f=>/^image\//.test(f.type)).forEach(f=>FB.imgs.push({url:URL.createObjectURL(f)}));e.target.value='';fbImgsNew();});
+ const dz=$('fbdrop');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('on');}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('on');}));
+ dz.addEventListener('drop',e=>{[...e.dataTransfer.files].filter(f=>/^image\//.test(f.type)).forEach(f=>FB.imgs.push({url:URL.createObjectURL(f)}));fbImgsNew();});
+ fbMode(FB.m);}
+function fbOpen(id){location.hash='#bai-facebook';setTimeout(()=>{fbInit();fbMode('post');fbPick(id);},50);}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-pfb]');if(b){e.preventDefault();fbOpen(+b.dataset.pfb);}});
+addEventListener('hashchange',()=>{if(location.hash==='#bai-facebook')fbInit();});if(location.hash==='#bai-facebook')setTimeout(fbInit,400);
 /* ================= Sửa nội dung từng trang ================= */
 const PGS=[['trang-chu','Trang chủ'],['giai-phap','Giải pháp (tổng quan)'],['chien-dich-10000ha','Chiến dịch 10.000 ha'],['ve-chung-toi','Về chúng tôi'],['nguon-hang','Nguồn hàng'],['doi-tac','Khách hàng, đối tác'],['su-kien','Sự kiện'],['lien-he','Liên hệ']];
 let PG={id:'',ready:false,fields:[],win:null,lang:'vi',init:false};
