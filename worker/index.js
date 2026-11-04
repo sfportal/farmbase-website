@@ -12,6 +12,7 @@ import * as aMedia from "../functions/api/admin/media.js";
 import * as aLeads from "../functions/api/admin/leads.js";
 import * as aPosts from "../functions/api/admin/posts.js";
 import * as aStats from "../functions/api/admin/stats.js";
+import * as aTranslate from "../functions/api/admin/translate.js";
 import * as me from "../functions/api/auth/me.js";
 import * as logout from "../functions/api/auth/logout.js";
 import * as setup from "../functions/api/auth/setup.js";
@@ -30,7 +31,7 @@ import * as track from "../functions/api/track.js";
 const ROUTES = [
   ["/sitemap.xml", sitemap], ["/bai-viet/:slug", baiViet],
   ["/api/admin/users", aUsers], ["/api/admin/content", aContent], ["/api/admin/settings", aSettings], ["/api/admin/partners", aPartners],
-  ["/api/admin/cookies", aCookies], ["/api/admin/media", aMedia], ["/api/admin/leads", aLeads], ["/api/admin/posts", aPosts], ["/api/admin/stats", aStats],
+  ["/api/admin/cookies", aCookies], ["/api/admin/media", aMedia], ["/api/admin/leads", aLeads], ["/api/admin/posts", aPosts], ["/api/admin/stats", aStats], ["/api/admin/translate", aTranslate],
   ["/api/auth/me", me], ["/api/auth/logout", logout], ["/api/auth/setup", setup], ["/api/auth/login", login], ["/api/auth/password", password],
   ["/api/lead", lead], ["/api/content", content], ["/api/posts", postList], ["/api/posts/:slug", postOne], ["/api/media/:id", media],
   ["/api/partners", partners], ["/api/consent", consent], ["/api/track", track],

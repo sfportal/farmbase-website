@@ -365,6 +365,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
         <div class="card">
           <div class="lt" role="group" aria-label="Ngôn ngữ bài viết" id="plt"><button type="button" aria-pressed="true" data-l="vi">Tiếng Việt</button><button type="button" aria-pressed="false" data-l="en">English</button><button type="button" aria-pressed="false" data-l="zh">中文</button></div>
           <p class="rule" id="pltnote" hidden>Bản tiếng Anh, tiếng Trung là tùy chọn. Để trống thì website hiện bản tiếng Việt.</p>
+          <div class="acts" id="ptrbox" hidden style="margin-top:8px;align-items:center"><button class="btn sm dark" type="button" id="ptr">Dịch tự động từ tiếng Việt</button><span class="cnote" style="margin:0">Dịch tiêu đề, tóm tắt, nội dung và SEO; giữ nguyên ảnh, video, link. Đọc lại trước khi lưu.</span></div>
           <label for="pt-title" style="margin-top:12px">Tiêu đề bài viết<input id="pt-title" maxlength="200" placeholder="Ví dụ: Hướng dẫn ghi nhật ký canh tác trên Zalo"></label>
           <label for="pt-exc">Tóm tắt ngắn (hiện ở danh sách bài và đầu bài)<textarea id="pt-exc" rows="2" maxlength="600"></textarea></label>
           <div style="margin-top:12px"><span class="flab">Nội dung</span><div id="pt-tb"></div><div id="pt-ed"></div>
@@ -1123,9 +1124,21 @@ function pStore(){if(!PCUR||!QL)return;const t=$('pt-title').value,x=$('pt-exc')
  else{const r=PCUR.tr[PLANG]=PCUR.tr[PLANG]||{};r.title=t;r.excerpt=x;r.body=b;r.meta_title=$('pt-mt').value;r.meta_desc=$('pt-md').value;}}
 function pLoadLang(){const src=PLANG==='vi'?PCUR:(PCUR.tr[PLANG]||{});$('pt-title').value=src.title||'';$('pt-exc').value=src.excerpt||'';$('pt-mt').value=src.meta_title||'';$('pt-md').value=src.meta_desc||'';
  QL.setContents([]);if(src.body)QL.clipboard.dangerouslyPasteHTML(0,pIn(src.body),'silent');QL.history.clear();
- $('pltnote').hidden=PLANG==='vi';$('pt-title').placeholder=PLANG==='vi'?'Ví dụ: Hướng dẫn ghi nhật ký canh tác trên Zalo':(PCUR.title||'');
+ $('pltnote').hidden=PLANG==='vi';$('ptrbox').hidden=PLANG==='vi';ptrLabel();$('pt-title').placeholder=PLANG==='vi'?'Ví dụ: Hướng dẫn ghi nhật ký canh tác trên Zalo':(PCUR.title||'');
  document.querySelectorAll('#plt button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.l===PLANG)));pSeo();}
 document.querySelectorAll('#plt button').forEach(b=>b.addEventListener('click',()=>{if(!QL)return;pStore();PLANG=b.dataset.l;pLoadLang();}));
+const LNV={en:'tiếng Anh',zh:'tiếng Trung'};const ptxt=h=>String(h||'').replace(/<[^>]+>/g,'').trim();
+function ptrLabel(){const b=$('ptr');if(!b||b.disabled)return;b.dataset.sure='';b.textContent='Dịch tự động từ tiếng Việt sang '+(LNV[PLANG]||'');}
+$('ptr').addEventListener('click',async()=>{if(!PCUR||PLANG==='vi')return;pStore();const L=PLANG,b=$('ptr'),r0=PCUR.tr[L]||{};
+ if(!PCUR.title.trim()&&!ptxt(PCUR.body)){toast('Bài tiếng Việt chưa có nội dung để dịch');return;}
+ if((String(r0.title||'').trim()||ptxt(r0.body))&&b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Bấm lần nữa để ghi đè bản '+LNV[L]+' đang có';setTimeout(()=>{if(b.dataset.sure==='1')ptrLabel();},6000);return;}
+ if(MODE!=='live'){ptrLabel();toast('Bản xem thử chưa có máy chủ nên chưa dịch được. Trên website thật nút này dịch ngay.');return;}
+ b.disabled=true;b.textContent='Đang dịch sang '+LNV[L]+'… (khoảng 20–60 giây)';
+ try{const j=await api('/api/admin/translate',{method:'POST',body:JSON.stringify({to:L,title:PCUR.title,excerpt:PCUR.excerpt,body:PCUR.body,meta_title:PCUR.meta_title,meta_desc:PCUR.meta_desc})});
+  const r=PCUR.tr[L]=PCUR.tr[L]||{};Object.assign(r,{title:j.title,excerpt:j.excerpt,body:j.body,meta_title:j.meta_title,meta_desc:j.meta_desc});PDIRTY=true;
+  if(PLANG===L)pLoadLang();toast(j.kept?'Đã dịch. Có '+j.kept+' đoạn chưa dịch được nên giữ tiếng Việt, vui lòng sửa tay':'Đã dịch xong. Vui lòng đọc lại rồi bấm Lưu');}
+ catch(e){toast(e.message==='no_ai'?'Máy chủ chưa bật dịch tự động':e.message==='ai_failed'?'Dịch chưa thành công, thử lại sau ít phút':em(e));}
+ finally{b.disabled=false;ptrLabel();}});
 async function openPost(id,preset){location.hash='#bai-viet-sua';try{await initQuill();}catch(e){toast('Chưa tải được trình soạn thảo, kiểm tra kết nối mạng');return;}
  let p=id?PL.find(x=>x.id===id):null;
  if(p&&PLIVE&&p.body===undefined){try{p=Object.assign(p,(await api('/api/admin/posts?id='+id)).item);}catch(e){toast(em(e));return;}}

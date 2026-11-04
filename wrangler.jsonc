@@ -13,6 +13,7 @@
     { "binding": "DB", "database_name": "farmbase", "database_id": "708142ad-4dfe-46b7-ae7d-b3a0c35f15f5" }
   ],
   // Giữ các biến đã thêm trên trang Cloudflare (ADMIN_TOKEN, RESEND_API_KEY, LEAD_EMAIL_TO...) khi đăng bản mới
+  "ai": { "binding": "AI" },
   "keep_vars": true,
   "observability": { "enabled": true }
 }
