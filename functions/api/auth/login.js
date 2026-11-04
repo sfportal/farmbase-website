@@ -26,5 +26,5 @@ export async function onRequestPost({ request, env }) {
   }
   await D.prepare("UPDATE users SET fails=0, locked_until=0, last_login=? WHERE id=?").bind(Date.now(), u.id).run();
   const cookie = await createSession(D, u.id, request);
-  return json({ ok: true, user: { email: u.email, name: u.name, role: u.role, role_name: ROLES[u.role] } }, 200, { "set-cookie": cookie });
+  return json({ ok: true, user: { email: u.email, name: u.name, role: u.role, role_name: ROLES[u.role], must_change: !!u.must_change } }, 200, { "set-cookie": cookie });
 }

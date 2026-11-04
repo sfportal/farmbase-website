@@ -8,7 +8,7 @@ export async function onRequestGet({ request, env }) {
   if (me instanceof Response) return me;
   const D = await db(env);
   const { results } = await D.prepare(
-    "SELECT id,email,name,role,active,created,created_by,last_login FROM users ORDER BY role='owner' DESC, created"
+    "SELECT id,email,name,role,active,must_change,created,created_by,last_login FROM users ORDER BY role='owner' DESC, created"
   ).all();
   return json({ users: results, roles: ROLES });
 }
@@ -26,7 +26,7 @@ export async function onRequestPost({ request, env }) {
   const D = await db(env);
   const exists = await D.prepare("SELECT id FROM users WHERE email=?").bind(email).first();
   if (exists) return json({ error: "exists" }, 409);
-  await D.prepare("INSERT INTO users (email,name,role,pass,active,created,created_by) VALUES (?,?,?,?,1,?,?)")
+  await D.prepare("INSERT INTO users (email,name,role,pass,active,must_change,created,created_by) VALUES (?,?,?,?,1,1,?,?)")
     .bind(email, clip(b.name, 80), b.role, await hashPassword(b.password), Date.now(), me.email).run();
   return json({ ok: true });
 }
@@ -47,7 +47,7 @@ export async function onRequestPatch({ request, env }) {
   if (b.name !== undefined) { sets.push("name=?"); args.push(clip(b.name, 80)); }
   if (b.password !== undefined) {
     if (!validPassword(b.password)) return json({ error: "weak_password" }, 400);
-    sets.push("pass=?", "fails=0", "locked_until=0"); args.push(await hashPassword(b.password));
+    sets.push("pass=?", "fails=0", "locked_until=0", "must_change=1"); args.push(await hashPassword(b.password));
   }
   if (!sets.length) return json({ error: "bad_request" }, 400);
   await D.prepare(`UPDATE users SET ${sets.join(",")} WHERE id=?`).bind(...args, u.id).run();

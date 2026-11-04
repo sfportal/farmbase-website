@@ -55,7 +55,8 @@ const SCHEMA = [
 ];
 // Cột thêm cho bảng đã có từ bản trước (bỏ qua nếu đã có)
 const MIGRATE = ["ALTER TABLE leads ADD COLUMN vid TEXT", "ALTER TABLE leads ADD COLUMN sid TEXT",
-  "ALTER TABLE posts ADD COLUMN visibility TEXT DEFAULT 'public'", "ALTER TABLE posts ADD COLUMN pass_hash TEXT", "ALTER TABLE posts ADD COLUMN expires_at INTEGER"];
+  "ALTER TABLE posts ADD COLUMN visibility TEXT DEFAULT 'public'", "ALTER TABLE posts ADD COLUMN pass_hash TEXT", "ALTER TABLE posts ADD COLUMN expires_at INTEGER",
+  "ALTER TABLE users ADD COLUMN must_change INTEGER NOT NULL DEFAULT 0"];
 
 let ready = false;
 // Tự tạo bảng ở lần gọi đầu tiên, người dùng không cần chạy SQL bằng tay.
@@ -151,7 +152,7 @@ export async function currentUser(request, env) {
   if (!raw || !env.DB) return null;
   const D = await db(env);
   const u = await D.prepare(
-    "SELECT u.id,u.email,u.name,u.role FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires>? AND u.active=1"
+    "SELECT u.id,u.email,u.name,u.role,u.must_change FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires>? AND u.active=1"
   ).bind(await sha(raw), Date.now()).first();
   return u || null;
 }
@@ -160,6 +161,8 @@ export async function currentUser(request, env) {
 export async function requireRole(request, env, roles) {
   const u = await currentUser(request, env);
   if (!u) return json({ error: "unauthorized" }, 401);
+  // Tài khoản dùng mật khẩu tạm phải đổi mật khẩu trước khi làm việc khác
+  if (u.must_change) return json({ error: "must_change" }, 403);
   if (roles && !roles.includes(u.role)) return json({ error: "forbidden" }, 403);
   return u;
 }

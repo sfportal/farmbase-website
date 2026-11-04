@@ -175,6 +175,15 @@ input,select,textarea{border:1px solid var(--line);border-radius:9px;padding:9px
 .dbars div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--muted);min-width:0}
 .dbars i{display:block;width:100%;max-width:34px;background:var(--leaf);border-radius:6px 6px 2px 2px}
 .dbars b{font-size:11px;color:var(--fg)}
+.hrs{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:3px;align-items:end;height:130px;margin-top:12px}
+.hrs div{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:10px;color:var(--muted);gap:3px;min-width:0}
+.hrs i{display:block;width:100%;background:var(--leaf);border-radius:3px 3px 1px 1px;min-height:2px}
+.hrs i.pk{background:var(--s-wait)}
+.heat{display:grid;grid-template-columns:34px repeat(24,minmax(0,1fr));gap:2px;font-size:10px;color:var(--muted);margin-top:12px}
+.heat span{height:18px;border-radius:3px;background:var(--line)}
+.heat b{font-weight:600;text-align:center}
+.heat em{font-style:normal;align-self:center}
+.hleg{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--muted);margin-top:8px}.hleg span{width:14px;height:10px;border-radius:2px;display:inline-block}
 .lead-st{padding:4px 8px;border-radius:8px;font-size:12px;font-weight:700;width:auto}
 .tbl td.n,.tbl th.n{text-align:right;font-variant-numeric:tabular-nums}
 #stk .kpi .l,#stk .kpi .v,#ckk .kpi .l,#ckk .kpi .v{display:block}
@@ -325,23 +334,16 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 
   <!-- TỔNG QUAN -->
   <section data-view="tong-quan">
-    <div class="top"><div><h1>Tổng quan</h1><p class="sub">Tuần 26/10 – 01/11/2026</p></div><div class="right"><a class="btn" href="#tao-nhanh">+ Tạo bài nhanh</a><a class="btn pri" href="#lich">Lập kế hoạch tháng</a></div></div>
-    <div class="grid g4">
-      <div class="card kpi"><div class="l">Lượt truy cập website</div><div class="v">1.248</div><div class="d up">▲ 18% so với tuần trước</div><svg class="spark" viewBox="0 0 120 36" preserveAspectRatio="none"><polyline fill="none" stroke="var(--leaf)" stroke-width="2" points="0,30 20,26 40,28 60,18 80,20 100,12 120,8"/></svg></div>
-      <div class="card kpi"><div class="l">Tiếp cận Fanpage</div><div class="v">8.930</div><div class="d up">▲ 9%</div><svg class="spark" viewBox="0 0 120 36" preserveAspectRatio="none"><polyline fill="none" stroke="var(--leaf)" stroke-width="2" points="0,24 20,22 40,26 60,20 80,14 100,16 120,10"/></svg></div>
-      <div class="card kpi"><div class="l">Bấm Zalo, Gọi, Messenger</div><div class="v">57</div><div class="d down">▼ 4%</div><svg class="spark" viewBox="0 0 120 36" preserveAspectRatio="none"><polyline fill="none" stroke="var(--s-wait)" stroke-width="2" points="0,14 20,10 40,16 60,12 80,18 100,16 120,18"/></svg></div>
-      <div class="card kpi"><div class="l">Khách để lại liên hệ</div><div class="v">12</div><div class="d up">▲ 5 khách mới</div><svg class="spark" viewBox="0 0 120 36" preserveAspectRatio="none"><polyline fill="none" stroke="var(--leaf)" stroke-width="2" points="0,30 20,28 40,24 60,26 80,18 100,14 120,10"/></svg></div>
+    <div class="top"><div><h1>Tổng quan</h1><p class="sub" id="ovsub">7 ngày qua</p></div><div class="right"><a class="btn" href="#tao-nhanh">+ Tạo bài nhanh</a><a class="btn pri" href="#thong-ke">Xem thống kê chi tiết</a></div></div>
+    <p class="src-line" id="ovsrc"><i></i><span>Đang tải…</span></p>
+    <div class="grid g4" id="ovk"></div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h2>Việc cần làm</h2><div class="list" id="ovtodo"></div></div>
+      <div class="card"><h2>Trang được xem nhiều (7 ngày) <a class="more" href="#thong-ke">Xem tất cả</a></h2><div id="ovpages" style="margin-top:8px"></div></div>
     </div>
     <div class="grid g2" style="margin-top:14px">
-      <div class="card"><h2>Việc cần làm <a class="more" href="#bai-viet">Xem tất cả</a></h2><div class="list" id="todo"></div></div>
-      <div class="card"><h2>Tương tác theo bài (tuần này)</h2><div class="bars" id="bars"></div></div>
-    </div>
-    <div class="grid g2" style="margin-top:14px">
-      <div class="card"><h2>Sắp đăng <a class="more" href="#lich">Mở lịch</a></h2><div class="list" id="upcoming"></div></div>
-      <div class="card"><h2>Luồng duyệt bài</h2>
-        <div class="flow"><span class="chip st-draft">Nháp</span>→<span class="chip st-wait">Chờ duyệt</span>→<span class="chip st-ok">Đã duyệt</span>→<span class="chip st-sched">Đã lên lịch</span>→<span class="chip st-pub">Đã đăng</span></div>
-        <p style="color:var(--muted);margin-top:12px">AI chỉ tạo bài ở trạng thái Nháp. Biên tập viên sửa rồi gửi duyệt; chỉ người có vai trò Duyệt mới lên lịch được. Đến giờ, hệ thống tự đăng lên Fanpage và mục Tin tức website. Bài đăng lỗi sẽ báo đỏ kèm lý do.</p>
-      </div>
+      <div class="card"><h2>Bài viết gần đây <a class="more" href="#bai-viet">Mở danh sách</a></h2><div class="list" id="ovposts"></div></div>
+      <div class="card"><h2>Khung giờ truy cập (45 ngày)</h2><p class="sub" id="ovpeak" style="margin:2px 0 0"></p><div class="hrs" id="ovhours"></div></div>
     </div>
   </section>
 
@@ -519,6 +521,11 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
       <div class="card"><h2>Lượt xem theo ngày</h2><div class="dbars" id="stdaily"></div></div>
       <div class="card"><h2>Bấm nút liên hệ</h2><div id="stcta" style="margin-top:8px"></div></div>
     </div>
+    <div class="card" style="margin-top:16px"><h2>Khung giờ truy cập trong 45 ngày qua</h2><p class="sub" id="stpeak" style="margin:2px 0 0"></p>
+      <div class="hrs" id="sthours" style="height:170px"></div>
+      <h2 style="margin-top:18px;font-size:14px">Theo thứ trong tuần và giờ</h2><div class="heat" id="stheat"></div>
+      <div class="hleg">Ít<span style="background:var(--line)"></span><span style="background:color-mix(in srgb,var(--leaf) 30%,var(--line))"></span><span style="background:color-mix(in srgb,var(--leaf) 65%,var(--line))"></span><span style="background:var(--leaf)"></span>Nhiều · giờ Việt Nam (GMT+7)</div>
+    </div>
     <div class="grid g2" style="margin-top:16px">
       <div class="card scroll"><h2>Từng trang</h2><table class="tbl" style="margin-top:8px"><thead><tr><th>Trang</th><th class="n">Lượt xem</th><th class="n">Người xem</th><th class="n">Thời gian TB</th><th class="n">Bấm liên hệ</th></tr></thead><tbody id="stpages"></tbody></table></div>
       <div class="card"><h2>Thiết bị và ngôn ngữ</h2><div id="stdev" style="margin-top:8px"></div><div id="stlang" style="margin-top:14px"></div>
@@ -634,7 +641,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
         <label for="up">Mật khẩu tạm<input id="up" required minlength="8" autocomplete="off"></label>
         <button class="btn dark" type="submit">Cấp tài khoản</button>
       </form>
-      <p class="note-ok" id="ufout">Mật khẩu tạm được tạo sẵn. Gửi email và mật khẩu cho người dùng qua Zalo riêng; họ nên đổi mật khẩu ngay sau lần đăng nhập đầu.</p>
+      <p class="note-ok" id="ufout">Mật khẩu tạm được tạo sẵn. Gửi email và mật khẩu cho người dùng qua Zalo riêng. Hệ thống buộc họ đổi mật khẩu ở lần đăng nhập đầu tiên.</p>
     </div>
     <div class="card" style="margin-top:16px;overflow-x:auto"><h2>Danh sách tài khoản</h2>
       <table class="tbl" style="margin-top:8px"><thead><tr><th>Người dùng</th><th>Vai trò</th><th>Trạng thái</th><th>Đăng nhập gần nhất</th><th></th></tr></thead><tbody id="ulist"></tbody></table>
@@ -677,9 +684,6 @@ function actions(p){
 function renderPosts(){
   const f=(document.getElementById('flt')||{}).value;
   const _pe=document.getElementById('posts');if(_pe)_pe.innerHTML=POSTS.filter(p=>!f||p.st===f).map(p=>`<tr><td><img class="thumb" src="../img/${p.img}.jpg" alt=""></td><td class="ttl">${p.t}<small>${p.sub}</small></td><td><span class="ch">${p.ch}</span></td><td>${langBadges(p)}</td><td>${chip(p.st)}</td><td style="white-space:nowrap">${fmt(p.d)} · ${p.h}</td><td><div class="acts">${actions(p)}</div></td></tr>`).join('');
-  const todo=POSTS.filter(p=>p.st==='wait'||p.st==='draft').slice(0,5);
-  document.getElementById('todo').innerHTML=todo.map(p=>`<div class="item"><span class="when">${fmt(p.d)}</span>${chip(p.st)}<span style="flex:1;min-width:0">${p.t}</span><span class="acts">${actions(p)}</span></div>`).join('')||'<p style="color:var(--muted)">Không còn bài chờ xử lý.</p>';
-  document.getElementById('upcoming').innerHTML=POSTS.filter(p=>p.st==='sched'||p.st==='ok').map(p=>`<div class="item"><span class="when">${fmt(p.d)} ${p.h}</span>${chip(p.st)}<span>${p.t}</span></div>`).join('')||'<p style="color:var(--muted)">Chưa có bài lên lịch.</p>';
   renderCal();
 }
 document.addEventListener('click',e=>{
@@ -689,7 +693,6 @@ document.addEventListener('click',e=>{
 });
 const pubbed=POSTS.filter(p=>p.r);
 const mx=Math.max(...pubbed.map(p=>p.r[1]));
-document.getElementById('bars').innerHTML=pubbed.map(p=>`<div><b>${p.r[1]}</b><i style="height:${Math.round(p.r[1]/mx*110)}px"></i>${fmt(p.d)}</div>`).join('');
 document.getElementById('rtab').innerHTML=pubbed.map(p=>`<tr><td>${p.t}</td><td>${fmt(p.d)}</td><td class="n">${p.r[0].toLocaleString('vi-VN')}</td><td class="n">${p.r[1]}</td><td class="n">${p.r[2]}</td></tr>`).join('');
 document.getElementById('media').innerHTML=MEDIA.map(m=>`<figure><img src="../img/${m[0]}.jpg" alt="${m[1]}" loading="lazy"><figcaption>${m[1]}<small>${m[2]}</small></figcaption></figure>`).join('');
 const WEEKS=[['Tuần 1 · 02–08/11','Mã vùng trồng và nhật ký'],['Tuần 2 · 09–15/11','Chăm sóc sau thu hoạch'],['Tuần 3 · 16–22/11','Khởi động Chiến dịch 10.000 ha'],['Tuần 4 · 23–30/11','Câu chuyện HTX, vùng trồng']];
@@ -725,11 +728,60 @@ function drawStats(d){const t=d.total||{};const rate=t.visitors?Math.round((t.ct
  hbars('stcta',d.ctas||[],r=>r.label,r=>r.clicks);
  document.getElementById('stpages').innerHTML=(d.pages||[]).map(p=>`<tr><td><b>${pn(p.path)}</b><small style="display:block;color:var(--muted)">${p.path}</small></td><td class="n">${nf(p.views)}</td><td class="n">${nf(p.visitors)}</td><td class="n">${mmss(p.avg_ms)}</td><td class="n">${nf(p.ctas)}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--muted)">Chưa có dữ liệu.</td></tr>';
  const DN={mobile:'Điện thoại',desktop:'Máy tính',tablet:'Máy tính bảng'},LNN={vi:'Tiếng Việt',en:'English',zh:'中文'};
- hbars('stdev',d.devices||[],r=>DN[r.device]||r.device||'Khác',r=>r.visitors);hbars('stlang',d.langs||[],r=>LNN[r.lang]||r.lang||'—',r=>r.views);}
+ hbars('stdev',d.devices||[],r=>DN[r.device]||r.device||'Khác',r=>r.visitors);hbars('stlang',d.langs||[],r=>LNN[r.lang]||r.lang||'—',r=>r.views);
+ drawHours(d.hours?d:sampleHours(),'sthours','stpeak','stheat');}
 async function loadStats(){const days=+document.getElementById('days').value;
  try{if(MODE!=='live')throw new Error('nokey');const d=await api('/api/admin/stats?days='+days);drawStats(d);srcLine('stsrc',true,'Dữ liệu thật từ máy chủ Cloudflare · cập nhật lúc '+new Date().toLocaleTimeString('vi-VN'));}
  catch(e){drawStats(sampleStats(days));srcLine('stsrc',false,e.message==='nokey'?'Dữ liệu mẫu: bản xem thử chưa có máy chủ':'Dữ liệu mẫu: chưa kết nối được máy chủ. Khi web chạy trên Cloudflare, số liệu thật hiện ở đây.');}}
-document.getElementById('days').addEventListener('change',loadStats);document.getElementById('reload').addEventListener('click',loadStats);
+document.getElementById('days').addEventListener('change',loadStats);
+/* Khung giờ truy cập */
+const WDN=['CN','T2','T3','T4','T5','T6','T7'];
+function sampleHours(){const w=[2,1,1,1,1,2,4,7,9,10,9,8,7,6,7,8,8,7,9,12,14,12,8,4];const hours=w.map((v,h)=>({h,views:v*9,sessions:v*5,ctas:Math.round(v/2)}));const heat=[];for(let d=0;d<7;d++)for(let h=0;h<24;h++)heat.push({w:d,h,views:Math.round(w[h]*[.6,1.1,1,1.05,1,.95,.7][d]*1.3)});return {hdays:45,hours,heat};}
+function drawHours(d,elBars,elPeak,elHeat){const H=Array.from({length:24},(_,h)=>{const r=(d.hours||[]).find(x=>x.h===h)||{};return {h,views:r.views||0,ctas:r.ctas||0};});
+ const tot=H.reduce((a,x)=>a+x.views,0);const mx=Math.max(1,...H.map(x=>x.views));
+ let best=0,bh=0;for(let h=0;h<24;h++){const v=H[h].views+H[(h+1)%24].views+H[(h+2)%24].views;if(v>best||(v===best&&H[h].views>H[bh].views)){best=v;bh=h;}}
+ const top=[...H].sort((a,b)=>b.views-a.views).filter(x=>x.views).slice(0,3).map(x=>String(x.h).padStart(2,'0')+'h');
+ const pk=new Set([bh,(bh+1)%24,(bh+2)%24]);const hh=h=>String(h%24).padStart(2,'0')+':00';
+ document.getElementById(elPeak).textContent=tot?`Khung đông nhất: ${hh(bh)}–${hh(bh+3)} (${Math.round(best/tot*100)}% lượt xem). Ba giờ cao nhất: ${top.join(', ')}. Tổng ${nf(tot)} lượt xem trong ${d.hdays||45} ngày.`:'Chưa có lượt xem trong 45 ngày qua. Số liệu hiện dần khi có người vào website.';
+ document.getElementById(elBars).innerHTML=H.map(x=>`<div title="${hh(x.h)}–${hh(x.h+1)}: ${nf(x.views)} lượt xem, ${nf(x.ctas)} lượt bấm liên hệ"><i class="${tot&&pk.has(x.h)?'pk':''}" style="height:${Math.round(x.views/mx*100)}%"></i>${x.h%3===0?x.h+'h':'&nbsp;'}</div>`).join('');
+ if(!elHeat)return;const cell={};(d.heat||[]).forEach(r=>cell[r.w+'-'+r.h]=r.views);const hm=Math.max(1,...Object.values(cell));
+ let out='<em></em>'+Array.from({length:24},(_,h)=>`<b>${h%3===0?h:''}</b>`).join('');
+ [1,2,3,4,5,6,0].forEach(w=>{out+=`<em>${WDN[w]}</em>`;for(let h=0;h<24;h++){const v=cell[w+'-'+h]||0;const p=Math.round(v/hm*100);out+=`<span title="${WDN[w]} ${hh(h)}: ${nf(v)} lượt xem" style="background:${v?`color-mix(in srgb,var(--leaf) ${Math.max(15,p)}%,var(--line))`:'var(--line)'}"></span>`;}});
+ document.getElementById(elHeat).innerHTML=out;}
+/* Tổng quan: số liệu thật */
+const dm=t=>{const d=new Date(t);return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');};
+function delta(c,p){c=+c||0;p=+p||0;if(!p)return c?['up','Mới có số liệu trong tuần này']:['','Chưa có số liệu tuần trước'];const r=Math.round((c-p)/p*100);return r>=0?['up','▲ '+r+'% so với 7 ngày trước']:['down','▼ '+Math.abs(r)+'% so với 7 ngày trước'];}
+function spark(vals,col){const mx=Math.max(1,...vals);const n=vals.length;return `<svg class="spark" viewBox="0 0 120 36" preserveAspectRatio="none"><polyline fill="none" stroke="${col||'var(--leaf)'}" stroke-width="2" points="${vals.map((v,i)=>Math.round(i*120/Math.max(1,n-1))+','+Math.round(32-v/mx*28)).join(' ')}"/></svg>`;}
+function last7(rows,key,val){const out=[];for(let i=6;i>=0;i--){const t=new Date(Date.now()-i*864e5+7*36e5).toISOString().slice(0,10);const r=rows.find(x=>key(x)===t);out.push(r?val(r):0);}return out;}
+async function loadOverview(){const now=Date.now();$('ovsub').textContent='7 ngày qua · '+dm(now-6*864e5)+' – '+dm(now)+'/'+new Date().getFullYear();
+ let S=null,L=null,P=null;const live=MODE==='live';
+ if(live){[S,L,P]=await Promise.all([can('stats')?api('/api/admin/stats?days=7').catch(()=>null):null,can('leads')?api('/api/admin/leads').catch(()=>null):null,can('content')?api('/api/admin/posts').catch(()=>null):null]);}
+ else{S=Object.assign(sampleStats(7),sampleHours(),{prev:{views:900,visitors:610,ctas:100}});}
+ srcLine('ovsrc',live,live?'Dữ liệu thật từ website · cập nhật lúc '+new Date().toLocaleTimeString('vi-VN'):'Dữ liệu mẫu: bản xem thử chưa có máy chủ');
+ const t=(S&&S.total)||{},pv=(S&&S.prev)||{};const dl=(S&&S.daily)||[];
+ const leads=L?L.leads||[]:null;const l7=leads?leads.filter(x=>x.ts>=now-7*864e5):[];const lnew=leads?leads.filter(x=>x.status==='Mới').length:0;
+ const lp=leads?leads.filter(x=>x.ts>=now-14*864e5&&x.ts<now-7*864e5).length:0;
+ const noS=S?null:(can('stats')?'Chưa tải được':'Vai trò của bạn không xem số liệu này');
+ const K=[
+  ['Lượt xem trang',S?nf(t.views):'—',S?delta(t.views,pv.views):['',noS],S?spark(last7(dl,x=>x.day,x=>x.views)):''],
+  ['Người xem',S?nf(t.visitors):'—',S?delta(t.visitors,pv.visitors):['',noS],S?spark(last7(dl,x=>x.day,x=>x.visitors||0)):''],
+  ['Bấm Zalo, Gọi, gửi form',S?nf(t.ctas):'—',S?delta(t.ctas,pv.ctas):['',noS],S?spark(last7(dl,x=>x.day,x=>x.ctas||0),'var(--s-wait)'):''],
+  ['Khách để lại liên hệ',leads?nf(l7.length):'—',leads?[lnew?'down':'up',lnew?lnew+' khách chưa xử lý':'Đã xử lý hết khách mới']:['',live&&!can('leads')?'Vai trò của bạn không xem mục này':live?'Chưa tải được':'Bản mẫu chưa có khách'],leads?spark(last7(l7.map(x=>({d:new Date(x.ts+7*36e5).toISOString().slice(0,10)})).reduce((a,x)=>{const f=a.find(y=>y.d===x.d);f?f.n++:a.push({d:x.d,n:1});return a;},[]),x=>x.d,x=>x.n)):'']];
+ $('ovk').innerHTML=K.map(k=>`<div class="card kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="d ${k[2][0]}">${esc(k[2][1]||'')}</div>${k[3]}</div>`).join('');
+ const items=P?P.items||[]:[];const drafts=items.filter(p=>p.status==='draft');const sched=items.filter(p=>p.status==='published'&&p.published_at>now);
+ const exp=items.filter(p=>p.status==='published'&&p.expires_at&&p.expires_at>now&&p.expires_at<now+7*864e5);
+ const todo=[];
+ if(lnew)todo.push(`<div class="item"><span class="chip st-wait">Khách mới</span><span style="flex:1">${lnew} khách để lại liên hệ chưa được gọi</span><a class="btn sm dark" href="#khach-hang">Xem</a></div>`);
+ drafts.slice(0,5).forEach(p=>todo.push(`<div class="item"><span class="chip st-draft">Nháp</span><span style="flex:1;min-width:0">${esc(p.title)}</span><button class="btn sm" type="button" data-pedit="${p.id}">Duyệt, đăng</button></div>`));
+ if(drafts.length>5)todo.push(`<p style="color:var(--muted);margin:6px 0 0">Còn ${drafts.length-5} bài nháp khác · <a href="#bai-viet">xem tất cả</a></p>`);
+ exp.forEach(p=>todo.push(`<div class="item"><span class="chip st-exp">Sắp hết hạn</span><span style="flex:1;min-width:0">${esc(p.title)} · hết hạn ${dm(p.expires_at)}</span><button class="btn sm" type="button" data-pedit="${p.id}">Sửa</button></div>`));
+ $('ovtodo').innerHTML=todo.join('')||`<p style="color:var(--muted)">${live?(P||L?'Không có việc tồn đọng.':'Chưa tải được dữ liệu.'):'Bản mẫu: đăng nhập để xem việc cần làm thật.'}</p>`;
+ if(S)hbars('ovpages',(S.pages||[]).slice(0,6),r=>pn(r.path),r=>r.views);else $('ovpages').innerHTML=`<p style="color:var(--muted)">${noS}</p>`;
+ const PCH=p=>p.status==='draft'?'<span class="chip st-draft">Nháp</span>':p.published_at>now?'<span class="chip st-sched">Hẹn giờ</span>':p.visibility==='link'?'<span class="chip st-ok">Chỉ có link</span>':'<span class="chip st-pub">Đã đăng</span>';
+ $('ovposts').innerHTML=items.slice().sort((a,b)=>(b.updated||0)-(a.updated||0)).slice(0,6).map(p=>`<div class="item"><span class="when">${dm(p.published_at&&p.status==='published'?p.published_at:p.updated)}</span>${PCH(p)}<a href="#bai-viet-sua" data-pedit="${p.id}" style="flex:1;min-width:0;color:inherit">${esc(p.title)}</a><span style="color:var(--muted);font-size:12px;white-space:nowrap">${nf(p.views)} lượt xem</span></div>`).join('')||`<p style="color:var(--muted)">${live?(P?'Chưa có bài viết.':'Vai trò của bạn không xem mục này'):'Bản mẫu: đăng nhập để xem bài viết thật.'}</p>`;
+ if(S)drawHours(S,'ovhours','ovpeak');else{$('ovhours').innerHTML='';$('ovpeak').textContent=noS;}}
+addEventListener('hashchange',()=>{if((location.hash||'#tong-quan')==='#tong-quan'&&ME)loadOverview();});
+document.getElementById('reload').addEventListener('click',loadStats);
 /* Khách để lại liên hệ */
 const LSTS=['Mới','Đã gọi','Hẹn gặp','Đã gửi báo giá','Đã ký','Không phù hợp'];
 const LCOL={'Mới':'var(--s-wait)','Đã gọi':'var(--s-sched)','Hẹn gặp':'var(--s-ok)','Đã gửi báo giá':'var(--s-ok)','Đã ký':'var(--forest)','Không phù hợp':'var(--s-draft)'};
@@ -812,7 +864,8 @@ function applyUser(){document.querySelectorAll('aside [data-cap]').forEach(a=>a.
  document.querySelector('.demo').hidden=MODE==='live';
  $('who').innerHTML=ME?`<b>${esc(ME.name||ME.email)}</b>${esc(ME.email)}<br><span class="rolechip ${ME.role==='owner'?'owner':''}">${esc(ME.role_name||ME.role)}</span><div class="wl">${MODE==='live'?'<button type="button" id="chpw">Đổi mật khẩu</button><button type="button" id="lgout">Đăng xuất</button>':'<button type="button" id="lgout">Thoát bản mẫu</button>'}</div>`:'';
  const h=(location.hash||'').slice(1);const a=document.querySelector(`aside a[data-v="${h}"]`);if(a&&a.hidden)location.hash='#tong-quan';
- loadStats();if(can("stats"))loadCookies();loadLeads();if(can("users"))loadUsers();if(can('settings'))loadMeasure();if(can('content')){loadContent();loadPartners();loadPosts();if(location.hash==='#trang')pgInit();}}
+ if(MODE==='live'&&ME&&ME.must_change){forceChange();return;}
+ loadOverview();loadStats();if(can("stats"))loadCookies();loadLeads();if(can("users"))loadUsers();if(can('settings'))loadMeasure();if(can('content')){loadContent();loadPartners();loadPosts();if(location.hash==='#trang')pgInit();}}
 function enter(u){ME=u;MODE='live';$('login').hidden=true;applyUser();toast('Xin chào '+(u.name||u.email));}
 document.addEventListener('click',async e=>{
  if(e.target.id==='lgout'){if(MODE==='live'){try{await api('/api/auth/logout',{method:'POST'});}catch(err){}}ME=null;$('who').innerHTML='';showLogin();}
@@ -824,7 +877,11 @@ async function boot(){try{const r=await fetch('/api/auth/me',{credentials:'same-
 /* Đổi mật khẩu */
 document.body.insertAdjacentHTML('beforeend',`<div id="cpo" hidden style="position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:16px"><form class="card" id="cpf" style="width:100%;max-width:360px;display:grid;gap:10px"><h2>Đổi mật khẩu</h2><label for="cpold">Mật khẩu hiện tại<input id="cpold" type="password" autocomplete="current-password" required></label><label for="cpnew">Mật khẩu mới (ít nhất 8 ký tự)<input id="cpnew" type="password" autocomplete="new-password" minlength="8" required></label><div id="cperr" style="color:var(--s-err);font-size:13px;min-height:18px"></div><div class="acts"><button class="btn dark" type="submit">Lưu</button><button class="btn" type="button" id="cpx">Hủy</button></div></form></div>`);
 $('cpx').addEventListener('click',()=>$('cpo').hidden=true);
-$('cpf').addEventListener('submit',async e=>{e.preventDefault();try{await api('/api/auth/password',{method:'POST',body:JSON.stringify({old_password:$('cpold').value,new_password:$('cpnew').value})});$('cpo').hidden=true;$('cpf').reset();toast('Đã đổi mật khẩu');}catch(err){$('cperr').textContent=err.message==='wrong'?'Mật khẩu hiện tại chưa đúng.':em(err);}});
+function forceChange(){const o=$('cpo');o.hidden=false;o.dataset.force='1';$('cpx').hidden=true;o.querySelector('h2').textContent='Đổi mật khẩu lần đầu';
+ if(!$('cpnote'))o.querySelector('h2').insertAdjacentHTML('afterend','<p id="cpnote" style="color:var(--muted);font-size:13px;margin:0">Tài khoản đang dùng mật khẩu tạm. Vui lòng đặt mật khẩu mới của riêng bạn (ít nhất 8 ký tự) trước khi vào trang quản trị.</p>');
+ if(!$('cpout'))$('cpx').insertAdjacentHTML('afterend','<button class="btn" type="button" id="cpout">Đăng xuất</button>');setTimeout(()=>$('cpold').focus(),50);}
+document.addEventListener('click',async e=>{if(e.target.id!=='cpout')return;try{await api('/api/auth/logout',{method:'POST'});}catch(err){}$('cpo').hidden=true;delete $('cpo').dataset.force;e.target.remove();$('cpx').hidden=false;ME=null;$('who').innerHTML='';showLogin();});
+$('cpf').addEventListener('submit',async e=>{e.preventDefault();try{await api('/api/auth/password',{method:'POST',body:JSON.stringify({old_password:$('cpold').value,new_password:$('cpnew').value})});const f=$('cpo').dataset.force;$('cpo').hidden=true;$('cpf').reset();$('cperr').textContent='';toast('Đã đổi mật khẩu');if(f){delete $('cpo').dataset.force;$('cpx').hidden=false;$('cpout')&&$('cpout').remove();$('cpnote')&&$('cpnote').remove();$('cpo').querySelector('h2').textContent='Đổi mật khẩu';ME.must_change=false;applyUser();}}catch(err){$('cperr').textContent=err.message==='wrong'?'Mật khẩu hiện tại chưa đúng.':err.message==='same_password'?'Mật khẩu mới phải khác mật khẩu tạm.':em(err);}});
 /* Tài khoản */
 const RN={owner:'Chủ sở hữu',admin:'Quản trị',approver:'Duyệt bài',editor:'Biên tập',sales:'Kinh doanh'};
 let USERS=[];
@@ -835,7 +892,7 @@ async function loadUsers(){try{if(MODE!=='live')throw new Error('demo');const d=
  catch(e){USERS=SAMPLE_USERS.map(x=>Object.assign({},x));srcLine('usrc',false,'Dữ liệu mẫu: thao tác chỉ chạy thử trên trang');}drawUsers();$('up').value=tmpPw();}
 function drawUsers(){$('ulist').innerHTML=USERS.map(u=>{const own=u.role==='owner';return `<tr><td><b>${esc(u.name||'—')}</b><br><small style="color:var(--muted)">${esc(u.email)}</small></td>
  <td>${own?'<span class="rolechip owner">Chủ sở hữu</span>':`<select data-urole="${u.id}" aria-label="Vai trò của ${esc(u.email)}" style="width:auto">${Object.keys(RN).filter(r=>r!=='owner').map(r=>`<option value="${r}" ${r===u.role?'selected':''}>${RN[r]}</option>`).join('')}</select>`}</td>
- <td>${u.active?'<span style="color:var(--s-ok);font-weight:600">Đang dùng</span>':'<span style="color:var(--s-err);font-weight:600">Đã khóa</span>'}</td><td>${dt(u.last_login)}</td>
+ <td>${u.active&&u.must_change?'<span style="color:var(--s-wait);font-weight:600">Chờ đổi mật khẩu</span>':u.active?'<span style="color:var(--s-ok);font-weight:600">Đang dùng</span>':'<span style="color:var(--s-err);font-weight:600">Đã khóa</span>'}</td><td>${dt(u.last_login)}</td>
  <td style="white-space:nowrap">${own?'':`<button class="btn sm" data-ureset="${u.id}">Đặt lại mật khẩu</button> <button class="btn sm" data-uact="${u.id}">${u.active?'Khóa':'Mở khóa'}</button> <button class="btn sm" data-udel="${u.id}">Xóa</button>`}</td></tr>`;}).join('');}
 async function uPatch(body,msg){const u=USERS.find(x=>x.id==body.id);try{if(MODE==='live')await api('/api/admin/users',{method:'PATCH',body:JSON.stringify(body)});Object.assign(u,body,body.active!==undefined?{active:body.active?1:0}:{});delete u.password;drawUsers();toast(msg);return true;}catch(e){toast(em(e));return false;}}
 document.addEventListener('change',e=>{const s=e.target.closest('[data-urole]');if(s)uPatch({id:+s.dataset.urole,role:s.value},'Đã đổi vai trò. Người dùng cần đăng nhập lại.');});

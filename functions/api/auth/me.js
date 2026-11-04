@@ -6,7 +6,7 @@ export async function onRequestGet({ request, env }) {
   const owner = await D.prepare("SELECT id FROM users WHERE role='owner' LIMIT 1").first();
   const u = await currentUser(request, env);
   return json({
-    user: u ? { email: u.email, name: u.name, role: u.role, role_name: ROLES[u.role] } : null,
+    user: u ? { email: u.email, name: u.name, role: u.role, role_name: ROLES[u.role], must_change: !!u.must_change } : null,
     needs_setup: !owner,
     owner_email: owner ? undefined : OWNER_EMAIL(env),
   });

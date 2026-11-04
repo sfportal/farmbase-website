@@ -10,6 +10,7 @@ export async function onRequestPost({ request, env }) {
   const D = await db(env);
   const row = await D.prepare("SELECT pass FROM users WHERE id=?").bind(u.id).first();
   if (!(await checkPassword(String(b.old_password || ""), row.pass))) return json({ error: "wrong" }, 401);
-  await D.prepare("UPDATE users SET pass=? WHERE id=?").bind(await hashPassword(b.new_password), u.id).run();
+  if (b.new_password === String(b.old_password || "")) return json({ error: "same_password" }, 400);
+  await D.prepare("UPDATE users SET pass=?, must_change=0 WHERE id=?").bind(await hashPassword(b.new_password), u.id).run();
   return json({ ok: true });
 }
