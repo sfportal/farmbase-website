@@ -421,9 +421,9 @@
    "zh": "位于多乐省 Krong Pac 与 Ea Kly 的榴莲合作社,在 FarmBase 上管理种植区。"
   },
   "role": {
-   "vi": "Khách hàng sử dụng FarmBase. Nông hộ vùng trồng 07 (Ea Kly) tự cài ứng dụng và tự nhập nhật ký canh tác. Đơn vị chuyên môn kỹ thuật và thu mua trong Chiến dịch 10.000 ha.",
-   "en": "FarmBase customer. Farmers of growing area 07 (Ea Kly) install the app and keep their own farm diaries. Technical and purchasing unit in the 10,000 ha Campaign.",
-   "zh": "FarmBase 用户。07 号种植区(Ea Kly)农户自行安装应用并记录农事日志。万公顷行动中的技术与收购单位。"
+   "vi": "Khách hàng sử dụng FarmBase để quản lý vùng trồng và nhật ký canh tác. Đơn vị chuyên môn kỹ thuật và thu mua trong Chiến dịch 10.000 ha.",
+   "en": "FarmBase customer, using it to manage growing areas and farm diaries. Technical and purchasing unit in the 10,000 ha Campaign.",
+   "zh": "FarmBase 用户，用于管理种植区和农事日志。万公顷行动中的技术与收购单位。"
   },
   "products": [
    {
