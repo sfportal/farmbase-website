@@ -980,7 +980,7 @@ async function loadSiteDict(){try{const r=await fetch(siteBase()||'../',{cache:'
 async function loadContent(){const d=await loadSiteDict();CDICT=d||CSAMPLE;CKEYS=Object.keys(CDICT).filter(k=>!/^[\dA-Z~/·→←.\s'’-]{1,6}$/.test(k));
  COV={};CLIVE=false;try{if(MODE!=='live')throw 0;const r=await api('/api/admin/content');(r.items||[]).forEach(x=>COV[x.k]=x);CLIVE=true;}catch(e){}
  srcLine('csrc',CLIVE,CLIVE?`Dữ liệu thật · ${CKEYS.length} đoạn nội dung · ${Object.keys(COV).filter(k=>!k.startsWith('img:')).length} đoạn đã chỉnh sửa`:(d?`${CKEYS.length} đoạn nội dung từ website · chưa kết nối máy chủ nên chỉ xuất, nhập và xem trước được, chưa lưu lên website`:'Dữ liệu mẫu: bản xem thử không đọc được nội dung website'));
- drawContent();drawImages();}
+ syncImgs();drawContent();drawImages();}
 const cval=(k,l)=>{const e=CED[k];if(e&&e[l]!==undefined)return e[l];const o=COV[k];if(o&&o[l])return o[l];return l==='vi'?k:((CDICT[k]||[])[l==='en'?0:1]||'');};
 const cdef=(k,l)=>l==='vi'?k:((CDICT[k]||[])[l==='en'?0:1]||'');
 function cfiltered(){const q=($('cq').value||'').toLowerCase().trim(),f=$('cf').value;return CKEYS.filter(k=>{
@@ -1016,9 +1016,14 @@ $('cimp').addEventListener('change',async e=>{const f=e.target.files[0];e.target
  $('cf').value='dirty';CPAGE=0;drawContent();toast(`Đã nhập ${n} đoạn thay đổi${skip?`, bỏ qua ${skip} dòng không khớp mã`:''}. Kiểm tra rồi bấm Lưu thay đổi`);}catch(err){toast('Không đọc được file. Hãy dùng file xuất từ trang này');}});
 /* Hình ảnh */
 const IP='im'+'g/';/* tách chuỗi để công cụ build không đổi đường dẫn */
-const IMGS=['08','15','01','07','11','13','12','03','00','02','04','06','09','14','16','17','18','19','20','21','kho1','kho2','kho3','kho4'].map(n=>IP+n+'.jpg').concat(['sau-rieng','ca-phe','thanh-long','chanh-leo','dua','chuoi','mit','buoi','vai','nhan','xoai','dua-xiem'].map(n=>IP+'crops/'+n+'.png'));
+let IMGS=['08','15','01','07','11','13','12','03','00','02','04','06','09','14','16','17','18','19','20','21','kho1','kho2','kho3','kho4'].map(n=>IP+n+'.jpg').concat(['sau-rieng','ca-phe','thanh-long','chanh-leo','dua','chuoi','mit','buoi','vai','nhan','xoai','dua-xiem'].map(n=>IP+'crops/'+n+'.png'));
 function imgAlt(p){const h=window.SITE_HTML||'';const m=h.match(new RegExp('src="'+p.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&')+'"[^>]*alt="([^"]*)"'))||h.match(new RegExp('alt="([^"]*)"[^>]*src="'+p.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&')+'"'));return m?m[1]:'';}
 const imgUrl=p=>{const o=COV['img:'+p];return o&&o.vi?o.vi:(siteBase()||'../')+p;};
+function syncImgs(){const h=window.SITE_HTML||'';if(!h)return;const seen=new Set();const out=[];
+ const re=/["'(](?:\.\.\/)?(img\/(?!logos\/)[\w\/-]+\.(?:jpg|png))["')]/g;let m;
+ while((m=re.exec(h))){const p=m[1];if(/og-10000ha/.test(p)||seen.has(p))continue;seen.add(p);out.push(p);}
+ const cr=IP+'crops/';const used=out.filter(p=>!p.startsWith(cr)),crops=out.filter(p=>p.startsWith(cr));
+ if(!used.length)return;const old=IMGS.filter(p=>!p.startsWith(cr)&&!seen.has(p)),oc=IMGS.filter(p=>p.startsWith(cr)&&!seen.has(p));IMGS=[...used,...old,...crops,...oc];}
 function drawImages(){srcLine('isrc',CLIVE,CLIVE?'Dữ liệu thật · ảnh thay thế lưu trên máy chủ':'Chưa kết nối máy chủ: xem được ảnh, chưa thay ảnh được');
  $('imgs').innerHTML=IMGS.map((p,i)=>{const ch=!!COV['img:'+p];return `<div class="imgc ${ch?'changed':''}"><div class="pv"><img src="${esc(imgUrl(p))}" alt="" loading="lazy" data-ii="${i}"></div><div class="b"><b>${esc(imgAlt(p)||p.split('/').pop())}</b><span class="cnote" data-ir="${i}">${esc(p)}${ch?' · đã thay':''}</span>
  <div class="acts"><label class="btn sm" style="cursor:pointer">Thay ảnh<input type="file" accept="image/jpeg,image/png,image/webp" hidden data-iu="${i}"></label>${ch?`<button class="btn sm" type="button" data-irs="${i}">Dùng ảnh gốc</button>`:''}</div></div></div>`;}).join('');
