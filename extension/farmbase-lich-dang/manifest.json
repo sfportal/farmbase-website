@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "FarmBase · Lịch đăng Facebook",
+  "short_name": "FarmBase Lịch đăng",
+  "version": "1.0.0",
+  "description": "Lên kế hoạch, lên lịch đăng bài Fanpage từ nội dung website FarmBase và tư liệu ảnh, video trong Google Drive.",
+  "action": {
+    "default_title": "Mở lịch đăng Facebook",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png",
+      "48": "icons/48.png"
+    }
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "downloads",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "https://farmbase.vn/*",
+    "https://www.farmbase.vn/*",
+    "https://*.workers.dev/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ]
+}
