@@ -1,5 +1,6 @@
 // Gắn cấu hình Google Analytics 4 và Facebook Pixel (cài trong trang quản lý) vào các trang công khai.
 import { cachedSettings } from "./_lib.js";
+import { seoPage } from "./trang.js";
 
 // Chỉ chèn mã cấu hình. Trang web tự tải GA4 và Pixel sau khi khách đồng ý cookie thống kê, marketing.
 function snippet(s) {
@@ -10,7 +11,10 @@ function snippet(s) {
 }
 
 export async function onRequest(ctx) {
-  const res = await ctx.next();
+  // Trang có link riêng cho Google (/, /giai-phap/, /doi-tac/<mã>...): gắn thẻ SEO; lỗi thì trả trang như cũ
+  let res = null;
+  try { res = await seoPage(ctx.request, ctx.env); } catch (e) { console.error("seoPage", e && e.stack || e); }
+  if (!res) res = await ctx.next();
   const path = new URL(ctx.request.url).pathname;
   const type = res.headers.get("content-type") || "";
   if (ctx.request.method !== "GET" || !type.includes("text/html") || path.startsWith("/quan-tri") || path.startsWith("/api/") || !ctx.env.DB)
