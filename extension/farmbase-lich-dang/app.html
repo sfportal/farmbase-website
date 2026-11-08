@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>FarmBase · Lịch đăng Facebook</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="icons/48.png" alt=""><div><b>FarmBase</b><small>Lịch đăng Facebook</small></div></div>
+  <nav id="tabs">
+    <a href="#lich" data-v="lich">Lịch đăng</a>
+    <a href="#noidung" data-v="noidung">Nội dung website</a>
+    <a href="#drive" data-v="drive">Kho Drive</a>
+    <a href="#caidat" data-v="caidat">Cài đặt</a>
+  </nav>
+  <span id="conn" class="conn">Chưa kết nối</span>
+</header>
+
+<div class="wrap">
+  <main>
+    <!-- LỊCH -->
+    <section id="v-lich" class="view">
+      <div class="bar">
+        <button class="btn" id="mprev" title="Tháng trước">‹</button>
+        <h2 id="mtitle"></h2>
+        <button class="btn" id="mnext" title="Tháng sau">›</button>
+        <button class="btn" id="mtoday">Hôm nay</button>
+        <span class="sp"></span>
+        <span class="legend"><i class="s-draft"></i>Nháp <i class="s-scheduled"></i>Nhắc đăng tay <i class="s-fb_scheduled"></i>Facebook đã hẹn <i class="s-published"></i>Đã đăng <i class="s-failed"></i>Lỗi</span>
+      </div>
+      <div class="cal" id="cal"></div>
+      <h3>Cần làm</h3>
+      <div id="todo" class="list"></div>
+      <h3>Nháp chưa đặt giờ</h3>
+      <div id="drafts" class="list"></div>
+    </section>
+
+    <!-- NỘI DUNG WEBSITE -->
+    <section id="v-noidung" class="view" hidden>
+      <div class="bar">
+        <input id="q" type="search" placeholder="Tìm bài viết, đối tác, trang…">
+        <div class="chips" id="ftype">
+          <button data-t="" class="on">Tất cả</button><button data-t="post">Bài viết</button><button data-t="partner">Đối tác</button><button data-t="page">Trang</button>
+        </div>
+        <button class="btn" id="freload">Tải lại</button>
+      </div>
+      <div id="feed" class="cards"></div>
+    </section>
+
+    <!-- DRIVE -->
+    <section id="v-drive" class="view" hidden>
+      <div class="bar">
+        <div id="crumb" class="crumb"></div>
+        <span class="sp"></span>
+        <div class="chips" id="dkind"><button data-k="" class="on">Tất cả</button><button data-k="image">Ảnh</button><button data-k="video">Video</button></div>
+        <a class="btn" id="dopen" target="_blank" rel="noopener">Mở thư mục để tải tư liệu lên</a>
+        <button class="btn" id="dreload">Tải lại</button>
+      </div>
+      <p class="hint">Bấm vào ảnh hoặc video để thêm vào bài đang soạn. Bấm lần nữa để bỏ chọn.</p>
+      <div id="dgrid" class="grid"></div>
+    </section>
+
+    <!-- CÀI ĐẶT -->
+    <section id="v-caidat" class="view" hidden>
+      <form id="conf" class="form">
+        <label>Địa chỉ website<input name="site" placeholder="https://farmbase.vn" required></label>
+        <label>Khóa API<input name="key" placeholder="fbk_…" autocomplete="off" spellcheck="false"><small>Tạo trong trang quản lý website → Cài đặt → Lên lịch đăng Facebook · Extension.</small></label>
+        <label>Link mở Facebook khi đăng tay<input name="fbPage"><small>Ví dụ trang soạn bài Meta Business Suite hoặc link Fanpage.</small></label>
+        <label>Hashtag mặc định<input name="hashtags"></label>
+        <label>Nhắc trước (phút)<input name="remindBefore" type="number" min="0" max="120"></label>
+        <div class="acts"><button class="btn dark" type="submit">Lưu và kiểm tra kết nối</button><span id="confst" class="muted"></span></div>
+      </form>
+      <div id="confinfo" class="info"></div>
+    </section>
+
+    <!-- ĐĂNG TAY -->
+    <section id="v-dang" class="view" hidden>
+      <div class="post-now">
+        <h2 id="dtitle"></h2>
+        <p class="muted" id="dwhen"></p>
+        <pre id="dmsg"></pre>
+        <div id="dmedia" class="grid sm"></div>
+        <div class="steps">
+          <button class="btn dark" id="dcopy">1. Sao chép nội dung</button>
+          <button class="btn dark" id="ddown">2. Tải tư liệu về máy</button>
+          <button class="btn dark" id="dfb">3. Mở Facebook để đăng</button>
+          <button class="btn ok" id="ddone">Đánh dấu đã đăng</button>
+          <button class="btn" id="dedit">Sửa bài</button>
+        </div>
+        <p class="muted" id="dst"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- KHUNG SOẠN BÀI -->
+  <aside class="composer">
+    <div class="ch"><h2 id="ctitle">Bài mới</h2><button class="btn" id="cnew" title="Soạn bài mới">+ Mới</button></div>
+    <p id="cstate" class="state"></p>
+    <label>Tên nội bộ<input id="ftitle" placeholder="VD: Tuần 2 · Tập huấn MSVT Krông Pắc"></label>
+    <label>Nội dung bài đăng <small id="fcount">0 ký tự</small><textarea id="fmsg" rows="10" placeholder="Viết nội dung hoặc chọn một bài ở tab Nội dung website…"></textarea></label>
+    <label>Link đính kèm<input id="flink" placeholder="https://farmbase.vn/bai-viet/…"></label>
+    <div class="lbl">Tư liệu <small>(tối đa 10 ảnh hoặc 1 video)</small></div>
+    <div id="fmedia" class="media"></div>
+    <div class="row2">
+      <label>Thời gian đăng<input id="fwhen" type="datetime-local"></label>
+      <label>Cách đăng
+        <select id="fmode"><option value="manual">Nhắc tôi đăng tay</option><option value="facebook">Facebook tự hẹn giờ</option></select>
+      </label>
+    </div>
+    <p id="fsrc" class="muted"></p>
+    <div class="acts">
+      <button class="btn" id="bdraft">Lưu nháp</button>
+      <button class="btn dark" id="bsched">Lên lịch</button>
+      <button class="btn" id="bnow" hidden>Đăng ngay</button>
+      <button class="btn" id="bcancel" hidden>Hủy hẹn trên Facebook</button>
+      <button class="btn danger" id="bdel" hidden>Xóa</button>
+    </div>
+    <p id="cmsg" class="muted"></p>
+  </aside>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

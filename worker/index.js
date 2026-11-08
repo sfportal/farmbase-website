@@ -26,15 +26,25 @@ import * as media from "../functions/api/media/[id].js";
 import * as partners from "../functions/api/partners.js";
 import * as consent from "../functions/api/consent.js";
 import * as track from "../functions/api/track.js";
+import * as aSocial from "../functions/api/admin/social.js";
+import * as sStatus from "../functions/api/social/status.js";
+import * as sFeed from "../functions/api/social/feed.js";
+import * as sDrive from "../functions/api/social/drive.js";
+import * as sFile from "../functions/api/social/file/[id].js";
+import * as sPlans from "../functions/api/social/plans.js";
+import * as sPublish from "../functions/api/social/publish.js";
+import { corsHeaders } from "../functions/_social.js";
 
 // [mẫu đường dẫn, module]; :ten là tham số
 const ROUTES = [
   ["/sitemap.xml", sitemap], ["/bai-viet/:slug", baiViet],
   ["/api/admin/users", aUsers], ["/api/admin/content", aContent], ["/api/admin/settings", aSettings], ["/api/admin/partners", aPartners],
-  ["/api/admin/cookies", aCookies], ["/api/admin/media", aMedia], ["/api/admin/leads", aLeads], ["/api/admin/posts", aPosts], ["/api/admin/stats", aStats], ["/api/admin/translate", aTranslate],
+  ["/api/admin/cookies", aCookies], ["/api/admin/media", aMedia], ["/api/admin/leads", aLeads], ["/api/admin/posts", aPosts], ["/api/admin/stats", aStats], ["/api/admin/translate", aTranslate], ["/api/admin/social", aSocial],
   ["/api/auth/me", me], ["/api/auth/logout", logout], ["/api/auth/setup", setup], ["/api/auth/login", login], ["/api/auth/password", password],
   ["/api/lead", lead], ["/api/content", content], ["/api/posts", postList], ["/api/posts/:slug", postOne], ["/api/media/:id", media],
   ["/api/partners", partners], ["/api/consent", consent], ["/api/track", track],
+  ["/api/social/status", sStatus], ["/api/social/feed", sFeed], ["/api/social/drive", sDrive], ["/api/social/file/:id", sFile],
+  ["/api/social/plans", sPlans], ["/api/social/publish", sPublish],
 ].map(([p, m]) => [new RegExp("^" + p.replace(/:(\w+)/g, "(?<$1>[^/]+)") + "/?$"), m]);
 
 const METHOD = { GET: "onRequestGet", POST: "onRequestPost", PUT: "onRequestPut", PATCH: "onRequestPatch", DELETE: "onRequestDelete", HEAD: "onRequestGet" };
@@ -42,6 +52,20 @@ const json = (o, s) => new Response(JSON.stringify(o), { status: s, headers: { "
 
 async function route(request, env, ctx) {
   const path = new URL(request.url).pathname;
+  // API cho extension Chrome lên lịch đăng Facebook: cho phép gọi từ trang chrome-extension://
+  if (path.startsWith("/api/social/")) {
+    const cors = corsHeaders(request);
+    if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+    const res = await dispatch(request, env, ctx, path);
+    if (!Object.keys(cors).length) return res;
+    const out = new Response(res.body, res);
+    for (const [k, v] of Object.entries(cors)) out.headers.set(k, v);
+    return out;
+  }
+  return dispatch(request, env, ctx, path);
+}
+
+async function dispatch(request, env, ctx, path) {
   for (const [re, mod] of ROUTES) {
     const m = path.match(re);
     if (!m) continue;

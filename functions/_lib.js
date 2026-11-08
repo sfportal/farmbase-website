@@ -52,6 +52,11 @@ const SCHEMA = [
   `CREATE INDEX IF NOT EXISTS idx_posts_pub ON posts(status, published_at)`,
   `CREATE TABLE IF NOT EXISTS pass_tries (ip TEXT, slug TEXT, ts INTEGER)`,
   `CREATE INDEX IF NOT EXISTS idx_pass_tries ON pass_tries(slug, ip, ts)`,
+  `CREATE TABLE IF NOT EXISTS social_plans (
+     id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, message TEXT NOT NULL DEFAULT '', link TEXT, media TEXT, source TEXT,
+     scheduled_at INTEGER, status TEXT NOT NULL DEFAULT 'draft', mode TEXT NOT NULL DEFAULT 'manual',
+     fb_id TEXT, error TEXT, created INTEGER, updated INTEGER, author TEXT)`,
+  `CREATE INDEX IF NOT EXISTS idx_social_plans_at ON social_plans(scheduled_at)`,
 ];
 // Cột thêm cho bảng đã có từ bản trước (bỏ qua nếu đã có)
 const MIGRATE = ["ALTER TABLE leads ADD COLUMN vid TEXT", "ALTER TABLE leads ADD COLUMN sid TEXT",

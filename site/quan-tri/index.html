@@ -651,6 +651,17 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
       <div class="acts" style="margin-top:12px"><button class="btn dark" type="button" id="mesave">Lưu mã đo lường</button><span id="mest" style="font-size:12px;color:var(--muted);align-self:center"></span></div>
       <p class="note-ok">Sự kiện gửi kèm: xem trang (page_view / PageView), bấm Zalo, Gọi, Messenger (cta_click / Contact), gửi form liên hệ (generate_lead / Lead).</p>
     </div>
+    <div class="card" style="margin-top:16px" id="socialcard"><h2>Lên lịch đăng Facebook · Extension</h2>
+      <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">Extension Chrome đọc bài viết, đối tác của website và ảnh, video trong thư mục Google Drive để lên lịch đăng Fanpage. Thư mục Drive cần chia sẻ "Bất kỳ ai có đường liên kết đều xem được".</p>
+      <label for="sodrive">Link thư mục Google Drive chứa tư liệu<input id="sodrive" placeholder="https://drive.google.com/drive/folders/..." autocomplete="off" spellcheck="false"></label>
+      <div class="acts" style="margin-top:10px"><button class="btn dark" type="button" id="sosave">Lưu thư mục</button><a id="soopen" class="btn" target="_blank" rel="noopener" style="display:none;color:inherit;text-decoration:none">Mở thư mục</a><span id="sost" style="font-size:12px;color:var(--muted);align-self:center"></span></div>
+      <h2 style="margin-top:18px;font-size:15px">Khóa API cho extension</h2>
+      <p id="sokeyst" style="color:var(--muted);font-size:13px;margin:4px 0 8px">Chưa có khóa.</p>
+      <div class="acts"><button class="btn dark" type="button" id="sokey">Tạo khóa mới</button><button class="btn" type="button" id="sorevoke">Thu hồi khóa</button></div>
+      <div id="sokeybox" style="display:none;margin-top:10px"><input id="sokeyval" readonly style="font-family:monospace"><small style="color:#B4472F">Chép khóa này dán vào phần Cài đặt của extension. Khóa chỉ hiện một lần; tạo khóa mới sẽ vô hiệu khóa cũ.</small></div>
+      <div class="conn" style="margin-top:14px"><span class="ic" style="background:#1A73E8">G</span><div class="t"><b>Google Drive API</b><small>Biến GOOGLE_API_KEY trên Cloudflare · có thì đọc được thư mục con, kích thước, tải tệp gốc qua website</small></div><span id="sogst" class="todo">Chưa cài</span></div>
+      <div class="conn"><span class="ic" style="background:#1877F2">f</span><div class="t"><b>Facebook Graph API</b><small>Biến FB_PAGE_ID, FB_PAGE_TOKEN · có thì Facebook tự hẹn giờ đăng, không cần mở máy</small></div><span id="sofst" class="todo">Chưa cài</span></div>
+    </div>
   </section>
 
   <!-- NỘI DUNG ĐA NGÔN NGỮ -->
@@ -922,7 +933,7 @@ function applyUser(){document.querySelectorAll('aside [data-cap]').forEach(a=>a.
  $('who').innerHTML=ME?`<b>${esc(ME.name||ME.email)}</b>${esc(ME.email)}<br><span class="rolechip ${ME.role==='owner'?'owner':''}">${esc(ME.role_name||ME.role)}</span><div class="wl">${MODE==='live'?'<button type="button" id="chpw">Đổi mật khẩu</button><button type="button" id="lgout">Đăng xuất</button>':'<button type="button" id="lgout">Thoát bản mẫu</button>'}</div>`:'';
  const h=(location.hash||'').slice(1);const a=document.querySelector(`aside a[data-v="${h}"]`);if(a&&a.hidden)location.hash='#tong-quan';
  if(MODE==='live'&&ME&&ME.must_change){forceChange();return;}
- loadOverview();loadStats();if(can("stats"))loadCookies();loadLeads();if(can("users"))loadUsers();if(can('settings'))loadMeasure();if(can('content')){loadContent();loadPartners();loadPosts();if(location.hash==='#trang')pgInit();}}
+ loadOverview();loadStats();if(can("stats"))loadCookies();loadLeads();if(can("users"))loadUsers();if(can('settings')){loadMeasure();loadSocial();}if(can('content')){loadContent();loadPartners();loadPosts();if(location.hash==='#trang')pgInit();}}
 function enter(u){ME=u;MODE='live';$('login').hidden=true;applyUser();toast('Xin chào '+(u.name||u.email));}
 document.addEventListener('click',async e=>{
  if(e.target.id==='lgout'){if(MODE==='live'){try{await api('/api/auth/logout',{method:'POST'});}catch(err){}}ME=null;$('who').innerHTML='';showLogin();}
@@ -966,6 +977,16 @@ $('uf').addEventListener('submit',async e=>{e.preventDefault();const body={email
 /* Mã đo lường */
 function measureState(){const g=$('gaid').value.trim(),p=$('pxid').value.trim();
  $('gast').textContent=g?'Đã cài '+g:'Chưa cài';$('gast').className=g?'ok':'todo';$('pxst').textContent=p?'Đã cài':'Chưa cài';$('pxst').className=p?'ok':'todo';}
+function socialPaint(d){$('sodrive').value=d.drive_link||'';const o=$('soopen');o.style.display=d.drive_link?'':'none';o.href=d.drive_link||'#';
+ $('sokeyst').textContent=d.has_key?('Đã có khóa'+(d.key_created?' · tạo '+new Date(d.key_created).toLocaleString('vi-VN'):'')+(d.key_by?' bởi '+d.key_by:'')+'.'):'Chưa có khóa.';
+ const st=(id,ok,t)=>{const e=$(id);e.className=ok?'ok':'todo';e.textContent=ok?t:'Chưa cài';};st('sogst',d.google_api,'Đã cài');st('sofst',d.facebook,'Trang '+(d.page_id||''));}
+async function loadSocial(){if(MODE!=='live')return;try{socialPaint(await api('/api/admin/social'));}catch(e){}}
+$('sosave').addEventListener('click',async()=>{if(MODE!=='live'){$('sost').textContent='Bản mẫu: chưa lưu thật.';return;}
+ try{await api('/api/admin/social',{method:'PUT',body:JSON.stringify({drive_folder:$('sodrive').value.trim()})});$('sost').textContent='✓ Đã lưu.';loadSocial();}catch(e){$('sost').textContent=e.message==='bad_drive'?'Link thư mục Drive chưa đúng.':em(e);}});
+$('sokey').addEventListener('click',async()=>{if(MODE!=='live')return;if(!confirm('Tạo khóa mới? Extension đang dùng khóa cũ sẽ phải nhập khóa mới.'))return;
+ try{const d=await api('/api/admin/social',{method:'POST',body:'{}'});$('sokeybox').style.display='';$('sokeyval').value=d.key;$('sokeyval').select();loadSocial();}catch(e){$('sokeyst').textContent=em(e);}});
+$('sorevoke').addEventListener('click',async()=>{if(MODE!=='live')return;if(!confirm('Thu hồi khóa? Extension sẽ ngừng kết nối.'))return;
+ try{await api('/api/admin/social',{method:'DELETE'});$('sokeybox').style.display='none';loadSocial();}catch(e){$('sokeyst').textContent=em(e);}});
 async function loadMeasure(){if(MODE!=='live'){measureState();return;}try{const d=await api('/api/admin/settings');$('gaid').value=d.ga_id;$('pxid').value=d.fb_pixel_id;}catch(e){}measureState();}
 $('mesave').addEventListener('click',async()=>{const body={ga_id:$('gaid').value.trim().toUpperCase(),fb_pixel_id:$('pxid').value.trim()};$('gaid').value=body.ga_id;
  if(body.ga_id&&!/^G-[A-Z0-9]{4,15}$/.test(body.ga_id)){$('mest').textContent=ERRS.bad_ga_id;return;}if(body.fb_pixel_id&&!/^\d{8,20}$/.test(body.fb_pixel_id)){$('mest').textContent=ERRS.bad_fb_pixel_id;return;}

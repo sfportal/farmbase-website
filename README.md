@@ -23,6 +23,7 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
   - Trình soạn bài dùng Quill 2.0.3 (giấy phép BSD, để trong `site/quan-tri/vendor/`).
   - `GET /api/admin/stats`, `GET|PATCH /api/admin/leads`: thống kê và khách liên hệ, theo vai trò.
   - `GET /api/admin/cookies?days=30`: tỉ lệ đồng ý cookie, nguồn khách và chiến dịch utm (kèm số khách để lại liên hệ), khách quay lại, trang vào đầu tiên, hành trình các trang khách đã xem trước khi gửi form.
+  - `/api/social/*` và `GET|PUT|POST|DELETE /api/admin/social`: API cho extension Chrome lên lịch đăng Facebook (đọc nội dung website, tư liệu trong thư mục Google Drive, lịch đăng dùng chung, đẩy bài hẹn giờ qua Facebook Graph API). Extension nằm trong `extension/farmbase-lich-dang/`, hướng dẫn trong README của thư mục đó.
 - Vai trò: Chủ sở hữu (mọi thứ), Quản trị (trừ tài khoản), Duyệt bài (thống kê, nội dung), Biên tập (nội dung, hình ảnh), Kinh doanh (khách liên hệ).
 - Cơ sở dữ liệu: Cloudflare D1, tên biến `DB`. Bảng tự tạo ở lần gọi đầu.
 
