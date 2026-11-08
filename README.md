@@ -23,7 +23,6 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
   - Trình soạn bài dùng Quill 2.0.3 (giấy phép BSD, để trong `site/quan-tri/vendor/`).
   - `GET /api/admin/stats`, `GET|PATCH /api/admin/leads`: thống kê và khách liên hệ, theo vai trò.
   - `GET /api/admin/cookies?days=30`: tỉ lệ đồng ý cookie, nguồn khách và chiến dịch utm (kèm số khách để lại liên hệ), khách quay lại, trang vào đầu tiên, hành trình các trang khách đã xem trước khi gửi form.
-  - Trang có đường link riêng cho Google (`functions/trang.js`, danh sách trong `functions/_pages.js`): `/`, `/ve-chung-toi/`, `/giai-phap/`, `/truy-xuat/`, `/ma-vung-trong/`, `/ma-dong-goi/`, `/thu-mua-ky-thuat/`, `/giai-phap-rieng/`, `/nguon-hang/`, `/chien-dich-10000ha/`, `/doi-tac/`, `/doi-tac/<mã>`, `/su-kien/`, `/blog/`, `/lien-he/`. Máy chủ gắn title, description, canonical, hreflang (thêm `?lang=en`, `?lang=zh`), Open Graph, JSON-LD (Organization, WebSite, BreadcrumbList) riêng từng trang; trình duyệt tự chuyển sang `/#mã` như cũ. `/sitemap.xml` liệt kê các trang này (kèm bản EN, 中文), trang từng đối tác và bài viết. Link trong trang dùng dạng `/mã/` để Google đọc được, bấm vẫn chuyển trang không tải lại.
 - Vai trò: Chủ sở hữu (mọi thứ), Quản trị (trừ tài khoản), Duyệt bài (thống kê, nội dung), Biên tập (nội dung, hình ảnh), Kinh doanh (khách liên hệ).
 - Cơ sở dữ liệu: Cloudflare D1, tên biến `DB`. Bảng tự tạo ở lần gọi đầu.
 
@@ -36,3 +35,6 @@ Hướng dẫn từng bước: `docs/HUONG-DAN-CLOUDFLARE.md`.
 echo "ADMIN_TOKEN=thu-nghiem" > .dev.vars
 npx wrangler pages dev site --d1 DB=farmbase
 ```
+
+## SEO
+Trang có đường link riêng cho Google (`functions/trang.js`, danh sách trong `functions/_pages.js`): `/`, `/ve-chung-toi/`, `/giai-phap/`, `/truy-xuat/`, `/ma-vung-trong/`, `/ma-dong-goi/`, `/thu-mua-ky-thuat/`, `/giai-phap-rieng/`, `/nguon-hang/`, `/chien-dich-10000ha/`, `/doi-tac/`, `/doi-tac/<mã>`, `/su-kien/`, `/blog/`, `/lien-he/`. Máy chủ gắn title, description, canonical, hreflang (thêm `?lang=en`, `?lang=zh`), Open Graph, JSON-LD (Organization, WebSite, BreadcrumbList) riêng từng trang; trình duyệt tự chuyển sang `/#mã` như cũ. `/sitemap.xml` liệt kê các trang này (kèm bản EN, 中文), trang từng đối tác và bài viết. Link trong trang dùng dạng `/mã/` để Google đọc được, bấm vẫn chuyển trang không tải lại.
