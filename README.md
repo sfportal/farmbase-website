@@ -20,6 +20,7 @@ Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giả
   - Bài "chỉ người có link" (`visibility=link`): không hiện ở trang chủ, Blog, `/api/posts`, sitemap; gắn noindex. Đường link tự thêm đuôi ngẫu nhiên `-kxxxxx`. Có thể đặt mật khẩu (lưu dạng băm PBKDF2, người xem gửi qua header `X-Post-Pass`, tối đa 10 lần sai mỗi 15 phút) và ngày hết hiệu lực. Tắt hiệu lực (`PATCH /api/admin/posts`) hoặc quá hạn thì trả 410 "hết hiệu lực". Lượt xem, cookie đo như bài thường.
   - `/bai-viet/:slug`: link chia sẻ của từng bài, máy chủ gắn sẵn title, description, keywords, canonical, Open Graph, Twitter, JSON-LD để Google, Zalo, Facebook đọc được.
   - `/sitemap.xml`: trang chủ, trang 10.000 ha và mọi bài đã đăng.
+  - `POST /mcp`: máy chủ MCP chỉ đọc cho Claude và công cụ AI khác (trang, giải pháp, bài viết công khai, đối tác, tìm kiếm). `/llms.txt`: giới thiệu ngắn cho AI. Hướng dẫn: `docs/MCP.md`.
   - Trình soạn bài dùng Quill 2.0.3 (giấy phép BSD, để trong `site/quan-tri/vendor/`).
   - `GET /api/admin/stats`, `GET|PATCH /api/admin/leads`: thống kê và khách liên hệ, theo vai trò.
   - `GET /api/admin/cookies?days=30`: tỉ lệ đồng ý cookie, nguồn khách và chiến dịch utm (kèm số khách để lại liên hệ), khách quay lại, trang vào đầu tiên, hành trình các trang khách đã xem trước khi gửi form.
