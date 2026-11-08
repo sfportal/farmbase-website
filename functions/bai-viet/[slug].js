@@ -27,15 +27,16 @@ export async function onRequestGet({ params, env, request }) {
   const ld = { "@context": "https://schema.org", "@type": "Article", headline: p.title, description: desc, image: [img],
     datePublished: new Date(p.published_at).toISOString(), dateModified: new Date(p.updated || p.published_at).toISOString(),
     author: { "@type": "Organization", name: "FarmBase · Công ty Cổ phần BVI" }, publisher: { "@type": "Organization", name: "FarmBase", logo: { "@type": "ImageObject", url: `${url.origin}/img/logos/bvi.png` } },
-    mainEntityOfPage: canon };
+    mainEntityOfPage: canon, inLanguage: "vi" };
+  const crumbs = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [["Trang chủ", `${url.origin}/`], ["Blog", `${url.origin}/blog/`], [p.title, canon]].map(([n, u], i) => ({ "@type": "ListItem", position: i + 1, name: n, item: u })) };
   const head = `<base href="/">
 <meta name="description" content="${esc(desc)}">${p.meta_kw ? `\n<meta name="keywords" content="${esc(p.meta_kw)}">` : ""}
 <link rel="canonical" href="${esc(canon)}">
 <meta property="og:type" content="article"><meta property="og:site_name" content="FarmBase"><meta property="og:url" content="${esc(canon)}">
 <meta property="og:title" content="${esc(p.meta_title || p.title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:image" content="${esc(img)}">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="vi_VN"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(p.meta_title || p.title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${esc(img)}">
 <meta property="article:published_time" content="${new Date(p.published_at).toISOString()}">
-${priv ? '<meta name="robots" content="noindex, nofollow">' : `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`}
+${priv ? '<meta name="robots" content="noindex, nofollow">' : `<script type="application/ld+json">${JSON.stringify([ld, crumbs]).replace(/</g, "\\u003c")}</script>`}
 <script>window.FB_POST=${JSON.stringify(p.slug)}</script>`;
   let titled = false;
   const out = new HTMLRewriter()

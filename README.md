@@ -35,3 +35,6 @@ Hướng dẫn từng bước: `docs/HUONG-DAN-CLOUDFLARE.md`.
 echo "ADMIN_TOKEN=thu-nghiem" > .dev.vars
 npx wrangler pages dev site --d1 DB=farmbase
 ```
+
+## SEO
+Trang có đường link riêng cho Google (`functions/trang.js`, danh sách trong `functions/_pages.js`): `/`, `/ve-chung-toi/`, `/giai-phap/`, `/truy-xuat/`, `/ma-vung-trong/`, `/ma-dong-goi/`, `/thu-mua-ky-thuat/`, `/giai-phap-rieng/`, `/nguon-hang/`, `/chien-dich-10000ha/`, `/doi-tac/`, `/doi-tac/<mã>`, `/su-kien/`, `/blog/`, `/lien-he/`. Máy chủ gắn title, description, canonical, hreflang (thêm `?lang=en`, `?lang=zh`), Open Graph, JSON-LD (Organization, WebSite, BreadcrumbList) riêng từng trang; trình duyệt tự chuyển sang `/#mã` như cũ. `/sitemap.xml` liệt kê các trang này (kèm bản EN, 中文), trang từng đối tác và bài viết. Link trong trang dùng dạng `/mã/` để Google đọc được, bấm vẫn chuyển trang không tải lại.
