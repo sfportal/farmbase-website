@@ -30,9 +30,7 @@ import * as aSocial from "../functions/api/admin/social.js";
 import * as sStatus from "../functions/api/social/status.js";
 import * as sFeed from "../functions/api/social/feed.js";
 import * as sDrive from "../functions/api/social/drive.js";
-import * as sFile from "../functions/api/social/file/[id].js";
 import * as sPlans from "../functions/api/social/plans.js";
-import * as sPublish from "../functions/api/social/publish.js";
 import { corsHeaders } from "../functions/_social.js";
 
 // [mẫu đường dẫn, module]; :ten là tham số
@@ -43,8 +41,8 @@ const ROUTES = [
   ["/api/auth/me", me], ["/api/auth/logout", logout], ["/api/auth/setup", setup], ["/api/auth/login", login], ["/api/auth/password", password],
   ["/api/lead", lead], ["/api/content", content], ["/api/posts", postList], ["/api/posts/:slug", postOne], ["/api/media/:id", media],
   ["/api/partners", partners], ["/api/consent", consent], ["/api/track", track],
-  ["/api/social/status", sStatus], ["/api/social/feed", sFeed], ["/api/social/drive", sDrive], ["/api/social/file/:id", sFile],
-  ["/api/social/plans", sPlans], ["/api/social/publish", sPublish],
+  ["/api/social/status", sStatus], ["/api/social/feed", sFeed], ["/api/social/drive", sDrive],
+  ["/api/social/plans", sPlans],
 ].map(([p, m]) => [new RegExp("^" + p.replace(/:(\w+)/g, "(?<$1>[^/]+)") + "/?$"), m]);
 
 const METHOD = { GET: "onRequestGet", POST: "onRequestPost", PUT: "onRequestPut", PATCH: "onRequestPatch", DELETE: "onRequestDelete", HEAD: "onRequestGet" };

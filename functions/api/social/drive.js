@@ -1,6 +1,6 @@
 // Ảnh, video trong thư mục Google Drive đã gắn ở trang quản lý. ?folder=<mã thư mục con> để xem thư mục con.
 import { db, json, getSettings } from "../../_lib.js";
-import { socialAuth, listDrive, insideRoot, FILE_ID } from "../../_social.js";
+import { socialAuth, listDrive, FILE_ID } from "../../_social.js";
 
 export async function onRequestGet({ request, env }) {
   const u = await socialAuth(request, env);
@@ -12,12 +12,10 @@ export async function onRequestGet({ request, env }) {
   let folder = url.searchParams.get("folder") || root;
   if (!FILE_ID.test(folder)) return json({ error: "bad_folder" }, 400);
   try {
-    // Thư mục con: khi có GOOGLE_API_KEY thì kiểm tra nằm trong thư mục gốc
-    if (folder !== root && env.GOOGLE_API_KEY && !(await insideRoot(env, root, folder))) return json({ error: "outside_drive" }, 403);
-    const d = await listDrive(env, folder, url.origin);
+    const d = await listDrive(folder);
     return json({ root, folder, link: `https://drive.google.com/drive/folders/${folder}`, ...d });
   } catch (e) {
-    console.error("drive", e.message, e.detail || "");
+    console.error("drive", e.message);
     return json({ error: e.message === "drive_private" || /drive_40[34]/.test(e.message) ? "drive_private" : "drive_error" }, 502);
   }
 }

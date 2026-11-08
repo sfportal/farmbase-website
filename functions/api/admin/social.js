@@ -1,7 +1,7 @@
 // Cài đặt cho extension lên lịch đăng Facebook: thư mục Google Drive, khóa API cho extension.
 // GET: trạng thái · PUT {drive_folder}: gắn thư mục (dán link) · POST: tạo khóa mới (chỉ hiện một lần) · DELETE: thu hồi khóa.
 import { db, json, requireRole, CAN, sameOrigin, getSettings } from "../../_lib.js";
-import { folderId, newKey, sha, fbReady } from "../../_social.js";
+import { folderId, newKey, sha } from "../../_social.js";
 
 const put = (D, k, v) => D.prepare("INSERT INTO settings (k,v) VALUES (?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v").bind(k, v).run();
 
@@ -17,7 +17,6 @@ export async function onRequestGet({ request, env }) {
   return json({
     drive_folder: s.drive_folder || "", drive_link: s.drive_folder ? `https://drive.google.com/drive/folders/${s.drive_folder}` : "",
     has_key: !!s.social_key_hash, key_created: s.social_key_created ? +s.social_key_created : null, key_by: s.social_key_by || "",
-    google_api: !!env.GOOGLE_API_KEY, facebook: fbReady(env), page_id: env.FB_PAGE_ID || "",
   });
 }
 

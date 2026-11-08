@@ -4,14 +4,11 @@ import { api, getConf, setConf, DEFAULTS } from "./lib.js";
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const cssUrl = (u) => (u ? `url("${String(u).replace(/["\\\n]/g, "")}")` : "none");
-const STATUS = { draft: "Nháp", scheduled: "Nhắc đăng tay", fb_scheduled: "Facebook đã hẹn", published: "Đã đăng", failed: "Lỗi" };
+const STATUS = { draft: "Nháp", scheduled: "Đã lên lịch", published: "Đã đăng" };
 const ERR = {
   no_key: "Chưa nhập khóa API ở tab Cài đặt.", bad_key: "Khóa API không đúng hoặc đã bị thu hồi.", unauthorized: "Khóa API không đúng.",
   no_drive: "Website chưa gắn thư mục Google Drive (trang quản lý → Cài đặt).", drive_private: "Không đọc được thư mục Drive. Kiểm tra chia sẻ \"Bất kỳ ai có đường liên kết\".",
-  drive_error: "Lỗi khi đọc Google Drive, thử lại sau.", outside_drive: "Thư mục này không nằm trong thư mục tư liệu.",
-  fb_not_configured: "Website chưa cài Facebook Graph API (FB_PAGE_ID, FB_PAGE_TOKEN). Chọn \"Nhắc tôi đăng tay\".",
-  time_past: "Thời gian đã qua. Chọn giờ khác hoặc bấm Đăng ngay.", time_far: "Facebook chỉ cho hẹn giờ trong vòng 29 ngày.",
-  fb_locked: "Bài đã hẹn trên Facebook. Hủy hẹn trước khi sửa.", already: "Bài đã được đẩy lên Facebook.", empty: "Bài chưa có nội dung.",
+  drive_error: "Lỗi khi đọc Google Drive, thử lại sau.", empty: "Bài chưa có nội dung.",
   no_time: "Chọn thời gian đăng trước khi lên lịch.", not_found: "Không tìm thấy bài.", forbidden: "Không có quyền.",
 };
 const em = (e) => ERR[e.code] || ERR[e.message] || (e.message && !/^http_/.test(e.message) ? e.message : "Có lỗi, thử lại sau.");
@@ -20,10 +17,10 @@ const toLocal = (ms) => { if (!ms) return ""; const d = new Date(ms); return `${
 const fmt = (ms) => (ms ? new Date(ms).toLocaleString("vi-VN", { weekday: "short", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "Chưa đặt giờ");
 const thumbOf = (m) => (m.type === "drive" ? `https://drive.google.com/thumbnail?id=${m.id}&sz=w240` : m.url);
 
-let CONF = { ...DEFAULTS }, STAT = null, PLANS = [], FEED = null, DRIVE = { stack: [], items: [], mode: "" };
+let CONF = { ...DEFAULTS }, STAT = null, PLANS = [], FEED = null, DRIVE = { stack: [], items: [] };
 let MONTH = new Date(); MONTH.setDate(1);
 let ED = blank();
-function blank() { return { id: null, title: "", message: "", link: "", media: [], source: null, scheduled_at: null, status: "draft", mode: "manual" }; }
+function blank() { return { id: null, title: "", message: "", link: "", media: [], source: null, scheduled_at: null, status: "draft" }; }
 
 // ---------- Điều hướng ----------
 function show() {
@@ -46,7 +43,6 @@ async function connect() {
   try {
     STAT = await api("/api/social/status");
     c.textContent = "Đã kết nối " + new URL(STAT.site).host; c.className = "conn ok";
-    $("fmode").querySelector('[value="facebook"]').disabled = !STAT.facebook;
     return true;
   } catch (e) { c.textContent = em(e); c.className = "conn bad"; STAT = null; return false; }
 }
@@ -75,7 +71,7 @@ function drawCal() {
 const itemRow = (p) => `<div class="it" data-id="${p.id}"><span class="dot s-${esc(p.status)}"></span><b>${esc(p.title || p.message.slice(0, 80) || "(không tên)")}</b><span class="muted">${esc(STATUS[p.status])} · ${esc(fmt(p.scheduled_at))}</span></div>`;
 function drawLists() {
   const now = Date.now();
-  const todo = PLANS.filter((p) => p.status === "failed" || (p.status === "scheduled" && p.scheduled_at && p.scheduled_at < now + 86400000)).sort((a, b) => a.scheduled_at - b.scheduled_at);
+  const todo = PLANS.filter((p) => p.status === "scheduled" && p.scheduled_at && p.scheduled_at < now + 86400000).sort((a, b) => a.scheduled_at - b.scheduled_at);
   $("todo").innerHTML = todo.map(itemRow).join("") || '<div class="empty">Không có bài cần đăng trong 24 giờ tới.</div>';
   $("drafts").innerHTML = PLANS.filter((p) => !p.scheduled_at).map(itemRow).join("") || '<div class="empty">Không có nháp.</div>';
 }
@@ -96,7 +92,7 @@ $("mtoday").onclick = () => { MONTH = new Date(); MONTH.setDate(1); drawCal(); }
 function openPlan(id) {
   const p = PLANS.find((x) => x.id === id);
   if (!p) return;
-  if (p.status === "scheduled" && p.mode !== "facebook" && p.scheduled_at && p.scheduled_at <= Date.now() + 3600000) { location.hash = "dang/" + id; return; }
+  if (p.status === "scheduled" && p.scheduled_at && p.scheduled_at <= Date.now() + 3600000) { location.hash = "dang/" + id; return; }
   ED = JSON.parse(JSON.stringify(p)); paintEditor();
 }
 
@@ -144,7 +140,7 @@ async function loadDrive(folder) {
   try {
     const d = await api("/api/social/drive" + (folder ? "?folder=" + encodeURIComponent(folder.id) : ""));
     if (!folder) DRIVE.stack = [{ id: d.root, name: "Thư mục tư liệu" }];
-    DRIVE.items = d.items; DRIVE.mode = d.mode;
+    DRIVE.items = d.items;
     $("dopen").href = d.link;
     drawDrive();
   } catch (e) { $("dgrid").innerHTML = `<div class="empty">${esc(em(e))}</div>`; }
@@ -189,32 +185,25 @@ function paintMedia() {
 }
 $("fmedia").addEventListener("click", (e) => { const b = e.target.closest("[data-rm]"); if (!b) return; ED.media.splice(+b.dataset.rm, 1); paintMedia(); if (!$("v-drive").hidden) drawDrive(); });
 function paintEditor() {
-  const locked = ED.status === "fb_scheduled" || ED.status === "published";
+  const locked = ED.status === "published";
   $("ctitle").textContent = ED.id ? "Bài #" + ED.id : "Bài mới";
-  $("cstate").textContent = ED.id ? STATUS[ED.status] + (ED.error ? " · " + ED.error : "") + (ED.author ? " · sửa bởi " + ED.author : "") : "";
-  $("cstate").style.color = ED.status === "failed" ? "var(--failed)" : "var(--g)";
+  $("cstate").textContent = ED.id ? STATUS[ED.status] + (ED.author ? " · sửa bởi " + ED.author : "") : "";
   $("ftitle").value = ED.title || ""; $("fmsg").value = ED.message || ""; $("flink").value = ED.link || "";
-  $("fwhen").value = toLocal(ED.scheduled_at); $("fmode").value = ED.mode === "facebook" && STAT?.facebook ? "facebook" : "manual";
+  $("fwhen").value = toLocal(ED.scheduled_at);
   $("fsrc").textContent = ED.source ? "Nguồn: " + ED.source.title : "";
-  ["ftitle", "fmsg", "flink", "fwhen", "fmode", "bdraft", "bsched"].forEach((id) => ($(id).disabled = locked));
-  $("bdel").hidden = !ED.id; $("bcancel").hidden = ED.status !== "fb_scheduled";
-  modeUi(); count(); paintMedia(); msg("");
+  ["ftitle", "fmsg", "flink", "fwhen", "bdraft", "bsched"].forEach((id) => ($(id).disabled = locked));
+  $("bdel").hidden = !ED.id;
+  count(); paintMedia(); msg("");
 }
-function modeUi() {
-  const fb = $("fmode").value === "facebook";
-  $("bnow").hidden = !fb || ED.status === "fb_scheduled" || ED.status === "published";
-  $("bsched").textContent = fb ? "Hẹn giờ trên Facebook" : "Lên lịch nhắc";
-}
-$("fmode").addEventListener("change", modeUi);
 function count() { $("fcount").textContent = $("fmsg").value.length + " ký tự"; }
 $("fmsg").addEventListener("input", count);
 function readEditor() {
   ED.title = $("ftitle").value.trim(); ED.message = $("fmsg").value; ED.link = $("flink").value.trim();
-  ED.scheduled_at = $("fwhen").value ? new Date($("fwhen").value).getTime() : null; ED.mode = $("fmode").value;
+  ED.scheduled_at = $("fwhen").value ? new Date($("fwhen").value).getTime() : null;
 }
 async function save(status) {
   readEditor();
-  const body = { title: ED.title, message: ED.message, link: ED.link, media: ED.media, source: ED.source, scheduled_at: ED.scheduled_at, mode: ED.mode, status };
+  const body = { title: ED.title, message: ED.message, link: ED.link, media: ED.media, source: ED.source, scheduled_at: ED.scheduled_at, status };
   const r = ED.id ? await api("/api/social/plans", { method: "PUT", body: JSON.stringify({ id: ED.id, ...body }) }) : await api("/api/social/plans", { method: "POST", body: JSON.stringify(body) });
   ED = r.item;
   return r.item;
@@ -228,30 +217,12 @@ $("bdraft").onclick = () => busy($("bdraft"), async () => { await save("draft");
 $("bsched").onclick = () => busy($("bsched"), async () => {
   readEditor();
   if (!ED.scheduled_at) return msg(ERR.no_time);
-  if ($("fmode").value === "facebook") {
-    await save("draft");
-    const r = await api("/api/social/publish", { method: "POST", body: JSON.stringify({ id: ED.id }) });
-    ED = r.item;
-    await after(ED.status === "fb_scheduled" ? "✓ Đã hẹn giờ trên Facebook. Bài tự đăng lúc " + fmt(ED.scheduled_at) + "." : "✓ Đã đăng lên Facebook.");
-  } else {
-    if (ED.scheduled_at < Date.now()) return msg("Thời gian đã qua. Chọn giờ khác.");
-    await save("scheduled");
-    await after("✓ Đã lên lịch. Extension sẽ nhắc lúc " + fmt(ED.scheduled_at - (+CONF.remindBefore || 0) * 60000) + " (cần mở Chrome).");
-  }
-});
-$("bnow").onclick = () => busy($("bnow"), async () => {
-  if (!confirm("Đăng bài này lên Fanpage ngay bây giờ?")) return;
-  await save("draft");
-  ED = (await api("/api/social/publish", { method: "POST", body: JSON.stringify({ id: ED.id, now: true }) })).item;
-  await after("✓ Đã đăng lên Facebook.");
-});
-$("bcancel").onclick = () => busy($("bcancel"), async () => {
-  if (!confirm("Hủy hẹn giờ trên Facebook? Bài quay về nháp.")) return;
-  ED = (await api("/api/social/publish", { method: "POST", body: JSON.stringify({ id: ED.id, action: "cancel" }) })).item;
-  await after("✓ Đã hủy hẹn giờ.");
+  if (ED.scheduled_at < Date.now()) return msg("Thời gian đã qua. Chọn giờ khác.");
+  await save("scheduled");
+  await after("✓ Đã lên lịch. Extension sẽ nhắc lúc " + fmt(ED.scheduled_at - (+CONF.remindBefore || 0) * 60000) + " (cần mở Chrome).");
 });
 $("bdel").onclick = () => busy($("bdel"), async () => {
-  if (!confirm("Xóa bài này khỏi lịch?" + (ED.status === "fb_scheduled" ? " Bài hẹn trên Facebook cũng bị xóa." : ""))) return;
+  if (!confirm("Xóa bài này khỏi lịch?")) return;
   await api("/api/social/plans?id=" + ED.id, { method: "DELETE" });
   ED = blank(); await after("✓ Đã xóa.");
 });
@@ -268,7 +239,7 @@ function showPost(id) {
   $("dmedia").innerHTML = CUR.media.map((m) => `<div class="tile"><div class="im" style="background-image:${esc(cssUrl(thumbOf(m)))}">${m.kind === "video" ? "▶" : ""}</div><div class="nm">${esc(m.name)}</div></div>`).join("");
   $("ddown").hidden = !CUR.media.length; $("dst").textContent = "";
 }
-const fileUrl = (m) => (m.type === "url" ? m.url : STAT?.drive?.mode === "api" ? `${STAT.site}/api/social/file/${m.id}` : `https://drive.google.com/uc?export=download&id=${m.id}`);
+const fileUrl = (m) => (m.type === "url" ? m.url : `https://drive.google.com/uc?export=download&id=${m.id}`);
 $("dcopy").onclick = async () => { await navigator.clipboard.writeText($("dmsg").textContent); $("dst").textContent = "✓ Đã sao chép nội dung. Dán vào ô viết bài trên Facebook."; };
 $("ddown").onclick = async () => {
   for (const [i, m] of CUR.media.entries()) {
@@ -296,8 +267,7 @@ function fillConf() {
 function info() {
   const s = STAT;
   $("confinfo").innerHTML = !s ? "" : `<p class="ok">✓ Kết nối ${esc(s.site)} (${esc(s.user)})</p>
-    <p class="${s.drive ? "ok" : "bad"}">${s.drive ? `✓ Thư mục Drive: <a href="${esc(s.drive.link)}" target="_blank" rel="noopener">mở</a> · chế độ ${s.drive.mode === "api" ? "Google Drive API" : "thư mục công khai"}` : "✗ Website chưa gắn thư mục Google Drive"}</p>
-    <p class="${s.facebook ? "ok" : "bad"}">${s.facebook ? "✓ Facebook Graph API · Trang " + esc(s.facebook.page_id) + ": hẹn giờ tự đăng được" : "✗ Chưa cài Facebook Graph API: dùng chế độ nhắc đăng tay"}</p>`;
+    <p class="${s.drive ? "ok" : "bad"}">${s.drive ? `✓ Thư mục Drive: <a href="${esc(s.drive.link)}" target="_blank" rel="noopener">mở</a>` : "✗ Website chưa gắn thư mục Google Drive"}</p>`;
 }
 $("conf").addEventListener("submit", async (e) => {
   e.preventDefault();

@@ -19,7 +19,7 @@ export async function sync() {
   try { items = (await api("/api/social/plans")).items; } catch (e) { console.warn("sync", e.message); return; }
   const now = Date.now(), before = (+c.remindBefore || 0) * 60000;
   const want = new Map();
-  for (const p of items) if (p.status === "scheduled" && p.mode !== "facebook" && p.scheduled_at && p.scheduled_at - before > now - 60000) want.set("plan:" + p.id, p);
+  for (const p of items) if (p.status === "scheduled" && p.scheduled_at && p.scheduled_at - before > now - 60000) want.set("plan:" + p.id, p);
   const have = await chrome.alarms.getAll();
   for (const a of have) if (a.name.startsWith("plan:") && !want.has(a.name)) await chrome.alarms.clear(a.name);
   const cache = {};
@@ -30,7 +30,7 @@ export async function sync() {
     cache[p.id] = { title: p.title, message: p.message, scheduled_at: p.scheduled_at };
   }
   await chrome.storage.local.set({ planCache: cache, lastSync: now });
-  const due = items.filter((p) => p.status === "scheduled" && p.mode !== "facebook" && p.scheduled_at && p.scheduled_at < now).length;
+  const due = items.filter((p) => p.status === "scheduled" && p.scheduled_at && p.scheduled_at < now).length;
   await chrome.action.setBadgeBackgroundColor({ color: "#C7432F" });
   await chrome.action.setBadgeText({ text: due ? String(due) : "" });
 }

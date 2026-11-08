@@ -13,23 +13,13 @@ Lên kế hoạch và lên lịch đăng bài Fanpage từ nội dung website Fa
 - **Nội dung website**: tìm bài viết, đối tác, trang → *Soạn bài từ đây* (tự điền tiêu đề, tóm tắt, link, hashtag, ảnh bìa).
 - **Kho Drive**: bấm ảnh, video để thêm vào bài (tối đa 10 ảnh hoặc 1 video). *Mở thư mục để tải tư liệu lên* để thêm tư liệu mới.
 - **Lịch đăng**: lịch tháng, bấm vào ngày để soạn bài cho ngày đó, bấm vào bài để sửa.
-- **Cách đăng**:
-  - *Nhắc tôi đăng tay* (mặc định): đến giờ Chrome hiện thông báo; bấm vào để mở màn hình đăng: sao chép nội dung, tải tư liệu về máy, mở Facebook, rồi *Đánh dấu đã đăng*. Chrome cần đang mở.
-  - *Facebook tự hẹn giờ*: website gửi bài lên Fanpage qua Graph API với giờ hẹn; Facebook tự đăng kể cả khi tắt máy. Giờ hẹn từ 10 phút đến 29 ngày tới. Cần cài biến bên dưới.
+- **Đăng bài**: đến giờ Chrome hiện thông báo; bấm vào để mở màn hình đăng: sao chép nội dung, tải tư liệu về máy, mở Facebook, rồi *Đánh dấu đã đăng*. Chrome cần đang mở lúc đến giờ (nếu tắt, bài quá giờ hiện ở mục *Cần làm* và số đỏ trên biểu tượng).
 
-## Biến môi trường trên Cloudflare (Worker `farmbase-website` → Settings → Variables and Secrets)
-| Biến | Bắt buộc | Tác dụng |
-|---|---|---|
-| `GOOGLE_API_KEY` | Nên có | Khóa Google Cloud có bật *Google Drive API*. Có thì đọc được kích thước, thời lượng video, thư mục con được kiểm tra, tải tệp gốc qua `/api/social/file/:id` (Facebook tải ảnh, video ổn định hơn). Không có thì website đọc trang xem thư mục công khai của Drive. |
-| `FB_PAGE_ID` | Cho chế độ tự hẹn giờ | Mã số Fanpage. |
-| `FB_PAGE_TOKEN` | Cho chế độ tự hẹn giờ | Page access token dài hạn có quyền `pages_manage_posts`, `pages_read_engagement`. Lưu dạng Secret. |
-| `FB_GRAPH_VERSION` | Không | Mặc định `v23.0`. |
+Không cần mã Facebook (Graph API) hay khóa Google: website đọc thư mục Drive qua chế độ chia sẻ công khai.
 
 ## API dành cho extension
 Gửi kèm header `Authorization: Bearer fbk_…`. Trả CORS cho trang `chrome-extension://`.
-- `GET /api/social/status`: kiểm tra khóa, thư mục Drive, Facebook.
+- `GET /api/social/status`: kiểm tra khóa, thư mục Drive.
 - `GET /api/social/feed`: bài viết đã đăng và sắp đăng, đối tác, các trang chính (link tuyệt đối, ảnh bìa).
 - `GET /api/social/drive[?folder=<mã thư mục con>]`: ảnh, video trong thư mục Drive.
-- `GET /api/social/file/:id`: tệp gốc trong thư mục Drive (công khai, chỉ tệp nằm trong thư mục đã gắn).
 - `GET|POST|PUT|DELETE /api/social/plans`: lịch đăng.
-- `POST /api/social/publish` `{id}` hẹn giờ trên Facebook · `{id, now:true}` đăng ngay · `{id, action:"cancel"}` hủy hẹn.

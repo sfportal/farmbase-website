@@ -652,15 +652,13 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
       <p class="note-ok">Sự kiện gửi kèm: xem trang (page_view / PageView), bấm Zalo, Gọi, Messenger (cta_click / Contact), gửi form liên hệ (generate_lead / Lead).</p>
     </div>
     <div class="card" style="margin-top:16px" id="socialcard"><h2>Lên lịch đăng Facebook · Extension</h2>
-      <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">Extension Chrome đọc bài viết, đối tác của website và ảnh, video trong thư mục Google Drive để lên lịch đăng Fanpage. Thư mục Drive cần chia sẻ "Bất kỳ ai có đường liên kết đều xem được".</p>
+      <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">Extension Chrome đọc bài viết, đối tác của website và ảnh, video trong thư mục Google Drive để lên lịch, nhắc giờ đăng Fanpage. Không cần mã Facebook hay khóa Google. Thư mục Drive cần chia sẻ "Bất kỳ ai có đường liên kết đều xem được".</p>
       <label for="sodrive">Link thư mục Google Drive chứa tư liệu<input id="sodrive" placeholder="https://drive.google.com/drive/folders/..." autocomplete="off" spellcheck="false"></label>
       <div class="acts" style="margin-top:10px"><button class="btn dark" type="button" id="sosave">Lưu thư mục</button><a id="soopen" class="btn" target="_blank" rel="noopener" style="display:none;color:inherit;text-decoration:none">Mở thư mục</a><span id="sost" style="font-size:12px;color:var(--muted);align-self:center"></span></div>
       <h2 style="margin-top:18px;font-size:15px">Khóa API cho extension</h2>
       <p id="sokeyst" style="color:var(--muted);font-size:13px;margin:4px 0 8px">Chưa có khóa.</p>
       <div class="acts"><button class="btn dark" type="button" id="sokey">Tạo khóa mới</button><button class="btn" type="button" id="sorevoke">Thu hồi khóa</button></div>
       <div id="sokeybox" style="display:none;margin-top:10px"><input id="sokeyval" readonly style="font-family:monospace"><small style="color:#B4472F">Chép khóa này dán vào phần Cài đặt của extension. Khóa chỉ hiện một lần; tạo khóa mới sẽ vô hiệu khóa cũ.</small></div>
-      <div class="conn" style="margin-top:14px"><span class="ic" style="background:#1A73E8">G</span><div class="t"><b>Google Drive API</b><small>Biến GOOGLE_API_KEY trên Cloudflare · có thì đọc được thư mục con, kích thước, tải tệp gốc qua website</small></div><span id="sogst" class="todo">Chưa cài</span></div>
-      <div class="conn"><span class="ic" style="background:#1877F2">f</span><div class="t"><b>Facebook Graph API</b><small>Biến FB_PAGE_ID, FB_PAGE_TOKEN · có thì Facebook tự hẹn giờ đăng, không cần mở máy</small></div><span id="sofst" class="todo">Chưa cài</span></div>
     </div>
   </section>
 
@@ -978,8 +976,7 @@ $('uf').addEventListener('submit',async e=>{e.preventDefault();const body={email
 function measureState(){const g=$('gaid').value.trim(),p=$('pxid').value.trim();
  $('gast').textContent=g?'Đã cài '+g:'Chưa cài';$('gast').className=g?'ok':'todo';$('pxst').textContent=p?'Đã cài':'Chưa cài';$('pxst').className=p?'ok':'todo';}
 function socialPaint(d){$('sodrive').value=d.drive_link||'';const o=$('soopen');o.style.display=d.drive_link?'':'none';o.href=d.drive_link||'#';
- $('sokeyst').textContent=d.has_key?('Đã có khóa'+(d.key_created?' · tạo '+new Date(d.key_created).toLocaleString('vi-VN'):'')+(d.key_by?' bởi '+d.key_by:'')+'.'):'Chưa có khóa.';
- const st=(id,ok,t)=>{const e=$(id);e.className=ok?'ok':'todo';e.textContent=ok?t:'Chưa cài';};st('sogst',d.google_api,'Đã cài');st('sofst',d.facebook,'Trang '+(d.page_id||''));}
+ $('sokeyst').textContent=d.has_key?('Đã có khóa'+(d.key_created?' · tạo '+new Date(d.key_created).toLocaleString('vi-VN'):'')+(d.key_by?' bởi '+d.key_by:'')+'.'):'Chưa có khóa.';}
 async function loadSocial(){if(MODE!=='live')return;try{socialPaint(await api('/api/admin/social'));}catch(e){}}
 $('sosave').addEventListener('click',async()=>{if(MODE!=='live'){$('sost').textContent='Bản mẫu: chưa lưu thật.';return;}
  try{await api('/api/admin/social',{method:'PUT',body:JSON.stringify({drive_folder:$('sodrive').value.trim()})});$('sost').textContent='✓ Đã lưu.';loadSocial();}catch(e){$('sost').textContent=e.message==='bad_drive'?'Link thư mục Drive chưa đúng.':em(e);}});

@@ -1,8 +1,8 @@
-// Lịch đăng Facebook dùng chung cho cả nhóm (lưu D1). GET ?from=&to= (mili giây), POST tạo, PUT sửa {id,...}, DELETE ?id=.
+// Lịch đăng Facebook (đăng tay theo nhắc giờ) dùng chung cho cả nhóm (lưu D1). GET ?from=&to= (mili giây), POST tạo, PUT sửa {id,...}, DELETE ?id=.
 import { db, json, clip } from "../../_lib.js";
-import { socialAuth, FILE_ID, fbReady, fbDelete } from "../../_social.js";
+import { socialAuth, FILE_ID } from "../../_social.js";
 
-const STATUS = ["draft", "scheduled", "published"]; // fb_scheduled, failed do máy chủ đặt khi gọi Facebook
+const STATUS = ["draft", "scheduled", "published"];
 const HTTPS = /^https:\/\/[^\s<>"]{3,500}$/;
 
 function cleanMedia(list) {
@@ -29,7 +29,7 @@ export async function onRequestGet({ request, env }) {
   const { results } = await (await db(env)).prepare(
     `SELECT * FROM social_plans WHERE (scheduled_at BETWEEN ? AND ?) OR scheduled_at IS NULL ORDER BY scheduled_at IS NULL, scheduled_at LIMIT 500`
   ).bind(from, to).all();
-  return json({ items: results.map(row), facebook: fbReady(env) });
+  return json({ items: results.map(row) });
 }
 
 function read(b, old = {}) {
@@ -41,9 +41,8 @@ function read(b, old = {}) {
     source: b.source !== undefined ? cleanSource(b.source) : old.source ? JSON.parse(old.source) : null,
     scheduled_at: b.scheduled_at !== undefined ? (Number.isFinite(+b.scheduled_at) && +b.scheduled_at > 0 ? Math.round(+b.scheduled_at) : null) : old.scheduled_at ?? null,
     status: b.status !== undefined ? b.status : old.status || "draft",
-    mode: b.mode !== undefined ? (b.mode === "facebook" ? "facebook" : "manual") : old.mode || "manual",
   };
-  if (!STATUS.includes(v.status) && v.status !== old.status) return "bad_status";
+  if (!STATUS.includes(v.status)) return "bad_status";
   if (v.status === "scheduled" && !v.scheduled_at) return "no_time";
   if (!v.message && !v.media.length && !v.link) return "empty";
   return v;
@@ -56,8 +55,8 @@ export async function onRequestPost({ request, env }) {
   if (typeof v === "string") return json({ error: v }, 400);
   const now = Date.now();
   const r = await (await db(env)).prepare(
-    `INSERT INTO social_plans (title,message,link,media,source,scheduled_at,status,mode,created,updated,author) VALUES (?,?,?,?,?,?,?,?,?,?,?) RETURNING *`
-  ).bind(v.title, v.message, v.link, JSON.stringify(v.media), v.source ? JSON.stringify(v.source) : null, v.scheduled_at, v.status, v.mode, now, now, u.email).first();
+    `INSERT INTO social_plans (title,message,link,media,source,scheduled_at,status,created,updated,author) VALUES (?,?,?,?,?,?,?,?,?,?) RETURNING *`
+  ).bind(v.title, v.message, v.link, JSON.stringify(v.media), v.source ? JSON.stringify(v.source) : null, v.scheduled_at, v.status, now, now, u.email).first();
   return json({ item: row(r) }, 201);
 }
 
@@ -68,13 +67,11 @@ export async function onRequestPut({ request, env }) {
   const D = await db(env);
   const old = await D.prepare("SELECT * FROM social_plans WHERE id=?").bind(+b.id || 0).first();
   if (!old) return json({ error: "not_found" }, 404);
-  // Bài đã hẹn giờ trên Facebook: phải hủy hẹn trước khi sửa
-  if (old.status === "fb_scheduled") return json({ error: "fb_locked" }, 409);
   const v = read(b, old);
   if (typeof v === "string") return json({ error: v }, 400);
   const r = await D.prepare(
-    `UPDATE social_plans SET title=?,message=?,link=?,media=?,source=?,scheduled_at=?,status=?,mode=?,error=NULL,updated=?,author=? WHERE id=? RETURNING *`
-  ).bind(v.title, v.message, v.link, JSON.stringify(v.media), v.source ? JSON.stringify(v.source) : null, v.scheduled_at, v.status, v.mode, Date.now(), u.email, old.id).first();
+    `UPDATE social_plans SET title=?,message=?,link=?,media=?,source=?,scheduled_at=?,status=?,updated=?,author=? WHERE id=? RETURNING *`
+  ).bind(v.title, v.message, v.link, JSON.stringify(v.media), v.source ? JSON.stringify(v.source) : null, v.scheduled_at, v.status, Date.now(), u.email, old.id).first();
   return json({ item: row(r) });
 }
 
@@ -85,9 +82,6 @@ export async function onRequestDelete({ request, env }) {
   const D = await db(env);
   const old = await D.prepare("SELECT * FROM social_plans WHERE id=?").bind(id).first();
   if (!old) return json({ error: "not_found" }, 404);
-  if (old.status === "fb_scheduled" && old.fb_id && fbReady(env)) {
-    try { await fbDelete(env, old.fb_id); } catch (e) { return json({ error: "fb_error", detail: e.message }, 502); }
-  }
   await D.prepare("DELETE FROM social_plans WHERE id=?").bind(id).run();
   return json({ ok: true });
 }

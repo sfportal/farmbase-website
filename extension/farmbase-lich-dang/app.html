@@ -28,7 +28,7 @@
         <button class="btn" id="mnext" title="Tháng sau">›</button>
         <button class="btn" id="mtoday">Hôm nay</button>
         <span class="sp"></span>
-        <span class="legend"><i class="s-draft"></i>Nháp <i class="s-scheduled"></i>Nhắc đăng tay <i class="s-fb_scheduled"></i>Facebook đã hẹn <i class="s-published"></i>Đã đăng <i class="s-failed"></i>Lỗi</span>
+        <span class="legend"><i class="s-draft"></i>Nháp <i class="s-scheduled"></i>Đã lên lịch <i class="s-published"></i>Đã đăng</span>
       </div>
       <div class="cal" id="cal"></div>
       <h3>Cần làm</h3>
@@ -83,9 +83,9 @@
         <pre id="dmsg"></pre>
         <div id="dmedia" class="grid sm"></div>
         <div class="steps">
-          <button class="btn dark" id="dcopy">1. Sao chép nội dung</button>
-          <button class="btn dark" id="ddown">2. Tải tư liệu về máy</button>
-          <button class="btn dark" id="dfb">3. Mở Facebook để đăng</button>
+          <button class="btn dark" id="dcopy">Sao chép nội dung</button>
+          <button class="btn dark" id="ddown">Tải tư liệu về máy</button>
+          <button class="btn dark" id="dfb">Mở Facebook để đăng</button>
           <button class="btn ok" id="ddone">Đánh dấu đã đăng</button>
           <button class="btn" id="dedit">Sửa bài</button>
         </div>
@@ -103,18 +103,11 @@
     <label>Link đính kèm<input id="flink" placeholder="https://farmbase.vn/bai-viet/…"></label>
     <div class="lbl">Tư liệu <small>(tối đa 10 ảnh hoặc 1 video)</small></div>
     <div id="fmedia" class="media"></div>
-    <div class="row2">
-      <label>Thời gian đăng<input id="fwhen" type="datetime-local"></label>
-      <label>Cách đăng
-        <select id="fmode"><option value="manual">Nhắc tôi đăng tay</option><option value="facebook">Facebook tự hẹn giờ</option></select>
-      </label>
-    </div>
+    <label>Thời gian đăng<input id="fwhen" type="datetime-local"><small>Đến giờ extension nhắc, bấm vào thông báo để đăng.</small></label>
     <p id="fsrc" class="muted"></p>
     <div class="acts">
       <button class="btn" id="bdraft">Lưu nháp</button>
-      <button class="btn dark" id="bsched">Lên lịch</button>
-      <button class="btn" id="bnow" hidden>Đăng ngay</button>
-      <button class="btn" id="bcancel" hidden>Hủy hẹn trên Facebook</button>
+      <button class="btn dark" id="bsched">Lên lịch nhắc</button>
       <button class="btn danger" id="bdel" hidden>Xóa</button>
     </div>
     <p id="cmsg" class="muted"></p>
