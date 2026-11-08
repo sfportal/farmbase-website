@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Kiểm tra quy trình MSVT · BVI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one narrow column like a field form; sticky timer bar; manager view swaps in below the same header */
+:root{
+  --bg:#f3f6f1; --card:#ffffff; --fg:#17251c; --muted:#5b6b60; --line:#d9e2d6;
+  --green:#1f7a45; --green-ink:#ffffff; --green-soft:#e3f1e7; --amber:#b86b00; --amber-soft:#fbefd9;
+  --red:#b3261e; --red-soft:#f9e1df; --sel:#e9f4ec;
+  --f-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1712; --card:#16211a; --fg:#e4ede6; --muted:#9aaba0; --line:#2a3a30;
+  --green:#4fbf7d; --green-ink:#08130c; --green-soft:#1b3324; --amber:#f0a83c; --amber-soft:#3a2b12;
+  --red:#ef7a70; --red-soft:#3b1d1a; --sel:#1d3125; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1712; --card:#16211a; --fg:#e4ede6; --muted:#9aaba0; --line:#2a3a30;
+  --green:#4fbf7d; --green-ink:#08130c; --green-soft:#1b3324; --amber:#f0a83c; --amber-soft:#3a2b12;
+  --red:#ef7a70; --red-soft:#3b1d1a; --sel:#1d3125; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+#mcq,#essay{display:grid;gap:14px}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:720px;margin:0 auto}
+header.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:700}
+h1{font-size:clamp(24px,5vw,32px);line-height:1.2;margin:0;font-weight:800;text-wrap:balance}
+h2{font-size:18px;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:0}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.pill{font-family:var(--f-mono);font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--green-soft);color:var(--green);font-variant-numeric:tabular-nums}
+.pill.warn{background:var(--amber-soft);color:var(--amber)}
+.progress{flex:1;min-width:120px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress>i{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.tabs{display:flex;gap:6px;margin-left:auto}
+.tabs button{font:600 13px var(--f-body);border:1px solid var(--line);background:var(--card);color:var(--fg);padding:6px 12px;border-radius:8px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+section.block{display:grid;gap:14px;margin-top:22px}
+.sec-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec-h .meta{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px}
+.q .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:700}
+.q .t{font-weight:600}
+.q .tag{font-size:12px;color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--card)}
+.opt:hover{border-color:var(--green)}
+.opt input{margin-top:4px;accent-color:var(--green);flex:none}
+.opt:has(input:checked){background:var(--sel);border-color:var(--green)}
+.opt .k{font-family:var(--f-mono);font-weight:700;color:var(--muted);flex:none}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.case{background:var(--amber-soft);border-radius:8px;padding:10px 12px;font-size:14.5px}
+textarea,input[type=text],input[type=number]{width:100%;font:15px/1.5 var(--f-body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:92px;resize:vertical}
+textarea:focus,input:focus,button:focus-visible,.opt:focus-within{outline:2px solid var(--green);outline-offset:1px}
+.hint{font-size:12.5px;color:var(--muted)}
+.btn{font:700 15px var(--f-body);border:0;border-radius:10px;padding:12px 18px;cursor:pointer;background:var(--green);color:var(--green-ink)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.notice{border-radius:10px;padding:12px 14px;background:var(--green-soft);color:var(--fg)}
+.notice.err{background:var(--red-soft)}
+.notice.amber{background:var(--amber-soft)}
+.intro{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:12px;margin-top:18px}
+.intro ul{margin:0;padding-left:20px}
+.score{font-family:var(--f-mono);font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+/* manager */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+tr.pick{cursor:pointer} tr.pick:hover td{background:var(--sel)}
+.chip{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--amber-soft);color:var(--amber)}
+td.c-ok{background:var(--green-soft);color:var(--green);font-weight:700;text-align:center}
+td.c-no{background:var(--red-soft);color:var(--red);font-weight:700;text-align:center}
+table.mx th,table.mx td{padding:8px 10px}
+.chip.ok{background:var(--green-soft);color:var(--green)}
+.key{border-left:3px solid var(--green);padding:8px 12px;background:var(--green-soft);border-radius:0 8px 8px 0;font-size:14px}
+.key ul{margin:4px 0 0;padding-left:18px}
+.ans{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
+.grade{display:flex;gap:8px;align-items:center}
+.grade input{width:90px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">BVI · FarmBase · Đội triển khai mã số vùng trồng</div>
+    <h1>Kiểm tra quy trình triển khai mã vùng trồng tại xã</h1>
+    <p class="sub">Theo Quy trình bản 2.0 (03/11/2026): Bước 0 đến Bước 8, 3 cổng, định mức buổi tại vùng.</p>
+  </header>
+
+  <div class="bar" id="bar">
+    <span class="pill" id="timer">05:00</span>
+    <div class="progress" aria-label="Tiến độ làm bài"><i id="prog"></i></div>
+    <span class="pill" id="count">0/13</span>
+    <div class="tabs" id="tabs">
+      <button type="button" id="tab-test" aria-pressed="true">Làm bài</button>
+      <button type="button" id="tab-admin" aria-pressed="false">Quản lý chấm bài</button>
+    </div>
+  </div>
+
+  <main id="view-test">
+    <div class="intro" id="intro">
+      <h2>Trước khi bắt đầu</h2>
+      <ul>
+        <li><b>10 câu trắc nghiệm</b> (6 điểm/câu) và <b>3 câu tình huống</b> trả lời ngắn vài dòng (40 điểm). Tổng 100 điểm.</li>
+        <li>Thời gian làm bài <b>5 phút</b>, đồng hồ chạy ngay khi bấm Bắt đầu. <b>Hết giờ bài tự nộp</b> với những câu đã làm. Tải lại trang không dừng đồng hồ.</li>
+        <li>Tự luận: không cần viết dài. Ghi ý chính, làm gì trước, làm gì sau, ai làm.</li>
+        <li>Mỗi người làm một lần. Quản lý chấm phần tình huống; mở lại trang này trên cùng điện thoại để xem điểm.</li>
+      </ul>
+      <div class="notice" id="phien-info" hidden></div>
+      <label for="ho-ten"><b>Họ và tên của bạn</b> <span class="hint">(gõ đầy đủ, quản lý phân biệt bài theo tên)</span></label>
+      <input type="text" id="ho-ten" placeholder="Ví dụ: Nguyễn Thị Mẫn" autocomplete="off">
+      <div class="row">
+        <button class="btn" type="button" id="start">Bắt đầu làm bài</button>
+        <span class="hint" id="start-hint"></span>
+      </div>
+    </div>
+
+    <form id="form" hidden novalidate>
+      <section class="block">
+        <div class="sec-h"><h2>Phần 1 · Trắc nghiệm</h2><span class="meta">10 câu · 60 điểm · chọn 1 đáp án</span></div>
+        <div id="mcq"></div>
+      </section>
+      <section class="block">
+        <div class="sec-h"><h2>Phần 2 · Tình huống</h2><span class="meta">3 câu · 40 điểm · trả lời 2–5 dòng</span></div>
+        <div id="essay"></div>
+      </section>
+      <section class="block">
+        <div id="submit-msg" hidden></div>
+        <div class="row">
+          <button class="btn" type="submit" id="submit">Nộp bài</button>
+          <span class="hint" id="submit-hint"></span>
+        </div>
+      </section>
+    </form>
+
+    <div id="done" hidden></div>
+  </main>
+
+  <main id="view-admin" hidden></main>
+</div>
+<script>
+const MCQ = [
+  {id:"q1", tag:"Cổng 1 · Bước 1", t:"Đội được đưa bà con ký bất kỳ giấy tờ hồ sơ nào từ khi nào?", o:{
+    a:"Ngay tại buổi họp dân đầu tiên, để giữ chân bà con",
+    b:"Sau khi khảo sát xong lô thửa ở Bước 2",
+    c:"Chỉ sau khi đã chốt một hình thức đứng mã bằng biên bản ở Bước 1",
+    d:"Ngay khi UBND xã đồng ý cho triển khai"}},
+  {id:"q2", tag:"Timeline từ mốc T", t:"KPI của đội: hồ sơ phải nộp online chậm nhất bao nhiêu ngày tính từ mốc T?", o:{
+    a:"20 ngày", b:"30 ngày", c:"45 ngày", d:"60 ngày"}},
+  {id:"q3", tag:"Bước 6", t:"Hồ sơ mã số vùng trồng nội địa được nộp ở đâu?", o:{
+    a:"UBND xã nơi có vùng trồng, qua Cổng Dịch vụ công quốc gia",
+    b:"Chi cục Trồng trọt và BVTV tỉnh, nộp bản giấy",
+    c:"Gửi thẳng cho GACC Trung Quốc",
+    d:"Hiệp hội Sầu riêng nộp thay cho vùng"}},
+  {id:"q4", tag:"Bước 4 · Thu phí", t:"Tại buổi tập huấn, ký hồ sơ, khi nào đội thu phí đợt 1 (15 triệu đồng)?", o:{
+    a:"Ở cả ba hình thức đứng mã",
+    b:"Chỉ khi doanh nghiệp/HTX do công ty giới thiệu đứng mã (Hình thức 1)",
+    c:"Chỉ khi mã về HTX công ty hợp tác sâu (Hình thức 3)",
+    d:"Chỉ khi Tổ hợp tác nông dân đứng mã (Hình thức 2), và phải có phiếu thu"}},
+  {id:"q5", tag:"Phần D · Chốt sổ", t:"Hai mốc chốt sổ danh sách hộ là:", o:{
+    a:"Trước sự kiện ký 5 ngày, và trước khi xã kiểm tra 3 ngày",
+    b:"Trước sự kiện ký 3 ngày, và trước khi xã kiểm tra 5 ngày",
+    c:"Đúng ngày sự kiện ký, và đúng ngày xã kiểm tra",
+    d:"Trước khi nộp online 7 ngày"}},
+  {id:"q6", tag:"D3 · Định mức buổi", t:"Một hộ vắng mặt ở buổi ký hồ sơ. Theo bản 2.0, xử lý thế nào?", o:{
+    a:"Trong 3 ngày, đại diện mã hoặc tổ trưởng mang hồ sơ đến nhà ký; còn sót thì ký nốt ở buổi xã kiểm tra hoặc tách sang đợt sau",
+    b:"Nhân sự công ty xếp một buổi riêng xuống tận nhà ký",
+    c:"Hoãn nộp cả vùng đến khi hộ đó ký xong",
+    d:"Cho người thân ký thay, không cần giấy ủy quyền"}},
+  {id:"q7", tag:"HT7 · Sửa hồ sơ", t:"Xã kiểm tra và yêu cầu sửa diện tích của một hộ. Thứ tự làm đúng là:", o:{
+    a:"Sửa tay trên bản giấy rồi đưa hộ ký nháy bên cạnh",
+    b:"Sửa trên FarmBase trước, xuất lại các trang bị ảnh hưởng, ký lại, hủy bản cũ",
+    c:"In lại toàn bộ hồ sơ cả vùng và cho tất cả các hộ ký lại",
+    d:"Ghi chú lại, đợi phía Trung Quốc hỏi thì sửa một thể"}},
+  {id:"q8", tag:"HT9 · Bảo mật", t:"Thứ nào KHÔNG được tải lên Thư viện vùng trên FarmBase (hiện khi quét QR truy xuất)?", o:{
+    a:"Video flycam toàn vùng",
+    b:"Ảnh bẫy côn trùng có số hiệu",
+    c:"Ảnh kho thuốc có kệ, có khóa",
+    d:"Bản scan danh sách tập huấn có số điện thoại bà con"}},
+  {id:"q9", tag:"A6 · Định mức buổi", t:"Một mã mới làm theo quy trình có định mức mấy buổi xuống vùng?", o:{
+    a:"2 buổi: khảo sát và tập huấn",
+    b:"3 buổi: khảo sát (Bước 2), tập huấn và ký (Bước 4), đi cùng xã kiểm tra (Bước 5)",
+    c:"5 buổi, mỗi bước chính một buổi",
+    d:"Không giới hạn, cần thì đi"}},
+  {id:"q10", tag:"HT4 · FarmBase", t:"Bà con tự tạo vườn trong FarmBase trên Zalo. Vườn đó:", o:{
+    a:"Tự động được đưa vào mã vùng trồng",
+    b:"Được tính vào mã nếu bà con gửi ảnh sổ đỏ vào nhóm Zalo",
+    c:"Chỉ cần người phụ trách vùng bấm duyệt là vào mã",
+    d:"Là điểm sản xuất cá nhân, không thuộc mã vùng; vườn trong mã phải do nhóm thu thập tạo trong vùng"}}
+];
+const ESSAY = [
+  {id:"e1", max:15, tag:"Cổng 2 · Bước 3 → 4", t:"Thiếu giấy tờ sát ngày tập huấn",
+   c:"Còn 2 ngày nữa là buổi tập huấn, ký hồ sơ. Vùng 25 hộ, còn 3 hộ chưa nộp sổ đỏ: 1 hộ đang thế chấp ngân hàng, 2 hộ sợ mất đất nên không chịu đưa. Đại diện mã đề nghị hoãn cả vùng thêm 1 tuần.",
+   q:"Anh/chị có đồng ý hoãn không? Xử lý 3 hộ này thế nào?"},
+  {id:"e2", max:10, tag:"Giao tiếp với bà con", t:"Bà con hỏi ngày có mã",
+   c:"Trong nhóm Zalo, một bà con hỏi: \"Bao giờ có mã để bán qua Trung Quốc? Công ty cam kết ngày đi, trễ thì công ty chịu không?\"",
+   q:"Anh/chị trả lời thế nào? Viết 2–3 câu như tin nhắn gửi vào nhóm."},
+  {id:"e3", max:15, tag:"Bước 5 · D5 · Cổng 3", t:"Xã yêu cầu sửa nhiều thứ trong buổi kiểm tra",
+   c:"Trong buổi xã kiểm tra thực địa (Hình thức 1, doanh nghiệp đứng mã ở xa): xã yêu cầu bỏ 1 hộ vì đất đang tranh chấp, sửa diện tích của 2 hộ; cùng lúc có 1 hộ mới xin vào.",
+   q:"Sắp xếp xử lý thế nào để không phải ký đi ký lại nhiều vòng và không xuống vùng thêm buổi?"}
+];
+const TOTAL_Q = MCQ.length + ESSAY.length;
+const API = "/api/kiem-tra", API_QL = "/api/kiem-tra-quan-ly", LS = "fb-kiemtra-msvt";
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let S = null;            // {id, token, batDau, hoTen, tn, tl}
+let LIMIT = 300, skew = 0, tick = null, submitting = false, pin = null;
+
+const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)) } catch(_){} };
+const load = () => { try { return JSON.parse(localStorage.getItem(LS) || "null") } catch(_) { return null } };
+async function call(url, opt = {}) {
+  const r = await fetch(url, { ...opt, headers: { "content-type": "application/json", ...(opt.headers || {}) } });
+  let d = null; try { d = await r.json() } catch(_){}
+  if (!r.ok) { const e = new Error((d && d.error) || ("http_" + r.status)); e.status = r.status; throw e }
+  return d;
+}
+
+function renderTest(){
+  $("#mcq").innerHTML = MCQ.map((q,i)=>`
+    <div class="q" role="group" aria-labelledby="t-${q.id}">
+      <div class="n">CÂU ${i+1} · <span class="tag">${esc(q.tag)}</span></div>
+      <div class="t" id="t-${q.id}">${esc(q.t)}</div>
+      <div class="opts">${Object.entries(q.o).map(([k,v])=>`
+        <label class="opt"><input type="radio" name="${q.id}" id="${q.id}-${k}" value="${k}"><span class="k">${k.toUpperCase()}</span><span>${esc(v)}</span></label>`).join("")}
+      </div>
+    </div>`).join("");
+  $("#essay").innerHTML = ESSAY.map((e,i)=>`
+    <div class="q">
+      <div class="n">TÌNH HUỐNG ${i+1} · ${e.max} ĐIỂM · <span class="tag">${esc(e.tag)}</span></div>
+      <div class="t">${esc(e.t)}</div>
+      <div class="case">${esc(e.c)}</div>
+      <label for="${e.id}"><b>${esc(e.q)}</b></label>
+      <textarea id="${e.id}" name="${e.id}" placeholder="Ý chính, làm gì trước, ai làm…"></textarea>
+    </div>`).join("");
+  $("#form").addEventListener("input", updateProgress);
+  $("#form").addEventListener("change", updateProgress);
+}
+function collect(){
+  const tn = {}, tl = {};
+  MCQ.forEach(q=>{const c=document.querySelector(`input[name="${q.id}"]:checked`); tn[q.id]=c?c.value:null});
+  ESSAY.forEach(e=>{tl[e.id]=$("#"+e.id).value.trim()});
+  return {tn, tl};
+}
+function updateProgress(){
+  const {tn,tl} = collect();
+  const n = Object.values(tn).filter(Boolean).length + Object.values(tl).filter(v=>v.length>=10).length;
+  $("#count").textContent = `${n}/${TOTAL_Q}`;
+  $("#prog").style.width = (n/TOTAL_Q*100)+"%";
+  if (S && !S.nopLuc) { S.tn = tn; S.tl = tl; save() }
+}
+const fmt = s => String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+function startTimer(){
+  clearInterval(tick);
+  const upd=()=>{
+    const left = LIMIT - Math.floor((Date.now() + skew - S.batDau)/1000);
+    const p=$("#timer"); p.textContent = left>0 ? fmt(left) : "Hết giờ"; p.classList.toggle("warn", left<60);
+    if (left<=0 && !submitting) { clearInterval(tick); submit(null, true) }
+  };
+  upd(); tick=setInterval(upd, 500);
+}
+function showForm(){
+  $("#intro").hidden = true; $("#form").hidden = false;
+  Object.entries(S.tn||{}).forEach(([k,v])=>{ if(v){ const el=document.getElementById(k+"-"+v); if(el) el.checked=true } });
+  Object.entries(S.tl||{}).forEach(([k,v])=>{ const el=document.getElementById(k); if(el) el.value=v||"" });
+  updateProgress(); startTimer();
+}
+async function begin(){
+  const hoTen = $("#ho-ten").value.trim();
+  if (hoTen.length < 4 || !/\s/.test(hoTen)) { $("#start-hint").textContent = "Gõ đầy đủ họ và tên (ví dụ: Nguyễn Thị Mẫn) trước khi bắt đầu."; $("#ho-ten").focus(); return }
+  $("#start").disabled = true; $("#start-hint").textContent = "Đang mở bài…";
+  try {
+    const d = await call(API, { method:"POST", body: JSON.stringify({ action:"bat-dau", hoTen }) });
+    LIMIT = d.thoiGian || 300; skew = d.now - Date.now();
+    S = { id:d.id, token:d.token, batDau:d.batDau, hoTen, tn:{}, tl:{} }; save();
+    showForm(); window.scrollTo({top:0});
+  } catch(e) {
+    $("#start").disabled = false;
+    $("#start-hint").textContent = e.status===423 ? "Bài kiểm tra đang đóng. Chờ quản lý mở phiên mới." : e.status===429 ? "Mở bài quá nhiều lần từ mạng này. Thử lại sau ít phút." : "Chưa mở được bài, kiểm tra mạng rồi bấm lại.";
+  }
+}
+async function submit(ev, force){
+  if (ev) ev.preventDefault();
+  if (submitting || !S) return;
+  const {tn,tl} = collect();
+  const missing = MCQ.map((q,i)=>tn[q.id]?0:i+1).filter(Boolean);
+  const emptyE = ESSAY.filter(e=>tl[e.id].length<10).length;
+  const msg = $("#submit-msg");
+  if (!force && (missing.length||emptyE) && !$("#submit").dataset.confirm) {
+    msg.hidden=false; msg.className="notice amber";
+    msg.textContent = `Còn ${missing.length?`câu trắc nghiệm ${missing.join(", ")}`:""}${missing.length&&emptyE?" và ":""}${emptyE?`${emptyE} câu tình huống`:""} chưa trả lời. Bấm "Nộp bài" lần nữa nếu vẫn muốn nộp.`;
+    $("#submit").dataset.confirm="1"; return;
+  }
+  submitting = true;
+  $("#form").querySelectorAll("input,textarea,button").forEach(el=>el.disabled=true);
+  $("#submit-hint").textContent = force ? "Hết giờ, đang tự nộp bài…" : "Đang nộp…";
+  for (let i = 0; i < 4; i++) {
+    try {
+      const d = await call(API, { method:"POST", body: JSON.stringify({ action:"nop", id:S.id, token:S.token, tn, tl }) });
+      clearInterval(tick); S.nopLuc = d.nopLuc; S.tn = tn; S.tl = tl; save(); showDone(d); return;
+    } catch(e) {
+      if (e.status === 404) break;
+      msg.hidden=false; msg.className="notice err"; msg.textContent="Mạng chập chờn, đang thử nộp lại…";
+      await new Promise(r=>setTimeout(r, 1500*(i+1)));
+    }
+  }
+  submitting = false;
+  $("#submit").disabled = false; $("#submit-hint").textContent = "";
+  msg.hidden=false; msg.className="notice err";
+  msg.textContent="Nộp chưa được. Kiểm tra mạng rồi bấm Nộp bài lại; câu trả lời vẫn được giữ trên máy này.";
+}
+function showDone(b){
+  $("#intro").hidden=true; $("#form").hidden=true; clearInterval(tick);
+  $("#timer").textContent = b.giay!=null ? fmt(Math.min(b.giay, 5999)) : "--:--";
+  $("#count").textContent = `${TOTAL_Q}/${TOTAL_Q}`; $("#prog").style.width="100%";
+  const d=$("#done"); d.hidden=false;
+  const graded = typeof b.tong === "number";
+  d.innerHTML = `<div class="intro">
+    <h2>${graded?"Kết quả bài kiểm tra":"Đã nộp bài"}</h2>
+    <p class="sub">${esc(b.hoTen)} · nộp lúc ${new Date(b.nopLuc).toLocaleString("vi-VN")} · làm trong ${Math.floor(b.giay/60)} phút ${b.giay%60} giây</p>
+    ${graded?`<div class="row"><span class="score">${b.tong}/100</span><span class="hint">Trắc nghiệm ${b.diemTN}/60 · Tình huống ${b.diemTL}/40</span></div>${b.nhanXet?`<div class="notice">${esc(b.nhanXet)}</div>`:""}`
+      :`<div class="notice">Quản lý sẽ chấm phần tình huống và báo điểm. Mở lại trang này trên máy này sau để xem kết quả.</div>`}
+  </div>`;
+}
+
+/* ---------- quản lý ---------- */
+let QL = null, openId = null;
+const scoreTN = b => b.diemTN ?? 0;
+function renderPin(msgText){
+  $("#view-admin").innerHTML=`<div class="intro"><h2>Nhập mã PIN quản lý</h2>
+    <p class="sub">Phần chấm bài và xem kết quả chỉ dành cho quản lý.</p>
+    <input type="password" id="pin" inputmode="numeric" autocomplete="off" placeholder="Mã PIN">
+    <div class="row"><button class="btn" type="button" id="pin-go">Vào chấm bài</button><span class="hint" id="pin-msg">${esc(msgText||"")}</span></div></div>`;
+  const go = async () => {
+    const v = $("#pin").value.trim(); if (!v) return;
+    $("#pin-msg").textContent = "Đang kiểm tra…";
+    try { pin = v; await loadQL(); }
+    catch(e){ pin = null; $("#pin-msg").textContent = e.status===401 ? "Mã PIN chưa đúng." : e.status===429 ? "Sai quá nhiều lần, thử lại sau 15 phút." : "Chưa tải được, thử lại." }
+  };
+  $("#pin-go").addEventListener("click", go);
+  $("#pin").addEventListener("keydown", e=>{ if(e.key==="Enter") go() });
+  $("#pin").focus();
+}
+let xemPhien = null;
+async function loadQL(){
+  QL = await call(API_QL, { method:"POST", headers:{ "x-pin": pin }, body: JSON.stringify({ phien: xemPhien }) });
+  xemPhien = QL.phienId;
+  renderAdmin();
+}
+const tenKey = t => String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/\s+/g," ").trim();
+function phienBar(){
+  const cur = QL.phiens.find(p=>p.id===QL.phienId);
+  return `<section class="block"><div class="q">
+    <div class="sec-h"><h2>Phiên làm bài</h2><span class="meta">${QL.phienMo?`đang mở: ${esc((QL.phiens.find(p=>p.id===QL.phienMo)||{}).ten||"")}`:"đang đóng, không ai bắt đầu được"}</span></div>
+    <div class="row"><label for="ql-phien">Xem kết quả</label>
+      <select id="ql-phien" style="font:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg)">${QL.phiens.map(p=>`<option value="${p.id}" ${p.id===QL.phienId?"selected":""}>${esc(p.ten)} · ${new Date(p.taoLuc).toLocaleDateString("vi-VN")} · ${p.soBai} bài${p.dangMo?" · đang mở":""}</option>`).join("")}</select></div>
+    <div class="row">
+      <button class="btn" type="button" id="ql-new">Tạo phiên mới cho mọi người làm lại</button>
+      ${QL.phienMo?`<button class="btn ghost" type="button" id="ql-close">Đóng phiên đang mở</button>`:(cur?`<button class="btn ghost" type="button" id="ql-open">Mở lại phiên này</button>`:"")}
+    </div>
+    <span class="hint" id="ql-phien-msg">Phiên mới: ai mở link sẽ làm lại từ đầu, kể cả người đã nộp. Kết quả phiên cũ vẫn giữ, chọn ở ô "Xem kết quả".</span>
+  </div></section>`;
+}
+function bindPhien(){
+  $("#ql-phien").addEventListener("change", e=>{ xemPhien=Number(e.target.value); openId=null; loadQL().catch(()=>{}) });
+  const put = async (body, ok) => { try { await call(API_QL, { method:"PUT", headers:{ "x-pin":pin }, body: JSON.stringify(body) }); xemPhien=null; openId=null; await loadQL(); $("#ql-phien-msg").textContent=ok } catch(_) { $("#ql-phien-msg").textContent="Chưa làm được, thử lại." } };
+  const nb = $("#ql-new");
+  nb.addEventListener("click", ()=>{
+    if (!nb.dataset.confirm) { nb.dataset.confirm="1"; nb.textContent="Bấm lần nữa để mở phiên mới"; return }
+    const n = QL.phiens.length + 1;
+    put({ action:"phien-moi", ten:`Phiên ${n} · ${new Date().toLocaleDateString("vi-VN")}` }, "Đã mở phiên mới. Gửi lại link cho mọi người làm bài.");
+  });
+  $("#ql-close")?.addEventListener("click", ()=>put({ action:"dong" }, "Đã đóng phiên. Không ai bắt đầu bài mới được."));
+  $("#ql-open")?.addEventListener("click", ()=>put({ action:"mo", id: QL.phienId }, "Đã mở lại phiên này."));
+}
+function renderAdmin(){
+  const v=$("#view-admin");
+  const rows = QL.bai, done = rows.filter(b=>b.nopLuc);
+  const avg = done.length ? Math.round(done.reduce((s,b)=>s+scoreTN(b),0)/done.length) : 0;
+  const dem = {}; done.forEach(b=>{ const k=tenKey(b.hoTen); dem[k]=(dem[k]||0)+1 });
+  v.innerHTML = phienBar() + `<section class="block">
+    <div class="sec-h"><h2>Bài đã nộp</h2><span class="meta">${done.length} đã nộp · ${rows.length-done.length} đang làm · TB trắc nghiệm ${avg}/60</span></div>
+    <div class="row"><button class="btn ghost" type="button" id="ql-reload">Tải lại danh sách</button></div>
+    ${rows.length?`<div class="tbl-wrap"><table><thead><tr><th>Họ tên</th><th>Nộp lúc</th><th>Thời gian</th><th>Trắc nghiệm</th><th>Tình huống</th><th>Tổng</th></tr></thead><tbody>
+    ${rows.map(b=>!b.nopLuc
+      ? `<tr><td>${esc(b.hoTen)}</td><td colspan="5"><span class="chip">${Date.now()-b.batDau > 10*60000 ? "Bỏ dở" : "Đang làm"} · bắt đầu ${new Date(b.batDau).toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"})}</span></td></tr>`
+      : `<tr class="pick" data-id="${b.id}" tabindex="0"><td>${esc(b.hoTen)}${dem[tenKey(b.hoTen)]>1?' <span class="chip">trùng tên</span>':''}${b.hetGio?' <span class="chip">nộp trễ</span>':''}</td><td class="num">${new Date(b.nopLuc).toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"})}</td>
+      <td class="num">${Math.floor(b.giay/60)}:${String(b.giay%60).padStart(2,"0")}</td><td class="num">${scoreTN(b)}/60</td>
+      <td>${typeof b.diemTL==="number"?`<span class="num">${b.diemTL}/40</span> <span class="chip ${b.chamLuc?"ok":""}">${b.chamLuc?"đã duyệt":"tự chấm"}</span>`:`<span class="chip">Chưa chấm</span>`}</td>
+      <td>${typeof b.tong==="number"?`<span class="chip ok">${b.tong}</span>`:"–"}</td></tr>`).join("")}
+    </tbody></table></div>`:`<div class="notice">Chưa có bài nộp. Gửi link trang này cho nhân sự, bài nộp sẽ hiện ở đây.</div>`}
+  </section>
+  ${done.length?`<section class="block">
+    <div class="sec-h"><h2>Bảng đáp án từng người</h2><span class="meta">xanh: đúng · đỏ: sai · –: bỏ trống</span></div>
+    <div class="tbl-wrap"><table class="mx"><thead><tr><th>Họ tên</th>${MCQ.map((q,i)=>`<th title="${esc(q.t)}">C${i+1}</th>`).join("")}<th>Điểm TN</th></tr></thead><tbody>
+    ${done.map(b=>`<tr class="pick" data-id="${esc(b._id??b.id)}" tabindex="0"><td>${esc(b.hoTen)}</td>${MCQ.map(q=>{const a=b.tn?.[q.id]; return `<td class="num ${a?(a===QL.dapAn[q.id]?"c-ok":"c-no"):""}">${a?a.toUpperCase():"–"}</td>`}).join("")}<td class="num">${scoreTN(b)}/60</td></tr>`).join("")}
+    <tr><td><b>Đáp án đúng</b></td>${MCQ.map(q=>`<td class="num"><b>${QL.dapAn[q.id].toUpperCase()}</b></td>`).join("")}<td></td></tr>
+    <tr><td class="hint">Số người đúng</td>${MCQ.map(q=>`<td class="num hint">${done.filter(b=>b.tn?.[q.id]===QL.dapAn[q.id]).length}/${done.length}</td>`).join("")}<td></td></tr>
+    </tbody></table></div></section>`:""}
+  <section class="block" id="detail"></section>
+  <section class="block">
+    <div class="sec-h"><h2>Đáp án trắc nghiệm</h2><span class="meta">chỉ hiện sau khi nhập PIN</span></div>
+    ${MCQ.map((q,i)=>`<div class="key"><b>Câu ${i+1}: ${QL.dapAn[q.id].toUpperCase()}</b> · ${esc(q.o[QL.dapAn[q.id]])}<div class="hint">${esc(QL.giaiThich[q.id]||"")}</div></div>`).join("")}
+  </section>`;
+  $("#ql-reload").addEventListener("click", ()=>loadQL().catch(()=>{}));
+  bindPhien();
+  v.querySelectorAll("tr.pick").forEach(tr=>{
+    const go=()=>{ openId=Number(tr.dataset.id); renderDetail(); $("#detail").scrollIntoView({behavior:"smooth"}) };
+    tr.addEventListener("click",go); tr.addEventListener("keydown",e=>{ if(e.key==="Enter") go() });
+  });
+  renderDetail();
+}
+function renderDetail(){
+  const box=$("#detail"); if(!box) return;
+  const b=QL.bai.find(s=>s.id===openId); if(!b){ box.innerHTML=""; return }
+  box.innerHTML=`<div class="sec-h"><h2>Chấm bài: ${esc(b.hoTen)}</h2><span class="meta">trắc nghiệm tự chấm ${scoreTN(b)}/60</span></div>
+  <div class="q"><div class="n">TRẮC NGHIỆM · ĐÁP ÁN TỪNG CÂU</div>
+    ${MCQ.map((q,i)=>{ const a=b.tn?.[q.id], k=QL.dapAn[q.id], ok=a===k;
+      return `<div class="opt ${ok?"right":"wrong"}" style="cursor:default;display:grid;gap:4px">
+        <span><b>Câu ${i+1}.</b> ${esc(q.t)}</span>
+        <span>${ok?"✓":"✗"} <b>Chọn:</b> ${a?`${a.toUpperCase()}. ${esc(q.o[a])}`:"Bỏ trống"}</span>
+        ${ok?"":`<span class="hint"><b>Đáp án đúng:</b> ${k.toUpperCase()}. ${esc(q.o[k])}</span>`}</div>`}).join("")}
+  </div>
+  ${ESSAY.map((e,i)=>`<div class="q">
+    <div class="n">TÌNH HUỐNG ${i+1} · TỐI ĐA ${e.max} ĐIỂM</div><div class="t">${esc(e.t)}</div>
+    <div class="ans">${esc(b.tl?.[e.id]||"(bỏ trống)")}</div>
+    <div class="key"><b>Tự chấm sơ bộ: ${b.tuCham?.per?.[e.id]??0}/${e.max}</b> <span class="hint">(dò theo ý chính, quản lý xem lại và sửa)</span><ul style="list-style:none;padding-left:0">${(QL.tuCham[e.id]||[]).map((y,j)=>{const ok=(b.tuCham?.khop?.[e.id]||[]).includes(j);return `<li>${ok?"✓":"○"} ${esc(y.y)} <span class="hint">(${y.d} điểm)</span></li>`}).join("")}</ul></div>
+    <details class="key"><summary><b>Ý cần có (đáp án mẫu)</b></summary><ul>${(QL.yCham[e.id]||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>
+    <div class="grade"><label for="g-${e.id}">Điểm</label><input type="number" id="g-${e.id}" min="0" max="${e.max}" step="0.5" value="${b.diemTungCau?.[e.id]??""}"><span class="hint">/ ${e.max}</span></div>
+  </div>`).join("")}
+  <div class="q"><label for="g-note"><b>Nhận xét gửi nhân sự</b> (tùy chọn)</label><textarea id="g-note" placeholder="Ví dụ: nắm chắc 3 cổng, cần ôn lại định mức buổi.">${esc(b.nhanXet||"")}</textarea>
+    <div class="row"><button class="btn" type="button" id="g-save">${b.chamLuc?"Lưu điểm":"Duyệt và lưu điểm"}</button><button class="btn ghost" type="button" id="g-del">Xóa bài này</button><span class="hint" id="g-msg"></span></div></div>`;
+  $("#g-save").addEventListener("click", async()=>{
+    const per={}; let bad=false;
+    ESSAY.forEach(e=>{ const v=$("#g-"+e.id).value; const n=v===""?NaN:Number(v); if(isNaN(n)||n<0||n>e.max) bad=true; else per[e.id]=n });
+    if(bad){ $("#g-msg").textContent="Nhập đủ điểm 3 câu, trong khoảng cho phép."; return }
+    $("#g-save").disabled=true; $("#g-msg").textContent="Đang lưu…";
+    try{ await call(API_QL, { method:"PATCH", headers:{ "x-pin":pin }, body: JSON.stringify({ id:b.id, diemTungCau:per, nhanXet:$("#g-note").value.trim() }) });
+      await loadQL(); $("#g-msg") && ($("#g-msg").textContent="Đã lưu. Nhân sự mở lại trang sẽ thấy điểm.");
+    }catch(e){ $("#g-msg").textContent="Lưu chưa được, thử lại."; $("#g-save").disabled=false }
+  });
+  const del = $("#g-del");
+  del.addEventListener("click", async()=>{
+    if (!del.dataset.confirm) { del.dataset.confirm="1"; del.textContent="Bấm lần nữa để xóa hẳn"; return }
+    try{ await call(API_QL+"?id="+b.id, { method:"DELETE", headers:{ "x-pin":pin } }); openId=null; await loadQL() }catch(_){ $("#g-msg").textContent="Xóa chưa được." }
+  });
+}
+function setTab(admin){
+  $("#tab-test").setAttribute("aria-pressed",String(!admin)); $("#tab-admin").setAttribute("aria-pressed",String(admin));
+  $("#view-test").hidden=admin; $("#view-admin").hidden=!admin;
+  $("#timer").hidden=admin; $(".progress").hidden=admin; $("#count").hidden=admin;
+  if (admin) (pin && QL ? renderAdmin() : renderPin());
+}
+
+/* ---------- khởi động ---------- */
+renderTest();
+$("#start").addEventListener("click", begin);
+$("#form").addEventListener("submit", submit);
+$("#tab-test").addEventListener("click", ()=>setTab(false));
+$("#tab-admin").addEventListener("click", ()=>setTab(true));
+if (location.hash === "#quan-ly") setTab(true);
+(async()=>{
+  try {
+    const p = await call(API);
+    const pi = $("#phien-info");
+    if (!p.phien) { pi.hidden=false; pi.className="notice amber"; pi.textContent="Bài kiểm tra đang đóng. Chờ quản lý mở phiên mới rồi tải lại trang."; $("#start").disabled=true }
+  } catch(_) {}
+  const s = load();
+  if (!s || !s.id) return;
+  S = s; $("#ho-ten").value = s.hoTen || "";
+  try {
+    const d = await call(`${API}?id=${encodeURIComponent(s.id)}&token=${encodeURIComponent(s.token)}`);
+    LIMIT = d.thoiGian || 300; skew = d.now - Date.now(); S.batDau = d.batDau;
+    if (d.phienMo && d.phienId !== d.phienMo) { S = null; try{ localStorage.removeItem(LS) }catch(_){} $("#ho-ten").value=""; return } // phiên mới: làm lại từ đầu
+    if (d.nopLuc) { S.nopLuc = d.nopLuc; save(); showDone(d) } else showForm();
+  } catch(e) {
+    if (e.status === 404) { S = null; try{ localStorage.removeItem(LS) }catch(_){} return }
+    if (!s.nopLuc) showForm();   // mất mạng: vẫn cho làm tiếp theo giờ đã lưu
+  }
+})();
+</script>
+</body>
+</html>

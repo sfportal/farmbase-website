@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /quan-tri/
 Disallow: /api/
+Disallow: /kiem-tra-msvt/
 Allow: /api/media/
 Sitemap: https://farmbase.vn/sitemap.xml
