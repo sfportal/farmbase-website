@@ -1,6 +1,7 @@
 // Điểm vào Cloudflare Worker: phục vụ trang tĩnh trong thư mục site/ và chạy các API trong functions/.
 // Giữ nguyên code functions/ (kiểu Pages Functions); tệp này chỉ định tuyến yêu cầu tới đúng hàm.
 import * as mw from "../functions/_middleware.js";
+import * as mcp from "../functions/mcp.js";
 import * as sitemap from "../functions/sitemap.xml.js";
 import * as baiViet from "../functions/bai-viet/[slug].js";
 import * as aUsers from "../functions/api/admin/users.js";
@@ -62,6 +63,11 @@ async function route(request, env, ctx) {
 
 export default {
   async fetch(request, env, ctx) {
+    // Máy chủ MCP cho AI đọc nội dung công khai (functions/mcp.js), không qua lớp chèn mã đo lường
+    if (/^\/mcp\/?$/.test(new URL(request.url).pathname)) {
+      try { return await mcp.onRequest({ request, env }); }
+      catch (e) { console.error("/mcp", e && e.stack || e); return json({ jsonrpc: "2.0", id: null, error: { code: -32603, message: "Internal error" } }, 500); }
+    }
     // Chạy lớp chèn mã đo lường (GA4, Pixel) như _middleware của Pages
     return mw.onRequest({ request, env, params: {}, waitUntil: (p) => ctx.waitUntil(p), next: () => route(request, env, ctx), data: {} });
   },
