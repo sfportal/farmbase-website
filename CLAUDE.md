@@ -8,7 +8,7 @@
 - Hai việc phải xin phép người dùng trước: đăng bài (đổi `status` sang `published`) và xóa dữ liệu.
 
 ## Kiến trúc
-- Cloudflare Worker `farmbase-website`, kết nối GitHub `uyducminh/farmbase-website`, nhánh `main`. Cấu hình nằm trong `wrangler.jsonc`.
+- Cloudflare Worker `farmbase-website`, kết nối GitHub `sfportal/farmbase-website`, nhánh `main`. Cấu hình nằm trong `wrangler.jsonc`.
 - Trang web là một file HTML một trang (SPA, định tuyến bằng `#hash`): `site/index.html`. Trang quản lý: `site/quan-tri/index.html`.
 - API nằm trong `functions/api/**` và được gọi qua `worker/index.js`. Chi tiết từng endpoint xem `README.md`.
 - Cơ sở dữ liệu: D1 `farmbase`, id `708142ad-4dfe-46b7-ae7d-b3a0c35f15f5`, biến `DB`. Workers AI dùng biến `AI`.

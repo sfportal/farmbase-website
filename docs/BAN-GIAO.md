@@ -1,7 +1,7 @@
 # Bàn giao website FarmBase (cập nhật 09/11/2026)
 
 ## Bắt đầu với một tài khoản Claude khác
-1. Mở Claude Code trên web, kết nối GitHub và chọn repo `uyducminh/farmbase-website`.
+1. Mở Claude Code trên web, kết nối GitHub và chọn repo `sfportal/farmbase-website`.
    - Tài khoản GitHub cần có quyền ghi vào repo. Nếu repo thuộc tài khoản khác, chủ repo thêm Quý khách làm cộng tác viên.
 2. Nếu cần đọc hoặc sửa bài trong cơ sở dữ liệu, kết nối connector Cloudflare của tài khoản Cloudflare đang chạy website.
    - Không dán token vào chat.
