@@ -1,0 +1,2 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage();p.on('pageerror',e=>console.log('ERR',e.message));p.on('console',m=>{if(m.type()==='error')console.log('CON',m.text())});
+await p.goto('http://localhost:8789/#su-kien');await p.waitForTimeout(2000);console.log(await p.evaluate(()=>[...document.querySelectorAll('.view')].filter(v=>!v.hidden).map(v=>v.dataset.view)));await b.close();})();

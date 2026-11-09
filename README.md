@@ -2,6 +2,8 @@
 
 Website giới thiệu FarmBase (VI · EN · 中文) và trang quản lý. Giải pháp FarmBase do BVI và Salefronts đồng phát triển.
 
+> Làm tiếp bằng Claude: đọc `CLAUDE.md` (cách sửa, dựng, kiểm tra, quy tắc nội dung) và `docs/BAN-GIAO.md` (trạng thái, việc còn treo). Bản nguồn giao diện nằm trong `src/`, dựng bằng `python3 tools/build.py`.
+
 ## Cấu trúc
 - `site/`: trang web tĩnh (trang chủ, các trang con, `quan-tri/` là trang quản lý).
 - `functions/api/`: máy chủ nhỏ chạy trên Cloudflare Pages Functions.
