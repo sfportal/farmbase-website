@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nhận đề xuất AI miễn phí – Hội thảo AI thực chiến 10/11</title>
+<meta name="description" content="Điền 1 phút, AI phân tích công việc của anh/chị và gửi ngay bản đề xuất giải pháp riêng.">
+<meta name="theme-color" content="#0E3B2C">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0E3B2C;--deep:#06201A;--green:#1F7A4D;--leaf:#5FB37A;--gold:#E0A526;--sun:#FFD66B;--mint:#EAF4EE;--cream:#FCF3DC;--ink:#14261D;--muted:#55675d;--line:#D5E5DA}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Be Vietnam Pro',system-ui,sans-serif;color:var(--ink);background:var(--mint);line-height:1.5;min-height:100vh}
+.top{background:linear-gradient(135deg,var(--deep),var(--forest) 60%,#1C5A3A);color:#fff;padding:22px 20px 70px;position:relative;overflow:hidden}
+.top:after{content:"";position:absolute;right:-70px;top:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,var(--sun),var(--gold) 45%,rgba(224,165,38,0) 70%);opacity:.85}
+.wrap{max-width:560px;margin:0 auto;position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#CFE6D6}
+.brand img{height:34px;border-radius:8px;background:#fff;padding:2px 6px}
+h1{font-size:clamp(26px,7vw,34px);line-height:1.15;font-weight:800;margin:16px 0 8px}
+h1 span{color:var(--gold)}
+.top p{color:#D8EBDD;font-size:15.5px}
+.card{background:#fff;border-radius:22px;box-shadow:0 12px 34px rgba(6,32,26,.14);padding:22px 20px;margin:-50px auto 18px;max-width:560px;position:relative;z-index:2}
+.steps{display:flex;gap:6px;margin-bottom:18px}
+.steps i{flex:1;height:6px;border-radius:9px;background:var(--line);transition:background .3s}
+.steps i.on{background:var(--green)}
+.stepname{font-size:12px;font-weight:700;color:var(--green);letter-spacing:.12em;text-transform:uppercase}
+h2{font-size:21px;color:var(--forest);margin:4px 0 14px;font-weight:800}
+label{display:block;font-weight:600;font-size:14.5px;margin:12px 0 6px}
+label small{font-weight:400;color:var(--muted)}
+input,select,textarea{width:100%;font:inherit;font-size:16px;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--green)}
+textarea{min-height:96px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:9px 14px;font:inherit;font-size:14.5px;cursor:pointer;color:var(--ink);transition:all .15s}
+.chip.on{background:var(--forest);border-color:var(--forest);color:#fff}
+.chip.on:before{content:"✓ ";color:var(--gold);font-weight:800}
+.btns{display:flex;gap:10px;margin-top:20px}
+.btn{flex:1;border:0;border-radius:99px;padding:15px 18px;font:inherit;font-weight:700;font-size:16px;cursor:pointer;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.pri{background:var(--forest);color:#fff}
+.btn.gold{background:var(--gold);color:var(--forest)}
+.btn.ghost{background:transparent;border:2px solid var(--forest);color:var(--forest);flex:0 0 auto;padding:13px 18px}
+.btn:active{transform:scale(.98)}
+.err{color:#B3261E;font-size:14px;margin-top:10px;min-height:1em}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted);margin-top:14px;font-weight:400}
+.consent input{width:20px;height:20px;flex:0 0 20px;margin-top:1px;accent-color:var(--green)}
+.hp{position:absolute;left:-9999px}
+.hide{display:none!important}
+/* chạy AI */
+.run{list-style:none;margin:6px 0 4px}
+.run li{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line);color:#9aa9a0;font-weight:600;transition:color .3s}
+.run li .ic{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:0 0 28px;font-size:14px}
+.run li.doing{color:var(--forest)}
+.run li.doing .ic{border-color:var(--gold);border-top-color:transparent;animation:spin .8s linear infinite}
+.run li.done{color:var(--forest)}
+.run li.done .ic{background:var(--green);border-color:var(--green);color:#fff}
+.run li small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* kết quả */
+.hello{font-size:18px;font-weight:700;color:var(--forest)}
+.diag{background:var(--mint);border-radius:16px;padding:14px 16px;margin:12px 0;font-size:15px}
+.big{display:flex;gap:10px;margin:14px 0}
+.big div{flex:1;background:var(--forest);color:#fff;border-radius:16px;padding:14px}
+.big strong{display:block;font-size:28px;color:var(--gold);line-height:1.1;font-weight:800}
+.big span{font-size:13px;color:#D8EBDD}
+h3{font-size:16px;color:var(--forest);margin:20px 0 10px;font-weight:800}
+.qt{border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;opacity:0;transform:translateY(10px);animation:in .5s ease-out forwards}
+.qt b{color:var(--forest);font-size:15.5px}
+.qt .h{float:right;background:var(--cream);color:#8a5a00;font-weight:700;font-size:12.5px;border-radius:99px;padding:3px 10px}
+.qt p{font-size:14px;margin-top:6px}
+.qt p.b{color:var(--muted)}.qt p.b:before{content:"Hiện tại: ";font-weight:700;color:#9a6b6b}
+.qt p.a:before{content:"Có AI: ";font-weight:700;color:var(--green)}
+.qt .tool{font-size:12.5px;color:var(--green);margin-top:6px;font-weight:600}
+@keyframes in{to{opacity:1;transform:none}}
+.pkg{background:linear-gradient(135deg,var(--forest),#1C5A3A);color:#fff;border-radius:18px;padding:18px;margin-top:6px}
+.pkg .n{font-size:22px;font-weight:800;color:var(--gold)}
+.pkg .p{font-size:18px;font-weight:700;margin:2px 0 8px}
+.pkg p{color:#D8EBDD;font-size:14.5px}
+.pkg .deal{margin-top:12px;background:rgba(255,214,107,.15);border:1px dashed var(--gold);border-radius:12px;padding:10px 12px;font-size:14px;color:#fff}
+.sample{background:var(--cream);border-radius:16px;padding:14px 16px;font-size:14.5px;white-space:pre-line;position:relative}
+.sample .typing:after{content:"▍";color:var(--green);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.road{counter-reset:r;list-style:none}
+.road li{counter-increment:r;display:flex;gap:12px;padding:6px 0;font-size:14.5px}
+.road li:before{content:counter(r);flex:0 0 28px;height:28px;border-radius:50%;background:var(--gold);color:var(--forest);font-weight:800;display:grid;place-items:center}
+.auto{background:var(--mint);border-radius:16px;padding:12px 16px;font-size:13.5px;color:var(--forest);margin-top:16px}
+.auto div{padding:3px 0}.auto div:before{content:"⚡ ";}
+.code{font-weight:800;letter-spacing:.1em;color:var(--green)}
+.stack{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.foot{text-align:center;font-size:12.5px;color:var(--muted);padding:6px 20px 30px}
+@media print{.top,.stack,.foot,.auto{display:none}.card{box-shadow:none;margin:0}body{background:#fff}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.qt{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><img src="logo-dala.png" alt="HTX DaLa"> Hội thảo AI thực chiến · 10/11/2026</div>
+    <h1>Điền 1 phút, nhận ngay <span>bản đề xuất AI</span> cho công việc của anh/chị</h1>
+    <p>AI sẽ đọc nhu cầu, chỉ ra việc nào tự động hoá được, tiết kiệm bao nhiêu giờ và viết thử một sản phẩm mẫu cho chính doanh nghiệp của anh/chị.</p>
+  </div>
+</header>
+
+<main class="card" id="app">
+  <div class="steps" id="bar"><i class="on"></i><i></i><i></i></div>
+
+  <!-- Bước 1 -->
+  <section data-step="1">
+    <div class="stepname">Bước 1/3 · Thông tin cá nhân</div>
+    <h2>Anh/chị là ai?</h2>
+    <label for="ho_ten">Họ và tên *</label>
+    <input id="ho_ten" autocomplete="name" placeholder="Nguyễn Văn An" required>
+    <label for="dien_thoai">Số điện thoại / Zalo *</label>
+    <input id="dien_thoai" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xx xxx xxx" required>
+    <div class="row">
+      <div><label for="email">Email <small>(nếu có)</small></label><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="ten@congty.vn"></div>
+      <div><label for="chuc_vu">Chức vụ</label><input id="chuc_vu" autocomplete="organization-title" placeholder="Giám đốc"></div>
+    </div>
+    <input class="hp" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="err" id="err1"></div>
+    <div class="btns"><button class="btn pri" data-next="2">Tiếp tục →</button></div>
+  </section>
+
+  <!-- Bước 2 -->
+  <section data-step="2" class="hide">
+    <div class="stepname">Bước 2/3 · Doanh nghiệp</div>
+    <h2>Doanh nghiệp của anh/chị</h2>
+    <label for="cong_ty">Tên công ty / HTX / cửa hàng</label>
+    <input id="cong_ty" autocomplete="organization" placeholder="Công ty TNHH ABC">
+    <label for="linh_vuc">Lĩnh vực</label>
+    <select id="linh_vuc">
+      <option value="">Chọn lĩnh vực</option>
+      <option>Nông nghiệp, HTX</option><option>Thương mại, bán lẻ</option><option>Sản xuất, chế biến</option>
+      <option>Dịch vụ</option><option>Xây dựng, bất động sản</option><option>Giáo dục, đào tạo</option>
+      <option>Vận tải, logistics</option><option>Khác</option>
+    </select>
+    <label>Quy mô nhân sự</label>
+    <div class="chips" data-single="quy_mo">
+      <button type="button" class="chip" data-v="1-2">1–2 người</button>
+      <button type="button" class="chip" data-v="3-9">3–9 người</button>
+      <button type="button" class="chip" data-v="10-30">10–30 người</button>
+      <button type="button" class="chip" data-v="30+">Trên 30</button>
+    </div>
+    <div class="err" id="err2"></div>
+    <div class="btns"><button class="btn ghost" data-back="1">←</button><button class="btn pri" data-next="3">Tiếp tục →</button></div>
+  </section>
+
+  <!-- Bước 3 -->
+  <section data-step="3" class="hide">
+    <div class="stepname">Bước 3/3 · Nhu cầu</div>
+    <h2>Việc gì đang tốn thời gian nhất?</h2>
+    <label>Chọn các việc lặp lại hằng ngày <small>(chọn nhiều)</small></label>
+    <div class="chips" data-multi="cong_viec_lap_lai">
+      <button type="button" class="chip" data-v="tra-loi-khach">Trả lời khách Zalo/Facebook</button>
+      <button type="button" class="chip" data-v="noi-dung">Soạn nội dung, bài đăng</button>
+      <button type="button" class="chip" data-v="bao-gia">Báo giá, hợp đồng</button>
+      <button type="button" class="chip" data-v="bao-cao">Báo cáo Excel</button>
+      <button type="button" class="chip" data-v="tai-lieu">Tài liệu, biên bản họp</button>
+      <button type="button" class="chip" data-v="cham-soc">Chăm sóc khách, nhắc lịch</button>
+      <button type="button" class="chip" data-v="ho-so">Hồ sơ, văn bản</button>
+      <button type="button" class="chip" data-v="nhan-su">Tuyển dụng, đào tạo</button>
+      <button type="button" class="chip" data-v="ban-online">Website, bán online</button>
+    </div>
+    <label for="mo_ta_nhu_cau">Kể ngắn: một ngày anh/chị mất thời gian vào việc gì? <small>(càng cụ thể, AI đề xuất càng sát)</small></label>
+    <textarea id="mo_ta_nhu_cau" placeholder="Ví dụ: mỗi ngày 50 khách hỏi giá sầu riêng qua Zalo, 2 nhân viên trả lời không kịp, cuối tuần phải tổng hợp đơn ra Excel..."></textarea>
+    <label>Muốn bắt đầu khi nào?</label>
+    <div class="chips" data-single="thoi_diem">
+      <button type="button" class="chip" data-v="ngay">Ngay tháng này</button>
+      <button type="button" class="chip" data-v="1-3-thang">1–3 tháng tới</button>
+      <button type="button" class="chip" data-v="tim-hieu">Đang tìm hiểu</button>
+    </div>
+    <label class="consent"><input type="checkbox" id="dong_y" checked> Tôi đồng ý để BVI và HTX DaLa liên hệ tư vấn qua điện thoại/Zalo. Thông tin chỉ dùng cho chương trình này.</label>
+    <div class="err" id="err3"></div>
+    <div class="btns"><button class="btn ghost" data-back="2">←</button><button class="btn gold" id="send">✨ Nhận đề xuất AI</button></div>
+  </section>
+
+  <!-- AI chạy -->
+  <section id="running" class="hide">
+    <div class="stepname">Quy trình tự động đang chạy</div>
+    <h2>AI đang làm việc cho anh/chị…</h2>
+    <ul class="run" id="run">
+      <li><span class="ic"></span><div>Lưu hồ sơ vào hệ thống khách hàng<small>Mã hồ sơ được tạo tự động</small></div></li>
+      <li><span class="ic"></span><div>AI đọc và phân tích nhu cầu<small>Đối chiếu lĩnh vực, quy mô, việc lặp lại</small></div></li>
+      <li><span class="ic"></span><div>Thiết kế quy trình tự động hoá<small>Ước tính số giờ tiết kiệm mỗi tháng</small></div></li>
+      <li><span class="ic"></span><div>Chọn gói phù hợp, chấm điểm ưu tiên<small>Theo bảng giá chương trình 10/11</small></div></li>
+      <li><span class="ic"></span><div>Viết thử sản phẩm mẫu và báo chuyên viên<small>Chuyên viên nhận hồ sơ ngay trên màn hình</small></div></li>
+    </ul>
+  </section>
+
+  <!-- Kết quả -->
+  <section id="result" class="hide"></section>
+</main>
+<p class="foot">Công ty CP BVI · HTX DaLa · Zalo tư vấn 0901 403 819</p>
+
+<script type="module">
+import { deXuatDuPhong } from "./de-xuat.js";
+const API = "/api/hoi-thao";
+const ZALO = "https://zalo.me/0901403819";
+const $ = s => document.querySelector(s);
+const state = { quy_mo: "", thoi_diem: "", cong_viec_lap_lai: [] };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// chips
+document.querySelectorAll("[data-single]").forEach(g => g.addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  g.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c === b));
+  state[g.dataset.single] = b.dataset.v;
+}));
+document.querySelectorAll("[data-multi]").forEach(g => g.addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  b.classList.toggle("on");
+  state[g.dataset.multi] = [...g.querySelectorAll(".chip.on")].map(c => c.dataset.v);
+}));
+
+function show(n) {
+  document.querySelectorAll("[data-step]").forEach(s => s.classList.toggle("hide", s.dataset.step != n));
+  document.querySelectorAll("#bar i").forEach((b, i) => b.classList.toggle("on", i < n));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function check(n) {
+  if (n >= 2) {
+    const ten = $("#ho_ten").value.trim(), sdt = $("#dien_thoai").value.replace(/\D/g, "");
+    if (ten.length < 2) return ($("#err1").textContent = "Vui lòng nhập họ tên.", false);
+    if (sdt.length < 9 || sdt.length > 12) return ($("#err1").textContent = "Số điện thoại chưa đúng.", false);
+    $("#err1").textContent = "";
+  }
+  return true;
+}
+document.querySelectorAll("[data-next]").forEach(b => b.addEventListener("click", () => { if (check(+b.dataset.next)) show(+b.dataset.next); }));
+document.querySelectorAll("[data-back]").forEach(b => b.addEventListener("click", () => show(+b.dataset.back)));
+
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function animate(promise) {
+  const items = [...document.querySelectorAll("#run li")];
+  let done = false; promise.finally(() => done = true);
+  for (let i = 0; i < items.length; i++) {
+    items[i].classList.add("doing");
+    await wait(i === items.length - 1 ? 700 : 1100);
+    if (i >= 2) while (!done) await wait(250);
+    items[i].classList.remove("doing"); items[i].classList.add("done");
+    items[i].querySelector(".ic").textContent = "✓";
+  }
+  await wait(400);
+}
+
+$("#send").addEventListener("click", async () => {
+  if (!state.cong_viec_lap_lai.length && $("#mo_ta_nhu_cau").value.trim().length < 5) { $("#err3").textContent = "Chọn ít nhất 1 việc hoặc kể ngắn nhu cầu."; return; }
+  const f = {
+    ho_ten: $("#ho_ten").value.trim(), dien_thoai: $("#dien_thoai").value.trim(), email: $("#email").value.trim(), chuc_vu: $("#chuc_vu").value.trim(),
+    cong_ty: $("#cong_ty").value.trim(), linh_vuc: $("#linh_vuc").value, quy_mo: state.quy_mo, cong_viec_lap_lai: state.cong_viec_lap_lai,
+    mo_ta_nhu_cau: $("#mo_ta_nhu_cau").value.trim(), thoi_diem: state.thoi_diem, dong_y: $("#dong_y").checked, website: $("#website").value
+  };
+  document.querySelectorAll("[data-step]").forEach(s => s.classList.add("hide"));
+  $("#bar").classList.add("hide"); $("#running").classList.remove("hide");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  const req = (async () => {
+    try {
+      const ctl = new AbortController(); setTimeout(() => ctl.abort(), 35000);
+      const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(f), signal: ctl.signal });
+      const d = await r.json(); if (!r.ok || !d.ket_qua) throw new Error(d.error || "lỗi");
+      return d;
+    } catch (e) {
+      try { const q = JSON.parse(localStorage.getItem("hoithao_cho_gui") || "[]"); q.push({ ...f, t: Date.now() }); localStorage.setItem("hoithao_cho_gui", JSON.stringify(q)); } catch {}
+      return { ket_qua: deXuatDuPhong(f), ma: Math.random().toString(36).slice(2, 8).toUpperCase(), offline: true };
+    }
+  })();
+  await animate(req);
+  render(f, await req);
+});
+
+async function typeText(el, text) {
+  el.classList.add("typing");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { el.textContent = text; el.classList.remove("typing"); return; }
+  for (let i = 0; i < text.length; i += 2) { el.textContent = text.slice(0, i + 2); await wait(14); }
+  el.classList.remove("typing");
+}
+
+function render(f, d) {
+  const k = d.ket_qua;
+  const gio = k.gio_tiet_kiem_thang || 0;
+  const tien = Math.round(gio * 60000 / 100000) / 10; // ước tính 60.000đ/giờ công
+  const msg = encodeURIComponent(`Chào BVI, tôi là ${f.ho_ten}${f.cong_ty ? " – " + f.cong_ty : ""}, mã hồ sơ ${d.ma}. Tôi muốn tư vấn gói ${k.goi_de_xuat}.`);
+  $("#running").classList.add("hide");
+  const R = $("#result"); R.classList.remove("hide");
+  R.innerHTML = `
+    <div class="stepname">Bản đề xuất riêng · Mã hồ sơ <span class="code">${esc(d.ma)}</span></div>
+    <p class="hello" style="margin-top:6px">${esc(k.chao)}</p>
+    <div class="diag">${esc(k.chan_doan)}</div>
+    <div class="big"><div><strong>${gio} giờ</strong><span>tiết kiệm mỗi tháng (ước tính)</span></div><div><strong>≈ ${tien.toLocaleString("vi-VN")} tr</strong><span>giá trị công/tháng*</span></div></div>
+    <h3>${(k.quy_trinh || []).length} quy trình AI làm được ngay cho anh/chị</h3>
+    ${(k.quy_trinh || []).map((q, i) => `<div class="qt" style="animation-delay:${i * .18}s"><span class="h">−${esc(q.gio_tiet_kiem_tuan)} giờ/tuần</span><b>${esc(q.ten)}</b><p class="b">${esc(q.truoc)}</p><p class="a">${esc(q.sau)}</p><div class="tool">🛠 ${esc(q.cong_cu)}</div></div>`).join("")}
+    <h3>✍️ ${esc(k.mau_thu?.tieu_de || "Sản phẩm mẫu AI viết thử")}</h3>
+    <div class="sample"><span id="sample"></span></div>
+    <h3>Gói đề xuất</h3>
+    <div class="pkg"><div class="n">${esc(k.goi_de_xuat)}</div><div class="p">${esc(k.gia)} · ${esc(k.thoi_gian)}</div><p>${esc(k.ly_do_goi)}</p>
+      <div class="deal">🎁 Ưu đãi riêng hội thảo 10/11: đặt cọc 4.000.000đ để giữ lịch triển khai, khoản cọc được trừ thẳng vào hợp đồng.</div></div>
+    <h3>Lộ trình 3 bước</h3>
+    <ol class="road">${(k.lo_trinh || []).map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    <div class="auto">
+      <div>Hồ sơ đã tạo, mã ${esc(d.ma)}</div>
+      <div>${d.offline ? "Mạng đang yếu: hồ sơ được giữ trên máy và tự gửi khi có mạng. Anh/chị có thể bấm Nhắn Zalo bên dưới" : "Chuyên viên BVI đã nhận thông báo và sẽ gọi/Zalo cho anh/chị"}</div>
+      <div>Toàn bộ quy trình này chạy tự động, không có người can thiệp. Đây cũng là thứ anh/chị có thể có cho khách của mình.</div>
+    </div>
+    <div class="stack">
+      <a class="btn pri" href="${ZALO}" target="_blank" rel="noopener">💬 Nhắn Zalo tư vấn ngay</a>
+      <a class="btn gold" href="${ZALO}" target="_blank" rel="noopener" id="coc">Giữ ưu đãi, đặt lịch khảo sát</a>
+      <button class="btn ghost" style="width:100%" onclick="window.print()">Lưu bản đề xuất (PDF)</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px">* Ước tính theo 60.000đ/giờ công. Số liệu chính xác có sau buổi khảo sát.</p>`;
+  try { navigator.clipboard && document.getElementById("coc").addEventListener("click", () => navigator.clipboard.writeText(decodeURIComponent(msg)).catch(() => {})); } catch {}
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  setTimeout(() => typeText(document.getElementById("sample"), k.mau_thu?.noi_dung || ""), 800);
+}
+
+// gửi lại hồ sơ chưa gửi được (mạng yếu tại hội trường)
+(async () => {
+  try {
+    const q = JSON.parse(localStorage.getItem("hoithao_cho_gui") || "[]"); if (!q.length) return;
+    const left = [];
+    for (const f of q) { try { const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(f) }); if (!r.ok) left.push(f); } catch { left.push(f); } }
+    localStorage.setItem("hoithao_cho_gui", JSON.stringify(left));
+  } catch {}
+})();
+</script>
+</body>
+</html>
