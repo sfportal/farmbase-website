@@ -26,7 +26,6 @@ import * as media from "../functions/api/media/[id].js";
 import * as partners from "../functions/api/partners.js";
 import * as consent from "../functions/api/consent.js";
 import * as track from "../functions/api/track.js";
-import * as hoiThao from "../functions/api/hoi-thao.js";
 
 // [mẫu đường dẫn, module]; :ten là tham số
 const ROUTES = [
@@ -35,7 +34,7 @@ const ROUTES = [
   ["/api/admin/cookies", aCookies], ["/api/admin/media", aMedia], ["/api/admin/leads", aLeads], ["/api/admin/posts", aPosts], ["/api/admin/stats", aStats], ["/api/admin/translate", aTranslate],
   ["/api/auth/me", me], ["/api/auth/logout", logout], ["/api/auth/setup", setup], ["/api/auth/login", login], ["/api/auth/password", password],
   ["/api/lead", lead], ["/api/content", content], ["/api/posts", postList], ["/api/posts/:slug", postOne], ["/api/media/:id", media],
-  ["/api/partners", partners], ["/api/consent", consent], ["/api/track", track], ["/api/hoi-thao", hoiThao],
+  ["/api/partners", partners], ["/api/consent", consent], ["/api/track", track],
 ].map(([p, m]) => [new RegExp("^" + p.replace(/:(\w+)/g, "(?<$1>[^/]+)") + "/?$"), m]);
 
 const METHOD = { GET: "onRequestGet", POST: "onRequestPost", PUT: "onRequestPut", PATCH: "onRequestPatch", DELETE: "onRequestDelete", HEAD: "onRequestGet" };
