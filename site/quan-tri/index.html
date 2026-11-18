@@ -297,6 +297,20 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
 .pgl{display:grid;grid-template-columns:34px 1fr;gap:6px;align-items:start;margin-top:4px}.pgl b{font-size:11px;color:var(--muted);padding-top:8px}.pgl textarea{min-height:0;font-size:14px;padding:6px 8px;resize:vertical}
 .pgimg{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center}.pgimg img{width:96px;height:64px;object-fit:cover;border-radius:8px;background:#eee}
 @media(max-width:1100px){.ped{grid-template-columns:1fr}.ped-side{position:static}.pge{grid-template-columns:1fr}.pge-r{position:static;order:-1}#pgfr{height:60vh}.pge-l{max-height:none}}
+.fbx{display:grid;grid-template-columns:300px 1fr;gap:16px;margin-top:14px}
+.fbx-l{max-height:640px;overflow:auto;padding:6px}
+.fbc{display:block;width:100%;text-align:left;border:0;background:none;border-radius:9px;padding:10px;cursor:pointer;font:inherit;color:inherit}
+.fbc:hover,.fbc.on{background:var(--sprout)}
+.fbc b{display:flex;gap:6px;align-items:center;font-size:13px}.fbc small{display:block;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fbc .tg{font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;background:var(--line)}.fbc .tg.h{background:#F6D7A7}.fbc .tg.d{background:var(--leaf);color:#06231F}.fbc .tg.u{background:#1877F2;color:#fff}
+.fbm{display:flex;flex-direction:column;gap:8px;max-height:460px;overflow:auto;padding:4px}
+.fbm .b{max-width:78%;padding:8px 11px;border-radius:12px;font-size:13px;white-space:pre-wrap;line-height:1.45}
+.fbm .in{background:var(--line);align-self:flex-start}.fbm .out{background:var(--forest);color:#fff;align-self:flex-end}
+.fbm .draft{align-self:flex-end;border:1px dashed var(--leaf);background:var(--surface);width:78%}
+.fbm .draft textarea{width:100%;min-height:70px;margin:6px 0}
+.fbm .meta{font-size:11px;opacity:.7;margin-top:3px}.fbm .nt{align-self:center;font-size:12px;color:var(--muted)}
+.fbst span{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin:2px 4px 2px 0;background:var(--line)}.fbst span.ok{background:var(--sprout);color:var(--forest)}
+@media(max-width:860px){.fbx{grid-template-columns:1fr}}
 </style>
 
 <div id="login" hidden>
@@ -323,6 +337,7 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
   <a href="#bai-viet" data-v="bai-viet" data-cap="content">Bài viết website <span class="n" id="nwait" hidden>0</span></a>
   <a href="#tao-nhanh" data-v="tao-nhanh" data-cap="content">Tạo bài nhanh</a>
   <a href="#bai-facebook" data-v="bai-facebook" data-cap="content">Bài Facebook</a>
+  <a href="#hop-thu-fanpage" data-v="hop-thu-fanpage" data-cap="inbox">Hộp thư Fanpage <span class="n" id="nfb" hidden>0</span></a>
   <a href="#thu-vien" data-v="thu-vien">Thư viện ảnh</a>
   <a href="#trang" data-v="trang" data-cap="content">Sửa nội dung từng trang</a>
   <a href="#noi-dung" data-v="noi-dung" data-cap="content">Nội dung và bản dịch <span class="n" id="ntr" hidden>0</span></a>
@@ -522,10 +537,43 @@ aside .who button{background:none;border:0;padding:0;color:#BFE3D2;cursor:pointe
           <textarea id="fbtext" rows="16" class="fbta" aria-label="Nội dung bài Facebook"></textarea>
           <p class="rule" id="fbnote" style="margin-top:6px">Sửa trực tiếp ở đây. Khi đổi thông tin hoặc tùy chọn bên trái, nội dung được viết lại.</p>
           <div class="acts" style="margin-top:10px"><button class="btn dark" type="button" id="fbcopy">Sao chép nội dung</button><button class="btn" type="button" id="fbcopyl">Sao chép link bài</button><button class="btn" type="button" id="fbregen">Viết lại từ đầu</button><a class="btn" href="https://www.facebook.com/farmbasevn" target="_blank" rel="noopener">Mở Fanpage ↗</a></div></div>
+        <div class="card" id="fbpub"><h2>Đăng thẳng lên Fanpage</h2>
+          <p class="rule">Đăng nội dung ở khung trên lên Fanpage FarmBase qua Facebook App. Ảnh cần là đường dẫn https (ví dụ ảnh trong Thư viện ảnh). Để trống giờ để đăng ngay.</p>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+            <label for="fbpimg">Ảnh (đường dẫn, tùy chọn)<input id="fbpimg" placeholder="https://farmbase.vn/img/01.jpg"></label>
+            <label for="fbpat">Hẹn giờ (tùy chọn)<input id="fbpat" type="datetime-local"></label>
+          </div>
+          <div class="acts" style="margin-top:10px"><button class="btn pri" type="button" id="fbpgo">Đăng lên Fanpage</button><span id="fbpst" style="font-size:12px;color:var(--muted);align-self:center"></span></div></div>
         <div class="card"><h2>Xem trước trên Facebook</h2>
           <div class="fbp"><div class="fbh"><span class="fbav">f</span><div><b>FarmBase</b><small>Vừa xong · 🌐</small></div></div><div class="fbt" id="fbpt"></div><div class="fbg" id="fbpg"></div><div class="fbl" id="fbpl2" hidden></div></div>
           <p class="rule" style="margin-top:8px">Facebook chỉ hiện khoảng 3 dòng đầu trước nút "Xem thêm": câu mở đầu nên nói rõ lợi ích hoặc tin chính.</p></div>
       </div>
+    </div>
+  </section>
+
+  <!-- HỘP THƯ FANPAGE -->
+  <section data-view="hop-thu-fanpage" hidden>
+    <div class="top"><div><h1>Hộp thư Fanpage</h1><p class="sub">Tin nhắn Messenger và bình luận trên Fanpage FarmBase. Claude soạn câu trả lời theo kiến thức FarmBase; câu khó (giá, hợp đồng, khiếu nại, để lại số điện thoại) được chuyển cho nhân viên và báo qua email.</p></div>
+      <div class="right"><button class="btn" type="button" id="fbxreload">Tải lại</button></div></div>
+    <p class="src-line" id="fbxsrc"><i></i><span>Đang tải…</span></p>
+    <div class="card" id="fbxset" style="margin-top:12px"><h2>Chế độ chatbot</h2>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px">
+        <label for="fbxmode">Khi có tin mới<select id="fbxmode"><option value="off">Tắt: chỉ lưu tin, không soạn trả lời</option><option value="draft">Soạn nháp: nhân viên duyệt rồi bấm gửi</option><option value="auto">Tự động: Claude gửi trả lời ngay</option></select></label>
+        <label for="fbxcmt">Bình luận công khai<select id="fbxcmt"><option value="on">Claude trả lời cả bình luận</option><option value="off">Chỉ trả lời tin nhắn riêng</option></select></label>
+      </div>
+      <div class="fbst" id="fbxcfg" style="margin-top:10px"></div></div>
+    <div class="fbx">
+      <div class="card fbx-l"><div id="fbxlist"></div></div>
+      <div class="card" id="fbxconv"><p style="color:var(--muted)">Chọn một cuộc trò chuyện bên trái.</p></div>
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card"><h2>Hỏi thử chatbot</h2><p class="rule">Gõ thử một câu khách hay hỏi để xem Claude trả lời thế nào. Không gửi lên Facebook.</p>
+        <label for="fbxq">Câu hỏi<textarea id="fbxq" rows="3" placeholder="Ví dụ: FarmBase có cấp mã vùng trồng không?"></textarea></label>
+        <div class="acts" style="margin-top:8px"><button class="btn dark" type="button" id="fbxask">Hỏi thử</button><select id="fbxqk" aria-label="Kiểu tin" style="width:auto"><option value="dm">Tin nhắn riêng</option><option value="comment">Bình luận</option></select></div>
+        <div id="fbxans" class="rule" style="margin-top:10px;white-space:pre-wrap"></div></div>
+      <div class="card"><h2>Kiến thức bổ sung</h2><p class="rule">Thêm thông tin cho chatbot (lịch tập huấn, chương trình đang chạy, câu trả lời mẫu). Chỉ ghi điều được phép nói công khai, không ghi giá nội bộ hay dữ liệu nông hộ.</p>
+        <textarea id="fbxkb" rows="7" aria-label="Kiến thức bổ sung cho chatbot"></textarea>
+        <div class="acts" style="margin-top:8px"><button class="btn dark" type="button" id="fbxkbs">Lưu kiến thức</button></div></div>
     </div>
   </section>
 
@@ -766,7 +814,7 @@ function renderCal(){
 document.getElementById('aiPlan').addEventListener('click',()=>{const o=document.getElementById('aiOut');o.hidden=false;o.innerHTML='<b>Đề xuất của AI (mẫu):</b> tháng 11 là giai đoạn sau thu hoạch sầu riêng và đang thu hoạch cà phê. Gợi ý 3 bài/tuần: 1 bài kiến thức (mã vùng trồng, nhật ký), 1 bài hình ảnh thực tế, 1 bài hướng dẫn Zalo Mini App. Tuần 3 dành cho khởi động Chiến dịch 10.000 ha. <button class="btn sm pri" type="button" data-toast="Đã áp dụng chủ đề vào lịch">Áp dụng</button>';});
 /* ---------- Kết nối API (Cloudflare) với dữ liệu mẫu dự phòng ---------- */
 let ME=null,MODE='?';/* MODE: live (có máy chủ) | demo (bản xem thử) */
-const CAPS={users:['owner'],settings:['owner','admin'],stats:['owner','admin','approver'],leads:['owner','admin','sales'],content:['owner','admin','approver','editor']};
+const CAPS={users:['owner'],settings:['owner','admin'],stats:['owner','admin','approver'],leads:['owner','admin','sales'],content:['owner','admin','approver','editor'],inbox:['owner','admin','approver','sales']};
 const can=c=>MODE==='demo'||(ME&&CAPS[c].includes(ME.role));
 async function api(path,opt={}){const r=await fetch(path,Object.assign({credentials:'same-origin'},opt,{headers:Object.assign({'content-type':'application/json'},opt.headers||{})}));
  const j=await r.json().catch(()=>null);if(r.status===401&&!/\/api\/auth\//.test(path)){showLogin();}if(!r.ok||!j){const e=new Error((j&&j.error)||r.status);e.status=r.status;throw e;}return j;}
@@ -922,7 +970,7 @@ function applyUser(){document.querySelectorAll('aside [data-cap]').forEach(a=>a.
  $('who').innerHTML=ME?`<b>${esc(ME.name||ME.email)}</b>${esc(ME.email)}<br><span class="rolechip ${ME.role==='owner'?'owner':''}">${esc(ME.role_name||ME.role)}</span><div class="wl">${MODE==='live'?'<button type="button" id="chpw">Đổi mật khẩu</button><button type="button" id="lgout">Đăng xuất</button>':'<button type="button" id="lgout">Thoát bản mẫu</button>'}</div>`:'';
  const h=(location.hash||'').slice(1);const a=document.querySelector(`aside a[data-v="${h}"]`);if(a&&a.hidden)location.hash='#tong-quan';
  if(MODE==='live'&&ME&&ME.must_change){forceChange();return;}
- loadOverview();loadStats();if(can("stats"))loadCookies();loadLeads();if(can("users"))loadUsers();if(can('settings'))loadMeasure();if(can('content')){loadContent();loadPartners();loadPosts();if(location.hash==='#trang')pgInit();}}
+ loadOverview();loadStats();if(can("stats"))loadCookies();loadLeads();if(can("users"))loadUsers();if(can('settings'))loadMeasure();if(can('inbox'))fbxLoad();if(can('content')){loadContent();loadPartners();loadPosts();if(location.hash==='#trang')pgInit();}}
 function enter(u){ME=u;MODE='live';$('login').hidden=true;applyUser();toast('Xin chào '+(u.name||u.email));}
 document.addEventListener('click',async e=>{
  if(e.target.id==='lgout'){if(MODE==='live'){try{await api('/api/auth/logout',{method:'POST'});}catch(err){}}ME=null;$('who').innerHTML='';showLogin();}
@@ -1497,4 +1545,56 @@ document.addEventListener('click',async e=>{const t=e.target.closest('[data-pgim
 addEventListener('hashchange',()=>{if(location.hash==='#trang')pgInit();});if(location.hash==='#trang')setTimeout(pgInit,300);
 
 boot();
+
+/* ---------- Hộp thư Fanpage (chatbot Claude) ---------- */
+const FBX={convs:[],cur:null,st:null,pub:false};
+const fbxT=ts=>ts?new Date(ts).toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}):'';
+const FBXERR={no_page_token:'Chưa cài FB_PAGE_TOKEN trên Cloudflare.',no_page_id:'Chưa cài FB_PAGE_ID trên Cloudflare.',no_claude_key:'Chưa cài ANTHROPIC_API_KEY trên Cloudflare.',bad_schedule:'Giờ hẹn phải sau ít nhất 10 phút và trong vòng 30 ngày.',bad_image:'Đường dẫn ảnh phải bắt đầu bằng https://',empty:'Chưa có nội dung.'};
+async function fbxCall(body){const r=await fetch('/api/admin/fanpage',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok){const d=j.detail||'';const k=Object.keys(FBXERR).find(x=>d.includes(x)||j.error===x);throw new Error(k?FBXERR[k]:(d||j.error||r.status));}return j;}
+async function fbxLoad(){if(MODE!=='live'||!can('inbox')){srcLine('fbxsrc',false,'Hộp thư chỉ chạy trên website thật (farmbase.vn/quan-tri) sau khi nối Facebook App.');return;}
+ try{const d=await api('/api/admin/fanpage');FBX.convs=d.convs;FBX.st=d.settings;FBX.pub=d.can_publish;
+  $('fbxmode').value=d.settings.mode;$('fbxcmt').value=d.settings.comments?'on':'off';$('fbxkb').value=d.settings.kb_extra||'';
+  ['fbxmode','fbxcmt','fbxkb','fbxkbs'].forEach(i=>$(i).disabled=!d.can_settings);
+  const C=d.configured,L={app_secret:'FB_APP_SECRET',verify_token:'FB_VERIFY_TOKEN',page_token:'FB_PAGE_TOKEN',page_id:'FB_PAGE_ID',claude:'ANTHROPIC_API_KEY'};
+  $('fbxcfg').innerHTML='Biến trên Cloudflare: '+Object.keys(L).map(k=>`<span class="${C[k]?'ok':''}">${C[k]?'✓':'✗'} ${L[k]}</span>`).join('');
+  const un=d.convs.reduce((a,c)=>a+(c.unread?1:0)+(c.drafts?1:0),0);$('nfb').hidden=!un;$('nfb').textContent=un;
+  srcLine('fbxsrc',true,`${d.convs.length} cuộc trò chuyện · cập nhật lúc ${new Date().toLocaleTimeString('vi-VN')}`);fbxList();if(FBX.cur)fbxOpen(FBX.cur,true);}
+ catch(e){srcLine('fbxsrc',false,'Chưa tải được hộp thư: '+e.message);}}
+function fbxList(){$('fbxlist').innerHTML=FBX.convs.map(c=>`<button type="button" class="fbc ${c.conv===FBX.cur?'on':''}" data-fbc="${esc(c.conv)}"><b>${esc(c.name||(c.kind==='comment'?'Người bình luận':'Khách Messenger'))} <span class="tg">${c.kind==='comment'?'Bình luận':'Tin nhắn'}</span>${c.handoff?'<span class="tg h">Nhân viên</span>':''}${c.drafts?'<span class="tg d">Nháp</span>':''}${c.unread?'<span class="tg u">Mới</span>':''}</b><small>${esc(c.last_text||'')}</small><small>${fbxT(c.last_ts)}</small></button>`).join('')||'<p style="color:var(--muted);padding:8px">Chưa có tin nào. Khi Facebook App đã nối webhook, tin nhắn và bình luận mới hiện ở đây.</p>';}
+async function fbxOpen(conv,quiet){FBX.cur=conv;fbxList();try{const d=await api('/api/admin/fanpage?conv='+encodeURIComponent(conv));const c=d.conv;
+ const msgs=d.msgs.map(m=>{if(m.dir==='in')return `<div class="b in">${esc(m.text)}<div class="meta">${esc(m.by||'')} ${fbxT(m.ts)}</div></div>`;
+  if(m.dir==='out')return `<div class="b out">${esc(m.text)}<div class="meta">${m.by==='bot'?'Claude tự gửi':esc(m.by||'')} · ${fbxT(m.ts)}</div></div>${m.note?`<div class="nt">${esc(m.note)}</div>`:''}`;
+  if(m.dir==='draft'&&(m.status==='draft'||m.status==='error'))return `<div class="b draft"><b style="font-size:12px">Nháp Claude soạn</b>${m.note?`<div class="meta">${esc(m.note)}</div>`:''}<textarea data-fbd="${m.id}">${esc(m.text)}</textarea><div class="acts"><button class="btn sm dark" type="button" data-fbsend="${m.id}">Gửi</button><button class="btn sm" type="button" data-fbdis="${m.id}">Bỏ nháp</button></div></div>`;
+  if(m.dir==='note')return `<div class="nt">${esc(FBXERR[m.note]||m.note||'')} · ${fbxT(m.ts)}</div>`;return '';}).join('');
+ $('fbxconv').innerHTML=`<h2>${esc(c.name||(c.kind==='comment'?'Bình luận':'Khách Messenger'))}<span class="cnote" style="font-weight:400">${c.kind==='comment'?'bình luận công khai':'Messenger'}</span>
+  <label class="chk" style="margin-left:auto;font-size:12px"><input type="checkbox" id="fbxho" ${c.handoff?'checked':''}> Nhân viên đang xử lý (Claude im lặng)</label></h2>
+  <div class="fbm" id="fbxmsgs">${msgs}</div>
+  <label for="fbxr" style="margin-top:10px">Trả lời<textarea id="fbxr" rows="3" placeholder="${c.kind==='comment'?'Trả lời công khai dưới bình luận':'Tin nhắn gửi khách (trong 24 giờ từ tin cuối của khách)'}"></textarea></label>
+  <div class="acts" style="margin-top:8px"><button class="btn dark" type="button" id="fbxsend">Gửi trả lời</button></div>`;
+ const box=$('fbxmsgs');box.scrollTop=box.scrollHeight;const cc=FBX.convs.find(x=>x.conv===conv);if(cc){cc.unread=0;fbxList();}}
+ catch(e){if(!quiet)toast('Không mở được: '+e.message);}}
+async function fbxSend(text,draft_id){if(!text.trim()){toast('Chưa có nội dung');return;}
+ try{await fbxCall({action:'send',conv:FBX.cur,text,draft_id});toast('Đã gửi lên Facebook');await fbxLoad();}catch(e){toast('Gửi lỗi: '+e.message);}}
+document.addEventListener('click',async e=>{const t=e.target;
+ const b=t.closest('[data-fbc]');if(b){fbxOpen(b.dataset.fbc);return;}
+ if(t.dataset.fbsend){const ta=document.querySelector(`[data-fbd="${t.dataset.fbsend}"]`);fbxSend(ta.value,+t.dataset.fbsend);return;}
+ if(t.dataset.fbdis){try{await fbxCall({action:'discard',draft_id:+t.dataset.fbdis});fbxOpen(FBX.cur,true);fbxLoad();}catch(err){toast(err.message);}return;}
+ if(t.id==='fbxsend'){fbxSend($('fbxr').value);return;}});
+document.addEventListener('change',async e=>{if(e.target.id==='fbxho'){try{await fbxCall({action:'handoff',conv:FBX.cur,on:e.target.checked});toast(e.target.checked?'Claude sẽ không trả lời cuộc này':'Claude trả lời lại cuộc này');fbxLoad();}catch(err){toast(err.message);}}});
+async function fbxPut(body,msg){try{const r=await fetch('/api/admin/fanpage',{method:'PUT',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error(r.status);toast(msg);}catch(e){toast('Chưa lưu được: '+e.message);}}
+$('fbxmode').addEventListener('change',e=>{if(e.target.value==='auto'&&!confirm('Bật tự động: Claude sẽ gửi trả lời lên Facebook ngay, không qua duyệt. Tiếp tục?')){e.target.value=FBX.st?FBX.st.mode:'draft';return;}fbxPut({mode:e.target.value},'Đã đổi chế độ chatbot');if(FBX.st)FBX.st.mode=e.target.value;});
+$('fbxcmt').addEventListener('change',e=>fbxPut({comments:e.target.value==='on'},'Đã lưu'));
+$('fbxkbs').addEventListener('click',()=>fbxPut({kb_extra:$('fbxkb').value},'Đã lưu kiến thức bổ sung'));
+$('fbxreload').addEventListener('click',fbxLoad);
+$('fbxask').addEventListener('click',async()=>{const q=$('fbxq').value;$('fbxans').textContent='Claude đang trả lời…';
+ try{const j=await fbxCall({action:'test',text:q,kind:$('fbxqk').value});const r=j.result||{};$('fbxans').textContent=(r.reply||'(không trả lời)')+(r.handoff?`\n\n→ Chuyển nhân viên: ${r.reason}`:'');}
+ catch(e){$('fbxans').textContent='Lỗi: '+e.message;}});
+$('fbpgo').addEventListener('click',async()=>{const message=$('fbtext').value.trim();if(!message){toast('Chưa có nội dung');return;}
+ if(MODE!=='live'){toast('Chỉ đăng được trên website thật');return;}
+ const at=$('fbpat').value;const schedule=at?Math.floor(new Date(at).getTime()/1000):0;
+ if(!confirm(schedule?`Hẹn đăng bài này lên Fanpage FarmBase lúc ${new Date(schedule*1000).toLocaleString('vi-VN')}?`:'Đăng bài này lên Fanpage FarmBase ngay bây giờ?'))return;
+ $('fbpst').textContent='Đang gửi…';
+ try{const j=await fbxCall({action:'post',message,image:$('fbpimg').value.trim(),schedule});$('fbpst').textContent=j.scheduled?'Đã hẹn giờ trên Facebook.':'Đã đăng lên Fanpage.';toast($('fbpst').textContent);}
+ catch(e){$('fbpst').textContent='Lỗi: '+e.message;}});
+addEventListener('hashchange',()=>{if(location.hash==='#hop-thu-fanpage')fbxLoad();});if(location.hash==='#hop-thu-fanpage')setTimeout(fbxLoad,500);
 </script>
